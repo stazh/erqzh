@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+        <head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes"/>
+            <link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico"/>
+            <link rel="shortcut icon" type="image/png" href="resources/images/favicon-16.png" sizes="16x16"/>
+            <link rel="shortcut icon" type="image/png" href="resources/images/favicon-24.png" sizes="24x24"/>
+            <link rel="shortcut icon" type="image/png" href="resources/images/favicon-32.png" sizes="32x32"/>
+            <link rel="shortcut icon" type="image/png" href="resources/images/favicon-64.png" sizes="64x64"/>
+    
+            <title data-template="config:app-title"/>
+            <meta name="description" content="Introduction template"/>
+            <meta name="pb-template" content="introduction.html"/>
+    
+            <link rel="stylesheet" type="text/css" href="resources/fonts/font.css"/>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald&amp;display=swap"/>
+            <link rel="stylesheet" href="resources/css/theme.css"/>
+            <link rel="stylesheet" href="resources/css/theme-ssrq.css"/>
+            <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
+            <script src="resources/scripts/app/app.js"></script>
+        </head>
+    
+        <body>
+            <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app"
+                require-language="require-language">
+                <pb-document id="document1" data-template="pages:pb-document"/>
+                <app-drawer-layout force-narrow="force-narrow">
+                    <app-drawer slot="drawer" align="right">
+                        <div class="drawer-content">
+                            <pb-media-query query="(max-width: 1023px)">
+                                <!-- language selector -->
+                                <ul class="drawer-menu">
+                                    <li>
+                                        <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
+                                    </li>
+                                    <li>
+                                        <a href="abbr.html" class="tp-menu-item" title="abbr">
+                                            <div>
+                                                <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
+                                            </div>
+                                            <div class="ripple-container"></div></a>
+                                    </li>
+                                    <li>
+                                        <a href="mailto:info@ssrq-sds-fds.ch" class="tp-menu-item">
+                                            <div>
+                                                <pb-i18n key="feedback">Feedback</pb-i18n>
+                                            </div>
+                                            <div class="ripple-container"></div></a>
+                                    </li>
+                                    <li>
+                                        <h4 slot="collapse-trigger">
+                                            <pb-i18n key="menu.download.title">Download</pb-i18n>
+                                        </h4>
+                                        <paper-listbox slot="collapse-content">
+                                            <paper-item>
+                                                <pb-download type="tex" src="document1" dialog="downloadDialog" data-i18n="[title]menu.download.pdf-latex" title="i18n(pdf-latex)">
+                                                    <pb-i18n key="menu.download.pdf-latex"/>
+                                                </pb-download>
+                                            </paper-item>
+                                            <paper-item>
+                                                <pb-edit-xml src="document1" data-i18n="[title]menu.download.view-tei" title="view-tei">
+                                                    XML
+                                                </pb-edit-xml>
+                                            </paper-item>
+                                        </paper-listbox>
+                                    </li>
+                                    <li>
+                                        <pb-lang name="lang" data-template="pages:languages"/>
+                                    </li>
+                                </ul>
+                            </pb-media-query>
+                        </div>
+                    </app-drawer>
+
+
+
+                    <app-header-layout>
+                        <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
+                            <app-toolbar class="menubar">
+                                <a href="${app}/index.html" class="logo" data-template="pages:parse-params"></a>
+                                <pb-media-query query="(min-width: 1024px)">
+                                    <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
+                                    <a href="abbr.html" class="tp-menu-item" title="abbr">
+                                        <div>
+                                            <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
+                                        </div>
+                                        <div class="ripple-container"></div></a>
+                                    <a href="mailto:info@ssrq-sds-fds.ch" class="tp-menu-item">
+                                        <div>
+                                            <pb-i18n key="feedback">Feedback</pb-i18n>
+                                        </div>
+                                        <div class="ripple-container"></div></a>
+                                    <div main-title="main-title"></div>
+                                    <pb-restricted login="login">
+                                        <paper-menu-button>
+                                            <a href="#" slot="dropdown-trigger" data-i18n="[title]menu.download.title" title="i18n(download)">
+                                                <pb-i18n key="menu.download.title">Download</pb-i18n>
+                                            </a>
+                                            <paper-listbox slot="dropdown-content">
+                                                <paper-item>
+                                                    <a target="_blank" data-template="app:download-pdf">
+                                                        <iron-icon slot="icon" icon="print"/>  
+                                                        PDF
+                                                    </a>                                                
+                                                </paper-item>    
+                                                                
+                                                <paper-item>
+                                                    <a target="_blank" data-template="app:download-xml">                                                    
+                                                        <iron-icon slot="icon" icon="text-format"/>
+                                                        XML/TEI
+                                                    </a>
+                                                </paper-item>                                                                                        
+                                            </paper-listbox>
+                                        </paper-menu-button>
+                                    </pb-restricted>
+
+
+                                    <!-- language selector -->
+                                    <pb-lang name="lang" data-template="pages:languages"/>
+
+                                    <pb-login id="login" group="tei">
+                                        <iron-icon slot="icon" icon="account-circle"/>
+                                    </pb-login>
+
+                                </pb-media-query>
+
+                                <pb-media-query query="(max-width: 1023px)">
+                                    <div main-title="main-title"></div>
+
+                                    <pb-login id="login" group="tei">
+                                        <iron-icon slot="icon" icon="account-circle"/>
+                                    </pb-login>
+                                    <paper-icon-button icon="icons:menu" drawer-toggle="drawer-toggle"/>
+                                </pb-media-query>
+
+                                <pb-progress indeterminate="indeterminate" bottom-item="bottom-item" subscribe="docs"/>
+
+                            </app-toolbar>
+
+
+
+                            <app-toolbar data-template="templates:include" data-template-path="templates/toolbar.html"/>
+                        </app-header>
+    
+                        <pb-drawer toggle="tocToggle" class="toc" emit="toc" subscribe="transcription">
+                            <div class="drawer-content">
+                                <h3>
+                                    <pb-i18n key="document.contents">Contents</pb-i18n>
+                                </h3>
+                                <pb-load id="toc" url="templates/toc.html?target=transcription&amp;icons=true" src="document1" subscribe="toc" load-once="load-once">
+                                    <pb-i18n key="dialogs.loading">Loading</pb-i18n>
+                                </pb-load>
+                            </div>
+                        </pb-drawer>
+                        <div class="grid">
+                            <main>
+                                <header>
+                                    <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription">
+                                        <pb-param name="view" value="metadata"/>
+                                    </pb-view>
+                                                </header>
+                                <div class="content-body">
+                                    <pb-navigation direction="backward" unit="page" emit="transcription" subscribe="transcription">
+                                        <paper-fab icon="icons:chevron-left"/>
+                                    </pb-navigation>
+                                    <pb-view id="view1" src="document1" xpath="//body" view="single" append-footnotes="append-footnotes" use-language="use-language" 
+                                        subscribe="transcription" emit="transcription" wait-for="metadata"></pb-view>
+                                    <pb-navigation direction="forward" unit="page" emit="transcription" subscribe="transcription">
+                                        <paper-fab icon="icons:chevron-right"/>
+                                    </pb-navigation>
+                                </div>
+                            </main>
+                        </div>
+                    </app-header-layout>
+                </app-drawer-layout>
+            </pb-page>
+            <div class="splash"/>
+        </body>
+    </html>
