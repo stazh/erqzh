@@ -84,6 +84,7 @@ main, .facsimile, .register {
     main {
         max-width: 1600px;
         margin: 0;
+        padding: 0 1rem 0 0;
     }
 }
 
@@ -493,8 +494,4 @@ paper-input label {
 
 pb-browse-docs::part(delete-button) {
     display: none;
-}
-
-.content-body {
-    padding-right: 1rem;
 }
