@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <app-toolbar class="menubar">
-    <a href="${app}/index.html" class="logo" data-template="pages:parse-params"/>
-    <pb-media-query query="min-width: 1024px">
+    <a href="${app}/index.html" class="logo" data-template="pages:parse-params"></a>
+    <pb-media-query query="(min-width: 1024px)">
         <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
+        <a href="abbr.html" class="tp-menu-item" title="abbr">
+            <div>
+                <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
+            </div>
+            <div class="ripple-container"></div></a>
+                <a href="mailto:info@ssrq-sds-fds.ch" class="tp-menu-item">
+            <div>
+                <pb-i18n key="feedback">Feedback</pb-i18n>
+            </div>
+            <div class="ripple-container"></div></a>
         <paper-menu-button>
-            <a href="#" slot="dropdown-trigger" data-i18n="[title]menu.download.title" title="i18n(download)">
-                <pb-i18n key="menu.download.title">Download</pb-i18n>
+            <a href="#" slot="dropdown-trigger">
+                <pb-i18n key="menu.admin.title">Admin</pb-i18n>
             </a>
             <paper-listbox slot="dropdown-content">
                 <paper-item>
@@ -40,34 +50,15 @@
                 </paper-item>
             </paper-listbox>
         </paper-menu-button>
-        <pb-restricted login="login">
-            <paper-menu-button>
-                <a href="#" slot="dropdown-trigger">
-                    <pb-i18n key="menu.admin.title">Admin</pb-i18n>
-                </a>
-                <paper-listbox slot="dropdown-content">
-                    <paper-item data-template="pages:edit-odd-list"/>
-                    <paper-item>
-                        <pb-download url="api/apps/download">
-                            <pb-i18n key="appgen.xar-download">Download App as .xar</pb-i18n>
-                        </pb-download>
-                    </paper-item>
-                    <paper-item>
-                        <a href="${app}/api.html" data-template="pages:parse-params" target="_blank">API Documentation</a>
-                    </paper-item>
-                </paper-listbox>
-            </paper-menu-button>
-        </pb-restricted>
     </pb-media-query>
 
-    <!-- Search input -->
-    <pb-search action="${app}/search.html" data-template="pages:parse-params" value="${query}" redirect="redirect"/>
     <pb-media-query query="min-width: 1024px">
-       <!-- language selector -->
-       <pb-lang name="lang" data-template="pages:languages"/>
+        <!-- language selector -->
+        <pb-lang name="lang" data-template="pages:languages"/>
     </pb-media-query>
-    <pb-login id="login" group="tei">
-    </pb-login>
+
+    <pb-login id="login" group="tei"></pb-login>
+
     <paper-dialog id="downloadDialog">
         <h2>
             <pb-i18n key="dialogs.generatingFile">Generating file ...</pb-i18n>
@@ -81,4 +72,5 @@
             </paper-button>
         </div>
     </paper-dialog>
+
 </app-toolbar>

@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <app-toolbar class="toolbar" sticky="sticky">
-    <paper-icon-button id="tocToggle" class="toc-toggle" icon="icons:view-list"/>
-    <a href="${app}/index.html?collection=${collection}" data-i18n="[title]browse.${collection}.title" title="" data-template="pages:parse-params">
-        <paper-icon-button icon="icons:folder-open"/>
+    <a href="${app}/index.html?collection=${collection}" data-i18n="[title]browse.${collection}.title" title=""
+        data-template="pages:parse-params">
+        <paper-icon-button icon="icons:folder-open"></paper-icon-button>
     </a>
+    <!-- paper-icon-button id="tocToggle" class="toc-toggle" icon="icons:view-list"/-->
+    <pb-toggle-feature name="mode" properties-on='{"odd": "ssrq-norm"}' properties-off='{"odd": "ssrq"}' default="off" init-from-view="init-from-view"
+        emit="transcription" subscribe="transcription"
+        data-i18n="[title]view-switch" title=""><pb-i18n key="view-normalized"></pb-i18n></pb-toggle-feature>
     <pb-restricted login="login">
-        <pb-ajax subscribe="transcription" emit="transcription" url="api/odd" method="post" data-template="pages:parse-params" event="pb-refresh" title="Recompile ODD" data-i18n="[title]menu.admin.recompile">
-            <h3 slot="title">
-                <pb-i18n key="menu.admin.recompile"/>
-            </h3>
-            <paper-icon-button icon="icons:refresh"/>
+        <pb-ajax subscribe="transcription" emit="transcription" url="api/odd" method="post"
+            event="pb-refresh"
+            title="Recompile ODD" data-i18n="[title]menu.admin.recompile">
+            <h3 slot="title"><pb-i18n key="menu.admin.recompile"></pb-i18n></h3>
+            <paper-icon-button icon="icons:refresh"></paper-icon-button>
         </pb-ajax>
     </pb-restricted>
     <pb-zoom emit="transcription" direction="in" icon="icons:zoom-in"/>
@@ -20,6 +24,6 @@
     <pb-navigation emit="transcription" keyboard="right" subscribe="transcription" direction="forward" unit="page">
         <paper-icon-button icon="icons:chevron-right"/>
     </pb-navigation>
-    <paper-icon-button icon="icons:menu" drawer-toggle="drawer-toggle"/>
+<!--    <paper-icon-button icon="icons:menu" drawer-toggle="drawer-toggle"/>-->
     <pb-progress subscribe="transcription" indeterminate="indeterminate" bottom-item="bottom-item"/>
 </app-toolbar>
