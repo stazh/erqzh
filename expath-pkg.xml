@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package xmlns="http://expath.org/ns/pkg" spec="1.0" version="0.1" name="http://existsolutions.com/rqzh2" abbrev="rqzh2">
+<package xmlns="http://expath.org/ns/pkg" spec="1.0" version="0.1.0" name="http://existsolutions.com/rqzh2" abbrev="rqzh2">
     <title>Rechtsquellen des Kantons Zürich</title>
     <dependency package="http://exist-db.org/apps/shared"/>
-    <dependency package="http://existsolutions.com/apps/tei-publisher-lib" semver-min="2.8.8"/>
-    <dependency package="http://exist-db.org/open-api/router" semver-min="0.2.0"/>
+    <dependency package="http://existsolutions.com/apps/tei-publisher-lib" version="2.8.11"/>
+    <dependency package="http://exist-db.org/open-api/router" semver-min="0.5.1" semver-max="0"/>
 </package>
