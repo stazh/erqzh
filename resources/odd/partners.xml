@@ -1,0 +1,50 @@
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>Partners schema for eSSRQ</title>
+                <author>Pascale Sutter</author>
+            </titleStmt>
+            <publicationStmt>
+                <p>Page: Partners</p>
+            </publicationStmt>
+            <notesStmt>
+                <note type="ns">http://ssrq-sds-fds.ch/ns/nonTEI</note>
+            </notesStmt>
+            <sourceDesc>
+            </sourceDesc>
+        </fileDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <dataSpec ident="partners">
+                <valList>
+                   <valItem ident="Archives cantonales vaudoises (ACV)">
+                        <desc xml:lang="fr">
+                        <p></p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p></p>
+                        </desc>
+                   </valItem>
+                   <valItem ident="Bibliothèque publique et universitaire de Neuchâtel (BPUN)">
+                        <desc xml:lang="fr">
+                        <p></p>
+                        </desc>
+                        <desc xml:lang="de">
+                        <p></p>
+                        </desc>
+                    </valItem>
+                    <valItem ident="Staatsarchiv St. Gallen (StASG)">
+                        <desc xml:lang="de">
+                        <p></p>
+                        </desc>
+                        <desc xml:lang="fr">
+                        <p></p>
+                        </desc>
+                    </valItem>
+                </valList>
+            </dataSpec>
+        </body>
+    </text>
+</TEI>

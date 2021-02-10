@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<paper-card class="searchbox">
+    <h3><pb-i18n key="browse.search">Suche</pb-i18n><a href="#" id="search-info"><iron-icon icon="info"></iron-icon></a></h3>
+    <div class="card-content">
+        <pb-search submit-buttons="true" id="search-form" action="${app}/search.html" subscribe="search" data-template="pages:parse-params" 
+            value="${query}" submit-on-load="submit-on-load" redirect="redirect" data-i18n="[place-holder]search-query-attr">
+            <pb-select name="type" value="${type}" data-template="pages:parse-params" slot="beforeInput">
+                <paper-item value="text"><pb-i18n key="text">Text</pb-i18n></paper-item>
+                <paper-item value="person"><pb-i18n key="person">Person</pb-i18n></paper-item>
+                <paper-item value="organisation"><pb-i18n key="organisation">Organisation</pb-i18n></paper-item>
+                <paper-item value="places"><pb-i18n key="register.place">Place</pb-i18n></paper-item>
+                <paper-item value="lemma"><pb-i18n key="register.lemma">Lemma</pb-i18n></paper-item>
+                <paper-item value="keywords"><pb-i18n key="register.keywords">Keywords</pb-i18n></paper-item>
+            </pb-select>
+            <input type="hidden" name="refresh" value="true"/>
+            <input type="hidden" name="sort" id="hiddenSort" value="${sort}" data-template="pages:parse-params"/>
+            <div class="panel-body">
+
+
+                <h4><pb-i18n key="genre"/></h4>
+                <paper-checkbox id="bearbeitungstext" checked="checked" data-template="pages:parse-params"><pb-i18n key="searchText"/></paper-checkbox>
+                <ul class="subtype">
+                    <li>
+                        <paper-checkbox name="subtype" class="bearbeitungstext" value="title" data-template="templates:form-control"><pb-i18n key="title"/></paper-checkbox>
+                    </li>
+                    <li>
+                        <paper-checkbox name="subtype" class="bearbeitungstext" value="idno" data-template="templates:form-control"><pb-i18n key="signatur"/></paper-checkbox>
+                    </li>
+                    <li>
+                        <paper-checkbox name="subtype" class="bearbeitungstext" value="regest" data-template="templates:form-control"><pb-i18n key="regest"/></paper-checkbox>
+                    </li>
+                    <li>
+                        <paper-checkbox name="subtype" checked="checked" class="bearbeitungstext" value="comment" data-template="templates:form-control"><pb-i18n key="comment"/></paper-checkbox>
+                    </li>
+                    <li>
+                        <paper-checkbox name="subtype" class="bearbeitungstext" value="notes" data-template="templates:form-control"><pb-i18n key="notes"/></paper-checkbox>
+                    </li>
+                    <li>
+                        <paper-checkbox name="subtype" class="bearbeitungstext" value="seal" data-template="templates:form-control"><pb-i18n key="seal"/></paper-checkbox>
+                    </li>
+                </ul>
+                <paper-checkbox name="subtype" value="edition" checked="checked" data-template="pages:parse-params"><pb-i18n key="searchEdition"/></paper-checkbox>
+
+                <h4><pb-i18n key="filters"/></h4>
+
+                <div class="filter-grid">
+
+                    <label class="flexend"><pb-i18n key="period"/></label>
+                    <div class="right" data-template="search:period-range">
+                        <paper-input type="number" name="filter-period-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-period-min}" data-template="pages:parse-params" />
+                        <span class="until">-</span>
+                        <paper-input type="number" name="filter-period-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-period-max}" data-template="pages:parse-params"/>
+                        <span></span>
+                    </div>
+
+                </div>
+                <label for="filter-language"><pb-i18n key="language"></pb-i18n></label>
+                <pb-select id="filter-language" name="filter-language" data-template="templates:form-control" multi="multi">
+                    <paper-item value="de">de</paper-item>
+                    <paper-item value="fr">fr</paper-item>
+                    <paper-item value="it">it</paper-item>
+                    <paper-item value="la">la</paper-item>
+                </pb-select>
+
+                <pb-select name="filter-archive" data-i18n="[label]archive" value="${filter-archive}" data-template="pages:parse-params">
+                    <paper-item  data-template="search:list-archives"> </paper-item>
+                </pb-select>
+
+                <pb-select name="filter-pubplace" data-i18n="[label]origPlace" value="${filter-pubplace}" data-template="pages:parse-params">
+                    <paper-item value=""></paper-item>
+                    <paper-item value="yes"><pb-i18n key="yes">ja-falsch</pb-i18n></paper-item>
+                    <paper-item value="no"><pb-i18n key="no">nein-falsch</pb-i18n></paper-item>
+                </pb-select>
+                        
+                <pb-select name="filter-author" data-i18n="[label]scribe" value="${filter-author}" data-template="pages:parse-params">
+                    <paper-item value=""></paper-item>
+                    <paper-item value="yes"><pb-i18n key="yes">ja-falsch</pb-i18n></paper-item>
+                    <paper-item value="no"><pb-i18n key="no">nein-falsch</pb-i18n></paper-item>
+                </pb-select>                                            
+
+                <pb-select name="filter-seal" data-i18n="[label]seal" value="${filter-seal}" data-template="pages:parse-params">
+                    <paper-item value=""></paper-item>
+                    <paper-item value="yes"><pb-i18n key="yes">ja</pb-i18n></paper-item>
+                    <paper-item value="no"><pb-i18n key="no">nein</pb-i18n></paper-item>
+                </pb-select>
+
+                <pb-select name="filter-filiation" data-i18n="[label]filliation" value="${filter-filiation}" data-template="pages:parse-params">
+                    <paper-item value=""/>
+                    <paper-item value="yes"><pb-i18n key="yes">ja</pb-i18n></paper-item>
+                    <paper-item value="no"><pb-i18n key="no">nein</pb-i18n></paper-item>
+                </pb-select>
+
+                <pb-select name="filter-material" data-i18n="[label]material" value="${filter-material}" data-template="pages:parse-params">
+                    <paper-item value=""/>
+                    <paper-item value="Papier"><pb-i18n key="paper"/></paper-item>
+                    <paper-item value="Pergament"><pb-i18n key="parchment"/></paper-item>
+
+                </pb-select>
+
+                <pb-select name="filter-condition" data-i18n="[label]condition" value="${filter-condition}" data-template="pages:parse-params">
+                    <paper-item value=""/>
+                    <paper-item value="yes"><pb-i18n key="yes">ja</pb-i18n></paper-item>
+                    <paper-item value="no"><pb-i18n key="no">nein</pb-i18n></paper-item>                                                
+                </pb-select>
+
+                <pb-select class="filter-canton" name="filter-kanton" data-i18n="[label]volume" data-template="templates:form-control" multi="multi">                                                
+                    <paper-item value="ZH">ZH</paper-item>
+                    <paper-item value="BE">BE</paper-item>
+                    <paper-item value="LU">LU</paper-item>
+                    <paper-item value="UR">UR</paper-item>
+                    <paper-item value="SZ">SZ</paper-item>
+                    <paper-item value="OW/NW">OW/NW</paper-item>
+                    <paper-item value="GL">GL</paper-item>
+                    <paper-item value="ZG">ZG</paper-item>
+                    <paper-item value="FR">FR</paper-item>
+                    <paper-item value="SO">SO</paper-item>
+                    <paper-item value="BS/BL">BS/BL</paper-item>
+                    <paper-item value="SH">SH</paper-item>
+                    <paper-item value="AR/AI">AR/AI</paper-item>
+                    <paper-item value="SG">SG</paper-item>
+                    <paper-item value="GR">GR</paper-item>
+                    <paper-item value="AG">AG</paper-item>
+                    <paper-item value="TG">TG</paper-item>
+                    <paper-item value="TI">TI</paper-item>
+                    <paper-item value="VD">VD</paper-item>
+                    <paper-item value="VS">VS</paper-item>
+                    <paper-item value="NE">NE</paper-item>
+                    <paper-item value="GE">GE</paper-item>
+                    <paper-item value="JU">JU</paper-item>
+                </pb-select>                                    
+            
+
+                <div class="filter-grid formrow">
+
+                    <label class="flexend"><pb-i18n key="pubdate"/></label>
+                    <div class="right" data-template="search:pubdate-range">
+                        <paper-input type="number" name="filter-pubdate-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-pubdate-min}" data-template="pages:parse-params"/>
+                        <span class="until">-</span>
+                        <paper-input type="number" name="filter-pubdate-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-pubdate-max}" data-template="pages:parse-params"/>
+                    </div>
+
+                </div>
+
+                <div class="buttons">
+                    <paper-button slot="searchButton"><pb-i18n key="search"></pb-i18n></paper-button>
+                    <paper-button slot="resetButton"><pb-i18n key="reset"></pb-i18n></paper-button>
+                </div>
+
+            </div>
+        </pb-search>
+        <paper-dialog id="query-help-dialog">
+            <h2><pb-i18n key="help-title">Erläuterungen zur Suche</pb-i18n></h2>
+            <paper-dialog-scrollable>
+                <pb-document id="help-text" path="help.xml" odd="ssrq"/>
+                <pb-view src="help-text" view="single" use-language="use-language" xpath="//div[@xml:lang=tokenize(request:get-parameter('user.language', ()), '-')[1] or @xml:lang='de'][1]">
+                </pb-view>
+            </paper-dialog-scrollable>
+            <div class="buttons">
+                <paper-button dialog-confirm="dialog-confirm" autofocus="autofocus">
+                    <pb-i18n key="dialogs.close">Close</pb-i18n>
+                </paper-button>
+            </div>
+        </paper-dialog>                         
+    </div>
+    <script defer="defer">
+        const trigger = document.getElementById('search-info');
+        trigger.addEventListener('click', function(ev) {
+            ev.preventDefault();
+            document.getElementById('query-help-dialog').open();
+        });
+    </script>
+</paper-card>

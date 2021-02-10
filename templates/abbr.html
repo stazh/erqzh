@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title data-template="config:app-title"/>
+    <meta content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes" name="viewport"/>
+    <link href="resources/images/favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link href="resources/images/favicon-16.png" rel="shortcut icon" sizes="16x16" type="image/png"/>
+    <link href="resources/images/favicon-24.png" rel="shortcut icon" sizes="24x24" type="image/png"/>
+    <link href="resources/images/favicon-32.png" rel="shortcut icon" sizes="32x32" type="image/png"/>
+    <link href="resources/images/favicon-64.png" rel="shortcut icon" sizes="64x64" type="image/png"/>
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet"/>
+    <link href="resources/css/theme.css" rel="stylesheet"/>
+    <link href="resources/css/theme-ssrq.css" rel="stylesheet"/>
+    <script data-template="pages:load-components" src="pb-components-bundle.js" type="module"/>
+</head>
+
+
+<body>
+<pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" unresolved="unresolved" require-language="require-language">
+    <app-drawer-layout force-narrow="force-narrow">
+        <app-drawer align="right" slot="drawer">
+            <div class="drawer-content">
+                <pb-media-query query="(max-width: 1023px)">
+                    <!-- language selector -->
+                    <ul class="drawer-menu">
+                        <li>
+                            <a data-template="pages:parse-params" href="${app}/index.html">Start</a>
+                        </li>
+                        <li>
+                            <a class="tp-menu-item" href="abbr.html" title="abbr">
+                                <div>
+                                    <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
+                                </div>
+                                <div class="ripple-container"></div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="tp-menu-item" href="mailto:info@ssrq-sds-fds.ch">
+                                <div>
+                                    <pb-i18n key="feedback">Feedback</pb-i18n>
+                                </div>
+                                <div class="ripple-container"></div>
+                            </a>
+                        </li>
+                        <li>
+                            <pb-lang data-template="pages:languages" name="lang"/>
+                        </li>
+                    </ul>
+                </pb-media-query>
+            </div>
+        </app-drawer>
+        <app-header-layout>
+            <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
+                <app-toolbar class="menubar">
+                    <a href="${app}/index.html" class="logo" data-template="pages:parse-params"></a>
+                    <pb-media-query query="(min-width: 1024px)">
+                        <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
+                        <a href="abbr.html" class="tp-menu-item" title="abbr">
+                            <div>
+                                <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
+                            </div>
+                            <div class="ripple-container"></div></a>
+                        <a href="mailto:info@ssrq-sds-fds.ch" class="tp-menu-item">
+                            <div>
+                                <pb-i18n key="feedback">Feedback</pb-i18n>
+                            </div>
+                            <div class="ripple-container"></div></a>
+                        <pb-restricted login="login" group="tei">
+                            <paper-menu-button>
+                                <a href="#" slot="dropdown-trigger">
+                                    <pb-i18n key="menu.admin.title">Admin</pb-i18n>
+                                </a>
+                                <paper-listbox slot="dropdown-content">
+                                    <paper-item data-template="pages:edit-odd-list" data-template-emit="docs"></paper-item>
+                                    <paper-item>
+                                        <a href="${app}/api.html" data-template="pages:parse-params" target="_blank">API Documentation</a>
+                                    </paper-item>
+                                </paper-listbox>
+                            </paper-menu-button>
+                        </pb-restricted>
+                        <div main-title="main-title"></div>
+
+                        <!-- language selector -->
+                        <pb-lang name="lang" data-template="pages:languages"/>
+
+                        <pb-login id="login" group="tei">
+                            <iron-icon slot="icon" icon="account-circle"/>
+                            <p slot="information"><pb-i18n key="login-info"></pb-i18n></p>
+                        </pb-login>
+
+                    </pb-media-query>
+
+                    <pb-media-query query="(max-width: 1023px)">
+                        <div main-title="main-title"></div>
+
+                        <pb-login id="login" group="tei">
+                            <iron-icon slot="icon" icon="account-circle"/>
+                            <p slot="information"><pb-i18n key="login-info"></pb-i18n></p>
+                        </pb-login>
+                        <paper-icon-button icon="icons:menu" drawer-toggle="drawer-toggle"/>
+                    </pb-media-query>
+
+                    <pb-progress indeterminate="indeterminate" bottom-item="bottom-item" subscribe="docs"/>
+
+                </app-toolbar>
+            </app-header>
+
+            <main class="abbreviations">
+                <header>
+                    <h1>
+                        <pb-i18n key="abbreviations"></pb-i18n>
+                    </h1>
+                </header>
+
+                <div class="abbr-list" id="abbreviations">
+                    <pb-load url="api/abbreviations" use-language="use-language" auto="auto"></pb-load>
+                </div>
+            </main>
+        </app-header-layout>
+    </app-drawer-layout>
+</pb-page>
+<div class="splash"/>
+</body>
+</html>
