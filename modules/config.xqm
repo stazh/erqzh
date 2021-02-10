@@ -32,7 +32,8 @@ declare variable $config:webcomponents :="1.17.1";
  : CDN URL to use for loading webcomponents. Could be changed if you created your
  : own library extending pb-components and published it to a CDN.
  :)
-declare variable $config:webcomponents-cdn := "https://unpkg.com/@teipublisher/pb-components";
+declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@teipublisher/pb-components";
+(: declare variable $config:webcomponents-cdn := "https://unpkg.com/@teipublisher/pb-components"; :)
 
 (:~~
  : A list of regular expressions to check which external hosts are
@@ -59,7 +60,7 @@ declare variable $config:default-language := "en";
  : the parameters below for further configuration), or 'page' to browse
  : a document by actual pages determined by TEI pb elements.
  :)
-declare variable $config:default-view :="div";
+declare variable $config:default-view :="body";
 
 (:
  : The default HTML template used for viewing document content. This can be
@@ -81,7 +82,7 @@ declare variable $config:search-default :="tei:div";
  : $pagination-depth to 3 to not show the sub-subsections as separate pages.
  : Setting $pagination-depth to 1 would show entire top-level divs on one page.
  :)
-declare variable $config:pagination-depth := 10;
+declare variable $config:pagination-depth := 0;
 
 (:
  : If a div starts with less than $pagination-fill elements before the
@@ -205,7 +206,7 @@ declare variable $config:fop-config :=
  : arguments.
  :)
 declare variable $config:tex-command := function($file) {
-    ( "/usr/local/bin/pdflatex", "-interaction=nonstopmode", $file )
+    ( "/usr/local/texlive/2018/bin/x86_64-darwin/xelatex", "-interaction=nonstopmode", $file )
 };
 
 (:
@@ -278,7 +279,9 @@ declare variable $config:context-path :=
 (:~
  : The root of the collection hierarchy containing data.
  :)
-declare variable $config:data-root :=$config:app-root || "/data";
+declare variable $config:data-root := "/db/apps/rqzh-data/data";
+
+declare variable $config:temp-root := "/db/apps/rqzh-data/data/temp";
 
 (:~
  : The root of the collection hierarchy whose files should be displayed
@@ -290,21 +293,21 @@ declare variable $config:data-default := $config:data-root;
  : A sequence of root elements which should be excluded from the list of
  : documents displayed in the browsing view.
  :)
-declare variable $config:data-exclude :=
-    doc($config:data-root || "/taxonomy.xml")/tei:TEI
-;
+declare variable $config:data-exclude := (
+    doc($config:data-root || "/taxonomy.xml")/tei:TEI,
+    collection($config:data-root || "/SG/SG_III_4/latest")/tei:TEI
+);
 
-(:~
- : The main ODD to be used by default
- :)
-declare variable $config:default-odd :="";
+declare variable $config:default-odd :="ssrq.odd";
+
+declare variable $config:odd := $config:default-odd;
 
 (:~
  : Complete list of ODD files used by the app. If you add another ODD to this list,
  : make sure to run modules/generate-pm-config.xql to update the main configuration
  : module for transformations (modules/pm-config.xql).
  :)
-declare variable $config:odd-available :=();
+declare variable $config:odd-available := ( $config:default-odd, "ssrq-norm.odd" );
 
 (:~
  : List of ODD files which are used internally only, i.e. not for displaying information
@@ -313,6 +316,12 @@ declare variable $config:odd-available :=();
 declare variable $config:odd-internal := "docx.odd";
 
 declare variable $config:odd-root := $config:app-root || "/resources/odd";
+
+declare variable $config:schema-odd := doc($config:odd-root || "/TEI_Schema_SSRQ.odd")/*;
+
+declare variable $config:abbr := doc($config:odd-root || "/abbr.xml")/*;
+
+declare variable $config:partners := doc($config:odd-root || "/partners.xml")/*;
 
 declare variable $config:output := "transform";
 
@@ -343,7 +352,8 @@ declare variable $config:dts-collections := map {
                 "members": function() {
                     nav:get-root((), map {
                         "leading-wildcard": "yes",
-                        "filter-rewrite": "yes"
+                        "filter-rewrite": "yes",
+                        "fields": "idno"
                     })
                 },
                 "metadata": function($doc as document-node()) {

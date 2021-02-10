@@ -23,12 +23,21 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 
+declare variable $nav:REFERENCED_DOCS := collection($config:data-root)//tei:div[@type='collection']//tei:ref/string();
+
+declare function nav:filter-collections($docs) {
+    for $doc in $docs
+    where not(ft:field($doc, 'idno') = $nav:REFERENCED_DOCS)
+    return
+        $doc
+};
+
 declare function nav:get-root($root as xs:string?, $options as map(*)?) {
-    $config:data-default ! (
-        for $doc in collection(. || "/" || $root)//tei:text[ft:query(., "file:*", $options)]
+    ($config:data-default ! (
+        for $doc in collection(. || "/" || $root)/tei:TEI[ft:query(., "kanton:*", $options)][not(@type="introduction")][.//tei:text/tei:body/*]
         return
-            $doc/ancestor::tei:TEI
-    )
+            $doc
+    )) => nav:filter-collections()
 };
 
 declare function nav:get-header($config as map(*), $node as element()) {
@@ -88,7 +97,7 @@ declare function nav:get-metadata($config as map(*), $root as element(), $field 
 declare function nav:sort($sortBy as xs:string, $items as element()*) {
     switch ($sortBy)
         case "date" return
-            sort($items, (), ft:field(?, "date", "xs:date"))
+            sort($items, (), ft:field(?, "idno"))
         default return
             sort($items, 'http://www.w3.org/2013/collation/UCA', ft:field(?, $sortBy))
 };

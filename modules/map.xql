@@ -74,3 +74,9 @@ return
 
 };
 
+declare function mapping:ssrq($root as node(), $userParams as map(*)) {
+    let $language := replace(($userParams?language, 'de')[1], '^([^-]+).*$', '$1')
+    let $session := session:set-attribute('ssrq.lang', $language)
+    return
+        $root
+};

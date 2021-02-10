@@ -108,8 +108,61 @@ declare function nav:output-footnotes($footnotes as element()*) {
     }
     </div>,
     <div class="footnotes">
+        <h4 class="block-title"><pb-i18n key="notes"/></h4>
+          <ol class="textcritical">
+        {
+            for $note in $footnotes[@type="a"]
+            order by number($note/@value)
+            let $note :=
+                element { node-name($note) } {
+                    $note/@*,
+                    nav:remove-nested-notes($note/node())
+                }
+            return
+                nav:check-note($note)
+        }
+        </ol>
+        <ol>
     {
-        $footnotes[not(self::pb-popover)]
+            for $note in $footnotes[@type="1"]
+            order by number($note/@value)
+            let $note :=
+                element { node-name($note) } {
+                    $note/@*,
+                    nav:remove-nested-notes($note/node())
     }
+            return
+                nav:check-note($note)
+        }
+        </ol>
     </div>
+};
+
+declare function nav:remove-nested-notes($nodes as node()*) {
+    for $node in $nodes
+    return
+        typeswitch($node)
+            case element(li) return
+                if ($node/@class="footnote") then
+                    ()
+                else
+                    $node
+            case element() return
+                element { node-name($node) } {
+                    $node/@*,
+                    nav:remove-nested-notes($node/node())
+                }
+            default return
+                $node
+};
+
+declare function nav:check-note($note as element()) {
+    if (matches($note/span[@class = "fn-content"], "[\.!\?]\s*$")) then
+        $note
+    else
+        element { node-name($note) } {
+            $note/@*,
+            <span class="fn-content">{ $note/span[@class = "fn-content"]/node() }.</span>,
+            $note/*[not(self::span)]
+        }
 };

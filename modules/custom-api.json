@@ -25,6 +25,90 @@
         }
     },
     "paths": {
+        "/api/register/{id}": {
+            "get": {
+                "summary": "Registerdaten abrufen",
+                "operationId": "custom:registerdaten",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema":{
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Registerdaten",
+                        "content": {
+                            "text/html":{
+                                "schema":{
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/abbreviations":{
+            "get": {
+                "summary": "Abkürzungsverzeichnis",
+                "operationId": "custom:abbreviations",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "schema":{
+                            "type": "string",
+                            "default": "de"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Abkürzungsverzeichnis",
+                        "content": {
+                            "text/html":{
+                                "schema":{
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/partners":{
+            "get": {
+                "summary": "Liste der Projektpartner",
+                "operationId": "custom:partners",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "schema":{
+                            "type": "string",
+                            "default": "de"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Liste der Projektpartner",
+                        "content": {
+                            "text/html":{
+                                "schema":{
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     },
     "security": [
         {
