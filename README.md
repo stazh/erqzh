@@ -6,7 +6,7 @@
   
 ## Utilise Dev Version of pb-components
 
-1 clone tei-publisher-components ( github.com/eeditiones/tei-publisher-components/ )
+1. clone tei-publisher-components ( github.com/eeditiones/tei-publisher-components/ )
 1. in rqzh2 modules/config.xqm set $config:webcomponents-cdn to ‘local’ 
 1. call `ant xar-local`
 1. remove tei-publisher-components from resources/scripts ( `rm -rf resources/scripts/*.js` )
@@ -20,7 +20,7 @@
 1. in modules/config.xqm set `config:webcomponents` to `local`
 2. call `ant clean xar-local`
 
-## use local dev version of pb-components
+## Use local dev version of pb-components
 
 1. clone tei-publisher-components ( github.com/eeditiones/tei-publisher-components/ ) or use
 your existing clone
