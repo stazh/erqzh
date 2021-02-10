@@ -12,13 +12,22 @@
 -->
 <modules>
     <!-- General latex extension functions -->
-    <!--output mode="latex">
+    <output mode="latex">
         <property name="class">"article"</property>
         <property name="section-numbers">false()</property>
         <property name="font-size">"12pt"</property>
-        <module uri="http://www.tei-c.org/tei-simple/xquery/ext-latex" prefix="ext-latex" at="xmldb:exist:///db/apps/tei-publisher/modules/ext-latex.xql"/>
-    </output-->
-    <!--output mode="web" odd="documentation">
-        <module uri="http://www.tei-c.org/tei-simple/xquery/ext-html" prefix="ext-html" at="xmldb:exist:///db/apps/tei-publisher/modules/ext-html.xql"/>
-    </output-->
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-latex" prefix="ext-latex" at="xmldb:exist:///db/apps/rqzh2/modules/ext-latex.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/rqzh2/modules/ext-common.xql"/>
+    </output>
+    <output mode="web">
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web" prefix="ext-html" at="xmldb:exist:///db/apps/rqzh2/modules/ext-html.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/rqzh2/modules/ext-common.xql"/>
+    </output>
+    <output mode="print">
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/rqzh2/modules/ext-common.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/ext-fo" prefix="ext-fo" at="xmldb:exist:///db/apps/rqzh2/modules/ext-fo.xql"/>
+    </output>
+    <output mode="epub">
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/rqzh2/modules/ext-common.xql"/>
+    </output>
 </modules>
