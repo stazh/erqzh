@@ -15,9 +15,17 @@
         <link rel="stylesheet" href="resources/css/theme.css"/>
         <link rel="stylesheet" href="resources/css/theme-ssrq.css"/>
         <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
+        <script src="resources/scripts/app/app.js"></script>
 
         <style>
 
+            .search-results paper-card {
+                width: 100%;
+                height: 100%;
+            }
+            h1.search{
+                margin:2rem 1rem 1rem 1rem;
+            }
             .main-grid {
                 display: grid;
                 grid-template-columns: auto 460px;
@@ -28,37 +36,104 @@
             .main-grid main {
                 padding: 1rem;
             }
-
-            .search-panel {
+            .search-results {
                 width: 100%;
                 height: 100%;
+            }
+            .search-results .filter-grid .right{
+                display: grid;
+                grid-template-columns: 40% auto 40%;
+            }
+            .search-results .filter-grid > label{
+                padding-bottom: 8px;
+            }
+            .search-results .filter-grid .until {
+                align-self:flex-end;
+                margin-bottom:0.5rem;
+                display:inline-block;
+                text-align: center;
+            }
+            .search-results .filter-grid .flexend{
+                align-self: flex-end;
+            }
+            .search-results h3{
+                padding:1rem;
+                background: #d1dae0;
+                margin:0;
+            }
+
+            .search-results .formrow{
+                margin-top:1rem;
+            }
+            .search-results .formrow label{
+                padding:1.5rem 0 1rem 0;
             }
 
             .search-panel paper-card {
                 width: 100%;
+            }
+            .search-panel .formrow{
+                margin-top:1rem;
+            }
+            .search-panel .formrow label{
+                padding:1.5rem 0 1rem 0;
+            }
+            .search-panel .subtype{
+                padding-left:2rem;
             }
 
             .targets paper-checkbox {
                 margin-top: 10px;
             }
 
-            #results {
-                flex: 2 1;
-                overflow: scroll;
-                margin: 0 20px;
-                height: calc(100vh - 140px);
+            #results a {
+                color:var(--ssrq-link-color);
+                cursor: pointer;
+            }
+
+            #results a.hi {
+                background: #FCEA60;
+                padding: 0 0.2rem 0.3rem 0.2rem;
+            }
+
+            #results .count {
+                margin-right: 20px;
+                font-weight: bold;
+            }
+            #results h4{
+                margin:0.625rem 0;
+                line-height: 1.1;
+            }
+            #results h5{
+                margin:0.625rem 0;
+            }
+
+            #results .matches {
+                line-height: 27px;
+            }
+
+            #results .matches p {
+                font-family: var(--pb-content-font-family);
+                font-size: 1em;
+                line-height: 1.6em;
+                margin: 0 0 1rem 0;
+            }
+
+            #results .matches p *{
+                display: inline;
             }
 
             #results paper-card {
                 width: 100%;
                 margin-bottom: 15px;
-                padding: 8px;
+                padding: 1rem 1rem 0.5rem 1rem;
             }
 
             #results header {
                 display: flex;
                 justify-content: flex-start;
             }
+
             #results .count {
                 margin-right: 20px;
                 font-weight: bold;
@@ -74,23 +149,6 @@
             }
             .breadcrumb:first-child::before {
                 content: '';
-            }
-            .matches {
-                display: table;
-                margin-left: 20px;
-                margin-top: 10px;
-                font: var(--pb-results-body-font);
-            }
-            .matches p {
-                display: table-row;
-            }
-            .matches p * {
-                display: table-cell;
-                padding: 4px 8px;
-            }
-
-            .hi {
-                display: block;
             }
 
             #facets h3 {
@@ -110,6 +168,11 @@
                 padding-left: 1em;
                 vertical-align: middle;
             }
+
+            .search-sidebar {
+                padding: 1rem 1rem 1rem 0;
+            }
+
         </style>
     </head>
 
@@ -159,42 +222,13 @@
                     </section>
 
                     <div class="main-grid" data-template="search:set-default-params">
-
-                        <main>
-                            <div class="search-results">
-                                <pb-load id="results" url="api/search" emit="results"/>
-                            </div>
-
-                            <div class="search-panel">
-                                <paper-card>
-                                    <div class="card-content">
-                                        <pb-search id="search-form" subscribe="search" data-template="pages:parse-params" value="${query}" submit-on-load="submit-on-load">
-                                            <div class="targets">
-                                                <paper-checkbox name="field" value="text">Search sections</paper-checkbox>
-                                                <paper-checkbox name="field" value="head">Search headings</paper-checkbox>
-                                            </div>
-                                            <pb-custom-form id="facets" url="api/search/facets" subscribe="results" event="pb-results-received" emit="search"/>
-                                        </pb-search>
-                                    </div>
-                                </paper-card>
-                            </div>
-
-                        </main>
-                        <div class="search-panel">
-                            <div data-template="templates:include" data-template-path="templates/search-form.html"></div>
-                        </div>
-
-                    </div>
-
-<!--
-                    <div class="main-grid" data-template="search:set-default-params">
                         <main>
                             <div class="search-results">
                                 <paper-card>
                                     <h3><pb-i18n key="search-results">Search Results</pb-i18n></h3>
                                     <app-toolbar>
                                         <pb-paginate per-page="20" range="5" subscribe="results"/>
-                                        &lt;!&ndash; label for="sort-select"><pb-i18n key="sorting">Sorting</pb-i18n>: </label&ndash;&gt;
+                                        <!-- label for="sort-select"><pb-i18n key="sorting">Sorting</pb-i18n>: </label-->
                                         <div main-title="main-title"></div>
                                         <pb-select id="sort-select" name="sort" data-i18n="[label]sorting" value="${sort}" data-template="pages:parse-params">
                                             <paper-item value="date"><pb-i18n key="browse.orig-date">Date</pb-i18n></paper-item>
@@ -204,8 +238,9 @@
 
                                         <pb-progress indeterminate="indeterminate" bottom-item="bottom-item"/>
                                     </app-toolbar>
+
                                     <div class="card-content">
-                                        <pb-load id="results" class="search-panel" url="api/search-results.html" data-template="pages:parse-params" emit="results"/>
+                                        <pb-load id="results" class="search-panel" url="${app}/search-results.html" data-template="pages:parse-params" emit="results"/>
                                         <app-toolbar class="bottom-pagination">
                                             <pb-paginate per-page="20" range="5" subscribe="results"/>
                                         </app-toolbar>
@@ -213,11 +248,11 @@
                                 </paper-card>
                             </div>
                         </main>
-                        <div class="search-panel">
+
+                        <div class="search-panel search-sidebar">
                             <div data-template="templates:include" data-template-path="templates/search-form.html"></div>
                         </div>
                     </div>
--->
 
                 </app-header-layout>
 
@@ -246,6 +281,8 @@
                     });
                 });
             }
+
+            const typeC = document.querySelector('[name="type"]');
         </script>
     </body>
 </html>
