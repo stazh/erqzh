@@ -1604,7 +1604,8 @@
                                 </pb-collapse>
                             </pb:template>
                         </model>
-                        <model behaviour="block" predicate="not(ends-with(util:document-name(.//sourceDesc), 'Introduction.xml'))">
+
+                        <model behaviour="block" predicate="not(ends-with(util:document-name(.//sourceDesc), 'Einleitung.xml'))">
                             <param name="content" value=".//sourceDesc"/>
                             <pb:template xmlns="" xml:space="preserve">
                                 <pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
@@ -1615,8 +1616,8 @@
                                 </pb-collapse>
                             </pb:template>
                         </model>
-                        
-                        <model behaviour="block" predicate="ec:existsAdditionalSource(.//fileDesc/seriesStmt/idno/text())">
+
+                        <model behaviour="block" predicate="(ec:existsAdditionalSource(.//fileDesc/seriesStmt/idno/text())) and (not(ends-with(util:document-name(.//sourceDesc), 'Einleitung.xml')))">
                             <param name="content" value="ec:additionalSource(.//fileDesc/seriesStmt/idno/text())"/>
                             <pb:template xmlns="" xml:space="preserve">
                                 <pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
