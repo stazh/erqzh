@@ -8,11 +8,11 @@
             <link rel="shortcut icon" type="image/png" href="resources/images/favicon-24.png" sizes="24x24"/>
             <link rel="shortcut icon" type="image/png" href="resources/images/favicon-32.png" sizes="32x32"/>
             <link rel="shortcut icon" type="image/png" href="resources/images/favicon-64.png" sizes="64x64"/>
-    
+
             <title data-template="config:app-title"/>
             <meta name="description" content="Introduction template"/>
             <meta name="pb-template" content="introduction.html"/>
-    
+
             <link rel="stylesheet" type="text/css" href="resources/fonts/font.css"/>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald&amp;display=swap"/>
             <link rel="stylesheet" href="resources/css/theme.css"/>
@@ -20,7 +20,7 @@
             <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
             <script src="resources/scripts/app/app.js"></script>
         </head>
-    
+
         <body>
             <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app"
                 require-language="require-language">
@@ -129,7 +129,7 @@
 
                             <app-toolbar data-template="templates:include" data-template-path="templates/toolbar.html"/>
                         </app-header>
-    
+
                         <pb-drawer toggle="tocToggle" class="toc" emit="toc" subscribe="transcription">
                             <div class="drawer-content">
                                 <h3>
@@ -146,12 +146,13 @@
                                     <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription">
                                         <pb-param name="view" value="metadata"/>
                                     </pb-view>
-                                                </header>
+                                </header>
+                                
                                 <div class="content-body">
                                     <pb-navigation direction="backward" unit="page" emit="transcription" subscribe="transcription">
                                         <paper-fab icon="icons:chevron-left"/>
                                     </pb-navigation>
-                                    <pb-view id="view1" src="document1" xpath="//body" view="single" append-footnotes="append-footnotes" use-language="use-language" 
+                                    <pb-view id="view1" src="document1" xpath="//body" view="single" append-footnotes="append-footnotes" use-language="use-language"
                                         subscribe="transcription" emit="transcription" wait-for="metadata"></pb-view>
                                     <pb-navigation direction="forward" unit="page" emit="transcription" subscribe="transcription">
                                         <paper-fab icon="icons:chevron-right"/>
