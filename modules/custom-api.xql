@@ -47,7 +47,7 @@ declare function api:registerdaten($request as map(*)) {
 };
 
 declare function api:abbreviations($request as map(*)) {
-    let $lang := $request?parameters?language
+    let $lang := tokenize($request?parameters?language, '-')[1]
     let $blocks := $config:abbr//tei:dataSpec/tei:desc[@xml:lang=$lang]
 
     return
