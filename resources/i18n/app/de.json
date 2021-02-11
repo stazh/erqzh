@@ -19,7 +19,7 @@
   "comment": "Kommentar",
   "condition": "Erhaltungszustand",
   "credits": "Erstellung der Faksimiles:",
-  "doctitle":"Sammlung Schweizerischer Rechtsquellen online",
+  "doctitle":"Rechtsquellen des Kantons Zürich",
   "editiontext": "Editionstext",
   "family-organisation": "Familie/Organisation",
   "filliation": "Überlieferung",
@@ -74,7 +74,7 @@
   "yes": "ja",
   "no": "nein",
   "require-login":"Bitte einloggen",
-  "login-info": "Für ein neues Login oder bei Problemen bitte E-Mail an info@ssrq-sds-fds.ch oder Feedback-Button drücken.",
+  "login-info": "Für ein neues Login oder bei Problemen bitte E-Mail an christian.sieber@ji.zh.ch oder Feedback-Button drücken.",
   "upload": {
     "upload": "Dateien auswählen...",
     "drop": "TEI XML oder ODD files hinzufügen. Klicke auf den Button oben oder ziehe Dateien darauf."

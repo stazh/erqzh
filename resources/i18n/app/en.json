@@ -19,7 +19,7 @@
   "comment": "Comments",
   "condition": "Condition",
   "credits": "Facsimiles by courtesy of",
-  "doctitle": "Collection of Swiss Law Sources online",
+  "doctitle": "Law Sources of the Canton Zürich",
   "editiontext": "Edition Text",
   "family-organisation": "Family/Organisation",
   "filliation": "Filliation",
@@ -73,7 +73,7 @@
   "yes": "Yes",
   "no": "No",
   "require-login": "Please log in",
-  "login-info": "For an account or in case of problems please contact info@ssrq-sds-fds.ch or use the feedback button.",
+  "login-info": "For an account or in case of problems please contact christian.sieber@ji.zh.ch or use the feedback button.",
   "upload": {
     "upload": "Select files...",
     "drop": "Upload TEI XML or ODD files into the test document set. Click on the button above or drag&amp;drop files on it."

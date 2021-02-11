@@ -306,7 +306,7 @@
                                     <div class="ripple-container"></div></a>
                             </li>
                             <li>
-                                <a href="mailto:info@ssrq-sds-fds.ch" class="tp-menu-item">
+                                <a href="mailto:christian.sieber@ji.zh.ch" class="tp-menu-item">
                                     <div>
                                         <pb-i18n key="feedback">Feedback</pb-i18n>
                                     </div>
@@ -331,7 +331,7 @@
                                     <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
                                 </div>
                                 <div class="ripple-container"></div></a>
-                            <a href="mailto:info@ssrq-sds-fds.ch" class="tp-menu-item">
+                            <a href="mailto:christian.sieber@ji.zh.ch" class="tp-menu-item">
                                 <div>
                                     <pb-i18n key="feedback">Feedback</pb-i18n>
                                 </div>
@@ -451,22 +451,17 @@
                 Kontakt
             </h5>
             <address>
-                Rechtsquellenstiftung des <br/>
-                Schweizerischen Juristenvereins<br/>
-                Dr. Pascale Sutter<br/>
-                c/o Prof. Dr. Lukas Gschwend<br/>
-                Universität St. Gallen<br/>
-                Tigerbergstr. 21<br/>
-                CH-9000 St. Gallen<br/>
-                email: <a href="mailto:info@ssrq-sds-fds.ch">info@ssrq-sds-fds.ch</a>
+                Staatsarchiv des Kantons Zürich<br/>
+                Christian Sieber, lic. phil.<br/>
+                Leiter Elektronische Rechtsquellen-Edition Zürich<br/>
+                Winterthurerstrasse 170<br/>
+                8057 Zürich<br/>
+                email: <a href="mailto:christian.sieber@ji.zh.ch">christian.sieber (at) ji.zh.ch</a>
                 <br/>
-                <a href="https://www.ssrq-sds-fds.ch">https://www.ssrq-sds-fds.ch</a>
+                <a href="https://www.staatsarchiv.zh.ch">www.staatsarchiv.zh.ch</a>
             </address>
         </div>
         <div class="footer-col">
-            <h5>
-                <a href="partners.html">Projektpartner</a>
-            </h5>
             <h5>
                 Realisierung
             </h5>
@@ -495,29 +490,6 @@
             </p>
         </div>
     </footer>
-
-
-    <script>
-        const facets = document.getElementById('facets');
-        if (facets) {
-            facets.addEventListener('pb-custom-form-loaded', function(ev) {
-                const elems = ev.detail.querySelectorAll('.facet');
-                elems.forEach(facet =&gt; {
-                    facet.addEventListener('change', () =&gt; {
-                        const table = facet.closest('table');
-                        if (table) {
-                            const nested = table.querySelectorAll('.nested .facet').forEach(nested =&gt; {
-                                if (nested != facet) {
-                                    nested.checked = false;
-                                }
-                            });
-                        }
-                        facets.submit();
-                    });
-                });
-            });
-        }
-    </script>
 </body>
 
 </html>
