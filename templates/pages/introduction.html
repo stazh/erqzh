@@ -54,11 +54,6 @@
                                         </h4>
                                         <paper-listbox slot="collapse-content">
                                             <paper-item>
-                                                <pb-download type="tex" src="document1" dialog="downloadDialog" data-i18n="[title]menu.download.pdf-latex" title="i18n(pdf-latex)">
-                                                    <pb-i18n key="menu.download.pdf-latex"/>
-                                                </pb-download>
-                                            </paper-item>
-                                            <paper-item>
                                                 <pb-edit-xml src="document1" data-i18n="[title]menu.download.view-tei" title="view-tei">
                                                     XML
                                                 </pb-edit-xml>
@@ -99,22 +94,14 @@
                                             </a>
                                             <paper-listbox slot="dropdown-content">
                                                 <paper-item>
-                                                    <a target="_blank" data-template="app:download-pdf">
-                                                        <iron-icon slot="icon" icon="print"/>  
-                                                        PDF
-                                                    </a>                                                
-                                                </paper-item>    
-                                                                
-                                                <paper-item>
-                                                    <a target="_blank" data-template="app:download-xml">                                                    
+                                                    <a target="_blank" data-template="app:download-xml">
                                                         <iron-icon slot="icon" icon="text-format"/>
                                                         XML/TEI
                                                     </a>
-                                                </paper-item>                                                                                        
+                                                </paper-item>
                                             </paper-listbox>
                                         </paper-menu-button>
                                     </pb-restricted>
-
 
                                     <!-- language selector -->
                                     <pb-lang name="lang" data-template="pages:languages"/>
