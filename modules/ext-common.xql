@@ -183,6 +183,8 @@ declare function pmf:format-id($id as xs:string?) {
             replace($parts[2], '_', '-')
         else if (matches($parts[2], '^\d{4}_\d{3}')) then
             number(substring-before($parts[2], '_')) || '-' || number(substring-after($parts[2], '_'))
+        else if (count($parts) eq 1)
+        then ()
         else
             number($parts[2])
     return

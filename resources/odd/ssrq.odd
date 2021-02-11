@@ -966,6 +966,17 @@
                             <p><pb-i18n key="by">von</pb-i18n> [[fileDescPerson]]</p>
                         </pb:template>
                     </model>
+
+                    <model behaviour="block" predicate="$parameters?view='metadata' and ends-with(util:document-name($get(.)), 'Einleitung.xml')">
+                        <desc>Render page titles for TEI type "Introduction"</desc>
+                        <param name="stmtTitle" value="seriesStmt/title"/>
+                        <param name="fileDescTitle" value="titleStmt/title"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <h3>[[stmtTitle]]</h3>
+                            <h4>[[fileDescTitle]]</h4>
+                        </pb:template>
+                    </model>
+
                     <model behaviour="block" predicate="$parameters?view='metadata'">
                         <param name="idno-canton" value="ec:get-canton(seriesStmt/idno)"/>
                         <param name="idno-format" value="ec:format-id(seriesStmt/idno)"/>
