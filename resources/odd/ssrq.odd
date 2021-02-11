@@ -978,6 +978,7 @@
                     </model>
 
                     <model behaviour="block" predicate="$parameters?view='metadata'">
+                        <desc>Render popover containing tei metadata</desc>
                         <param name="idno-canton" value="ec:get-canton(seriesStmt/idno)"/>
                         <param name="idno-format" value="ec:format-id(seriesStmt/idno)"/>
                         <param name="stmtTitle" value="seriesStmt/title"/>
