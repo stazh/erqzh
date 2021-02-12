@@ -13,18 +13,20 @@
                 <pb-i18n key="feedback">Feedback</pb-i18n>
             </div>
             <div class="ripple-container"></div></a>
-        <paper-menu-button>
-            <a href="#" slot="dropdown-trigger">
-                <pb-i18n key="menu.admin.title">Admin</pb-i18n>
-            </a>
-            <paper-listbox slot="dropdown-content">
-                <paper-item>
-                    <pb-edit-xml src="document1" data-i18n="[title]menu.download.view-tei" title="view-tei">
-                        XML
-                    </pb-edit-xml>
-                </paper-item>
-            </paper-listbox>
-        </paper-menu-button>
+            <pb-restricted login="login">
+                <paper-menu-button>
+                    <a href="#" slot="dropdown-trigger">
+                        <pb-i18n key="menu.admin.title">Admin</pb-i18n>
+                    </a>
+                    <paper-listbox slot="dropdown-content">
+                        <paper-item>
+                            <pb-edit-xml src="document1" data-i18n="[title]menu.download.view-tei" title="view-tei">
+                                XML
+                            </pb-edit-xml>
+                        </paper-item>
+                    </paper-listbox>
+                </paper-menu-button>
+            </pb-restricted>
     </pb-media-query>
 
     <pb-media-query query="min-width: 1024px">
