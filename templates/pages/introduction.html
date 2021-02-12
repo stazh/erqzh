@@ -49,18 +49,6 @@
                                             <div class="ripple-container"></div></a>
                                     </li>
                                     <li>
-                                        <h4 slot="collapse-trigger">
-                                            <pb-i18n key="menu.download.title">Download</pb-i18n>
-                                        </h4>
-                                        <paper-listbox slot="collapse-content">
-                                            <paper-item>
-                                                <pb-edit-xml src="document1" data-i18n="[title]menu.download.view-tei" title="view-tei">
-                                                    XML
-                                                </pb-edit-xml>
-                                            </paper-item>
-                                        </paper-listbox>
-                                    </li>
-                                    <li>
                                         <pb-lang name="lang" data-template="pages:languages"/>
                                     </li>
                                 </ul>
@@ -87,21 +75,6 @@
                                         </div>
                                         <div class="ripple-container"></div></a>
                                     <div main-title="main-title"></div>
-                                    <pb-restricted login="login">
-                                        <paper-menu-button>
-                                            <a href="#" slot="dropdown-trigger" data-i18n="[title]menu.download.title" title="i18n(download)">
-                                                <pb-i18n key="menu.download.title">Download</pb-i18n>
-                                            </a>
-                                            <paper-listbox slot="dropdown-content">
-                                                <paper-item>
-                                                    <a target="_blank" data-template="app:download-xml">
-                                                        <iron-icon slot="icon" icon="text-format"/>
-                                                        XML/TEI
-                                                    </a>
-                                                </paper-item>
-                                            </paper-listbox>
-                                        </paper-menu-button>
-                                    </pb-restricted>
 
                                     <!-- language selector -->
                                     <pb-lang name="lang" data-template="pages:languages"/>
@@ -147,7 +120,7 @@
                                         <pb-param name="view" value="metadata"/>
                                     </pb-view>
                                 </header>
-                                
+
                                 <div class="content-body">
                                     <pb-navigation direction="backward" unit="page" emit="transcription" subscribe="transcription">
                                         <paper-fab icon="icons:chevron-left"/>
