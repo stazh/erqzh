@@ -132,6 +132,11 @@
                                     </pb-navigation>
                                 </div>
                             </main>
+                            <aside class="register">
+                                <pb-load id="register" url="api/register/{doc}" expand="expand" src="document1" emit="register">
+                                    <pb-i18n key="dialogs.loading"/>
+                                </pb-load>
+                            </aside>
                         </div>
                     </app-header-layout>
                 </app-drawer-layout>
