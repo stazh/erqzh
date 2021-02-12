@@ -19,7 +19,11 @@
                 </p>
             </sourceDesc>
         </fileDesc>
-        <encodingDesc/>
+        <encodingDesc>
+            <tagsDecl>
+                <rendition source="rqzh.css"/>
+            </tagsDecl>
+        </encodingDesc>
     </teiHeader>
     <text>
         <body>
