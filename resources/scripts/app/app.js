@@ -20,8 +20,9 @@ window.addEventListener('DOMContentLoaded', () => {
     });
     pbEvents.subscribe('pb-update', 'metadata', (ev) => {
         const credits = ev.detail.root.querySelector('#credits');
-        if (credits) {
-            document.getElementById('credits').innerHTML = credits.innerHTML;
+        const creditsTarget = document.getElementById('credits')
+        if (credits && creditsTarget) {
+            creditsTarget.innerHTML = credits.innerHTML;
         }
         blocks.push(ev.detail.root);
         if (blocks.length === 2) {
