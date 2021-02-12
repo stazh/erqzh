@@ -1,8 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="teipublisher_odds.xsd"?>
-<TEI xmlns="http://www.tei-c.org/ns/1.0"
-    xmlns:pb="http://teipublisher.com/1.0"
-    xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
+<TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
             <titleStmt>
@@ -24,7 +21,7 @@
         <encodingDesc>
             <tagsDecl>
                 <pb:behaviour output="latex" ident="textup">
-                    <pb:template>\textup{[[content]]}</pb:template>
+                    <pb:template xmlns="" xml:space="preserve">\textup{[[content]]}</pb:template>
                 </pb:behaviour>
                 <rendition source="ssrq.css"/>
             </tagsDecl>
@@ -36,7 +33,7 @@
                 <elementSpec ident="TEI" mode="change">
                     <model output="latex" predicate="request:get-parameter('archives', ())" behaviour="section">
                         <param name="archiveType" value="text/body/div/div"/>
-                        <pb:template>
+                        <pb:template xmlns="" xml:space="preserve">
                             \subsection{Ungedruckte Quellen}
                             \setcounter{footnote}{0}
 
@@ -230,14 +227,14 @@
                         <model behaviour="inline">
                             <outputRendition xml:space="preserve" scope="before">
                 content: '-';
-                            </outputRendition>
+                </outputRendition>
                         </model>
                         <model behaviour="break">
                             <param name="type" value="'page'"/>
                             <param name="label" value="@n"/>
                             <outputRendition xml:space="preserve">
                 display: block;
-                            </outputRendition>
+                </outputRendition>
                         </model>
                     </modelSequence>
                     <model behaviour="break">
@@ -250,10 +247,10 @@
                         <param name="content" value="ec:translate(@type, 0, 'uppercase')"/>
                         <outputRendition xml:space="preserve" scope="before">
             content: '[';
-                        </outputRendition>
+            </outputRendition>
                         <outputRendition xml:space="preserve" scope="after">
             content: ']';
-                        </outputRendition>
+            </outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="signed" mode="change">
@@ -516,9 +513,9 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="anchor" mode="change">
-                    <model behaviour="inline" output="latex">
+                    <model output="latex" behaviour="inline">
                         <param name="nr" value="a"/>
-                        <pb:template>\textnoteend{[[nr]]}</pb:template>
+                        <pb:template xmlns="" xml:space="preserve">\textnoteend{[[nr]]}</pb:template>
                     </model>
                     <model predicate="exists(root($parameters?root)//*[@spanTo = '#' || $node/@xml:id])" behaviour="notespan-end">
                         <param name="content" value="root($parameters?root)//*[@spanTo = '#' || $node/@xml:id]"/>
@@ -600,7 +597,7 @@
                     <model predicate="@rend='sup'" behaviour="inline">
                         <outputRendition xml:space="preserve">
             font-size: 80%; vertical-align: top;
-                        </outputRendition>
+            </outputRendition>
                     </model>
                     <model predicate="@rend!='sup' and @hand" behaviour="alternote">
                         <param name="content" value="."/>
@@ -644,24 +641,24 @@
                     <model predicate="desc" behaviour="inline">
                         <outputRendition xml:space="preserve">
             color: grey;
-                        </outputRendition>
+            </outputRendition>
                     </model>
                     <model predicate="@extent" behaviour="inline" cssClass="text-critical">
                         <param name="content" value="@extent"/>
                         <outputRendition xml:space="preserve" scope="before">
             content: '[..';
-                        </outputRendition>
+            </outputRendition>
                         <outputRendition xml:space="preserve" scope="after">
             content: '..]';
-                        </outputRendition>
+            </outputRendition>
                         <outputRendition xml:space="preserve">
             color: grey;
-                        </outputRendition>
+            </outputRendition>
                     </model>
                     <model behaviour="inline" cssClass="text-critical">
                         <outputRendition xml:space="preserve" scope="before">
             content: '[...]';
-                        </outputRendition>
+            </outputRendition>
                     </model>
                 </elementSpec>
                 <elementSpec ident="foreign" mode="change">
@@ -669,9 +666,9 @@
                     <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='fr'" behaviour="alternate">
                         <param name="default" value="."/>
                         <param name="alternate" value="(ec:label('lang-switch'), ec:colon(), ' ', ec:label(@xml:lang, false()))"/>
-                        <outputRendition>
-                            font-style: italic;
-                        </outputRendition>
+                        <outputRendition xml:space="preserve">
+            font-style: italic;
+            </outputRendition>
                     </model>
                     <model behaviour="alternate">
                         <param name="default" value="."/>
@@ -696,7 +693,6 @@
                                 </span>
                             </pb-popover>
                         </pb:template>
-
                     </model>
                 </elementSpec>
                 <elementSpec ident="persName" mode="add">
@@ -704,10 +700,12 @@
                         <param name="ref" value="@ref"/>
                         <pb:template xmlns="" xml:space="preserve">\persname{[[ref]]}{[[content]]}</pb:template>
                     </model>
-                    <model behaviour="inline" predicate="parent::respStmt and ../preceding-sibling::respStmt">
-                        <outputRendition scope="before">content: ', ';</outputRendition>
+                    <model predicate="parent::respStmt and ../preceding-sibling::respStmt" behaviour="inline">
+                        <outputRendition xml:space="preserve" scope="before">
+            content: ', ';
+            </outputRendition>
                     </model>
-                    <model behaviour="inline" predicate="parent::respStmt"/>
+                    <model predicate="parent::respStmt" behaviour="inline"/>
                     <model behaviour="inline" cssClass="semantic person">
                         <desc>Person with detail information</desc>
                         <param name="content" value="."/>
@@ -849,11 +847,11 @@
                     <modelSequence output="web">
                         <model predicate="@facs" behaviour="webcomponent">
                             <desc>Facsimile image links will be extracted via javascript</desc>
-                            <param name="facs" value="@facs || '.ptif'"/>
+                            <param name="facs" value="@facs"/>
                             <param name="name" value="'pb-facs-link'"/>
                             <outputRendition xml:space="preserve">
                 display: none;
-                            </outputRendition>
+                </outputRendition>
                         </model>
                         <modelGrp>
                             <model predicate="ancestor::body and not(preceding::pb[ancestor::body])" behaviour="omit">
@@ -874,7 +872,14 @@
                                 <param name="content" value="('[', ec:label('page-abbr', false()), ' ', @n, '] ')"/>
                                 <param name="facs" value="@facs"/>
                                 <param name="alternate" value="ec:label('pb')"/>
-                                <pb:template xml:space="preserve" xmlns=""><pb-facs-link facs="[[facs]].ptif" emit="transcription"><pb-popover>[[content]]<template slot="alternate">[[alternate]]</template></pb-popover></pb-facs-link></pb:template>
+                                <pb:template xmlns="" xml:space="preserve">
+                                    <pb-facs-link facs="[[facs]].ptif" emit="transcription">
+                                        <pb-popover>
+                                            [[content]]
+                                            <template slot="alternate">[[alternate]]</template>
+                                        </pb-popover>
+                                    </pb-facs-link>
+                                </pb:template>
                             </model>
                         </modelGrp>
                     </modelSequence>
@@ -922,9 +927,6 @@
                     </model>
                     <model output="fo" behaviour="heading"/>
                     <modelSequence output="web" predicate="$parameters?header='short'">
-                        <!--model behaviour="block">
-                            <param name="content" value="title[1]"/>
-                        </model-->
                         <model behaviour="block">
                             <param name="content" value="subsequence(title, 2)"/>
                         </model>
@@ -957,17 +959,19 @@
                             <param name="content" value="titleStmt"/>
                         </model>
                     </modelSequence>
-                    <model behaviour="block" predicate="$parameters?view='volumes'">
+                    <model predicate="$parameters?view='volumes'" behaviour="block">
                         <param name="stmtTitle" value="seriesStmt/title"/>
                         <param name="fileDescTitle" value="titleStmt/title"/>
                         <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <h3>[[stmtTitle]], [[fileDescTitle]]</h3>
-                            <p><pb-i18n key="by">von</pb-i18n> [[fileDescPerson]]</p>
+                            <p>
+                                <pb-i18n key="by">von</pb-i18n>
+                                [[fileDescPerson]]
+                            </p>
                         </pb:template>
                     </model>
-
-                    <model behaviour="block" predicate="$parameters?view='metadata' and ends-with(util:document-name($get(.)), 'Einleitung.xml')">
+                    <model predicate="$parameters?view='metadata' and ends-with(util:document-name($get(.)), 'Einleitung.xml')" behaviour="block">
                         <desc>Render page titles for TEI type "Introduction"</desc>
                         <param name="stmtTitle" value="seriesStmt/title"/>
                         <param name="fileDescTitle" value="titleStmt/title"/>
@@ -976,8 +980,7 @@
                             <h4>[[fileDescTitle]]</h4>
                         </pb:template>
                     </model>
-
-                    <model behaviour="block" predicate="$parameters?view='metadata'">
+                    <model predicate="$parameters?view='metadata'" behaviour="block">
                         <desc>Render popover containing tei metadata</desc>
                         <param name="idno-canton" value="ec:get-canton(seriesStmt/idno)"/>
                         <param name="idno-format" value="ec:format-id(seriesStmt/idno)"/>
@@ -985,14 +988,19 @@
                         <param name="fileDescTitle" value="titleStmt/title"/>
                         <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
                         <param name="credits" value="./publicationStmt/availability/p[@xml:id='facs']/text()"/>
-                        <!-- TODO: implement link: middle part (e.g. SG_III_4) and document-name is missing -->
                         <param name="link" value="'https://www.ssrq-sds-fds.ch/online/tei/' || ec:get-canton(seriesStmt/idno) || '/' "/>
-
                         <pb:template xmlns="" xml:space="preserve">
                             <pb-popover persistent="persistent" placement="bottom">
-                                <span class="id" slot="default">[[idno-format]] <iron-icon icon="icons:info"></iron-icon></span>
+                                <span class="id" slot="default">
+                                    [[idno-format]]
+                                    <iron-icon icon="icons:info"/>
+                                </span>
                                 <span slot="alternate">
-                                    <p>[[stmtTitle]], [[fileDescTitle]], <pb-i18n key="by">von</pb-i18n> [[fileDescPerson]]</p>
+                                    <p>
+                                        [[stmtTitle]], [[fileDescTitle]],
+                                        <pb-i18n key="by">von</pb-i18n>
+                                        [[fileDescPerson]]
+                                    </p>
                                     <p>
                                         <pb-i18n key="zitation">Zitation:</pb-i18n>
                                         <a href="[[link]]">[[idno-format]]</a>
@@ -1006,7 +1014,6 @@
                             <span id="credits" style="display: none">[[credits]]</span>
                         </pb:template>
                     </model>
-
                 </elementSpec>
                 <elementSpec ident="back" mode="change">
                     <desc>back contains the commentary, which normally should appear as a numbered list</desc>
@@ -1024,14 +1031,18 @@
                             \end{intro}
                         </pb:template>
                     </model>
-                    <model behaviour="block" predicate="$parameters?view='metadata' and exists(./div/p/node())">
+                    <model predicate="$parameters?view='metadata' and exists(./div/p/node())" behaviour="block">
                         <param name="content" value="div"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <pb-collapse id="" class="comment" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
                                 <div slot="collapse-trigger">
-                                    <h4 class="block-title"><pb-i18n key="meta.comment"/></h4>
+                                    <h4 class="block-title">
+                                        <pb-i18n key="meta.comment"/>
+                                    </h4>
                                 </div>
-                                <div id="comment" slot="collapse-content"><ol>[[content]]</ol></div>
+                                <div id="comment" slot="collapse-content">
+                                    <ol>[[content]]</ol>
+                                </div>
                             </pb-collapse>
                         </pb:template>
                     </model>
@@ -1044,7 +1055,7 @@
                     <model output="latex" predicate="request:get-parameter('archives', ()) and head[@type='title']" behaviour="block">
                         <param name="title" value="head/text()"/>
                         <param name="archive" value="div"/>
-                        <pb:template>
+                        <pb:template xmlns="" xml:space="preserve">
                             \subsubsection{[[title]]}
 
                             \begin{hangparas}{4.5mm}{1}
@@ -1055,7 +1066,7 @@
                     <model output="latex" predicate="request:get-parameter('archives', ()) and head[@type='subtitle']" behaviour="block">
                         <param name="archiveName" value="head/text()"/>
                         <param name="items" value="div"/>
-                        <pb:template>
+                        <pb:template xmlns="" xml:space="preserve">
                             [[archiveName]]
                             \begin{itemize}
                             [[items]]
@@ -1067,7 +1078,7 @@
                         <param name="itemType" value="listBibl/head/text()"/>
                         <param name="ident" value="string-join(listBibl/bibl/idno, '; ')"/>
                         <param name="note" value="if (listBibl/note) then ('\footnote{' || listBibl/note || '}') else ()"/>
-                        <pb:template>
+                        <pb:template xmlns="" xml:space="preserve">
                             \item [[itemType]]: [[ident]][[note]]
                         </pb:template>
                     </model>
@@ -1118,9 +1129,9 @@
                     </model>
                     <model predicate="@place" behaviour="block" cssClass="ab">
                         <param name="content" value="('[', string-join((ec:translate(@type, 0, 'lowercase'),ec:translate(@place, 0, 'lowercase'),ec:translate(@hand, 0, 'lowercase')), ' '), if (@scribe) then (' ', ec:label('byScribe', false()), ' ', ec:scribe(@scribe)) else (), ec:punct(':', false()), '] ', .)"/>
-                        <outputRendition>
-                            font-size: 15px;
-                        </outputRendition>
+                        <outputRendition xml:space="preserve">
+            font-size: 15px;
+            </outputRendition>
                     </model>
                     <model behaviour="paragraph"/>
                 </elementSpec>
@@ -1130,7 +1141,7 @@
                         <param name="type" value="'text-critical'"/>
                         <outputRendition xml:space="preserve">
             font-size: 80%;
-                        </outputRendition>
+            </outputRendition>
                     </model>
                     <model behaviour="paragraph"/>
                 </elementSpec>
@@ -1247,7 +1258,7 @@
                         <model behaviour="listItem">
                             <param name="content" value="idno"/>
                         </model>
-                        <model behaviour="listItem" predicate="exists(altIdentifier)">
+                        <model predicate="exists(altIdentifier)" behaviour="listItem">
                             <param name="content" value="altIdentifier/idno"/>
                         </model>
                     </modelSequence>
@@ -1288,10 +1299,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="physDesc">
-                    <model behaviour="listItem" predicate="exists(sealDesc)">
+                    <model predicate="exists(sealDesc)" behaviour="listItem">
                         <param name="content" value="sealDesc"/>
                     </model>
-                    <model behaviour="omit" predicate="not(exists(sealDesc))"/>
+                    <model predicate="not(exists(sealDesc))" behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="supportDesc">
                     <modelSequence>
@@ -1420,21 +1431,21 @@
                     </model>
                     <model predicate="parent::figure" behaviour="block">
                         <outputRendition xml:space="preserve">
-                            font-style: italic;
-                        </outputRendition>
+            font-style: italic;
+            </outputRendition>
                     </model>
                     <model predicate="parent::table" behaviour="caption">
                         <desc>head inside table should be output as caption element</desc>
                     </model>
                     <model predicate="parent::lg" behaviour="block">
                         <outputRendition xml:space="preserve">
-                            font-style: italic;
-                        </outputRendition>
+            font-style: italic;
+            </outputRendition>
                     </model>
                     <model predicate="parent::list" behaviour="block">
                         <outputRendition xml:space="preserve">
-                            font-weight: bold;
-                        </outputRendition>
+            font-weight: bold;
+            </outputRendition>
                     </model>
                     <model predicate="ancestor::app" behaviour="inline">
                         <desc>Heading in app (don't format)</desc>
@@ -1501,7 +1512,7 @@
                             <param name="level" value="5"/>
                             <outputRendition xml:space="preserve">
                 margin-top: 1em;
-                            </outputRendition>
+                </outputRendition>
                         </model>
                         <model behaviour="list">
                             <desc>Liste der Bibliographieeinträge</desc>
@@ -1582,54 +1593,54 @@
                 </elementSpec>
                 <elementSpec ident="teiHeader" mode="change">
                     <modelSequence predicate="$parameters?view='metadata'">
-                        <model behaviour="block" predicate="not(ends-with(util:document-name(.//sourceDesc), 'Introduction.xml'))">
+                        <model predicate="not(ends-with(util:document-name(.//sourceDesc), 'Introduction.xml'))" behaviour="block">
                             <param name="content" value="fileDesc"/>
                         </model>
                         <model behaviour="block">
                             <param name="content" value=".//msDesc/head"/>
                         </model>
-                        <!-- TODO: render date below header -->
                         <model behaviour="output-date">
                             <param name="content" value=".//msDesc"/>
                         </model>
-
-                        <model behaviour="block" predicate="exists(.//msContents/summary/node())">
+                        <model predicate="exists(.//msContents/summary/node())" behaviour="block">
                             <param name="content" value=".//msContents/summary"/>
                             <pb:template xmlns="" xml:space="preserve">
                                 <pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
                                     <div slot="collapse-trigger">
-                                        <h4 class="block-title"><pb-i18n key="meta.regest"/></h4>
+                                        <h4 class="block-title">
+                                            <pb-i18n key="meta.regest"/>
+                                        </h4>
                                     </div>
                                     <div id="regest" slot="collapse-content">[[content]]</div>
                                 </pb-collapse>
                             </pb:template>
                         </model>
-
-                        <model behaviour="block" predicate="not(ends-with(util:document-name(.//sourceDesc), 'Einleitung.xml'))">
+                        <model predicate="not(ends-with(util:document-name(.//sourceDesc), 'Einleitung.xml'))" behaviour="block">
                             <param name="content" value=".//sourceDesc"/>
                             <pb:template xmlns="" xml:space="preserve">
                                 <pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
                                     <div slot="collapse-trigger">
-                                        <h4 class="block-title"><pb-i18n key="meta.metadata"/></h4>
+                                        <h4 class="block-title">
+                                            <pb-i18n key="meta.metadata"/>
+                                        </h4>
                                     </div>
                                     <div id="sourceDesc" slot="collapse-content">[[content]]</div>
                                 </pb-collapse>
                             </pb:template>
                         </model>
-
-                        <model behaviour="block" predicate="(ec:existsAdditionalSource(.//fileDesc/seriesStmt/idno/text())) and (not(ends-with(util:document-name(.//sourceDesc), 'Einleitung.xml')))">
+                        <model predicate="(ec:existsAdditionalSource(.//fileDesc/seriesStmt/idno/text())) and (not(ends-with(util:document-name(.//sourceDesc), 'Einleitung.xml')))" behaviour="block">
                             <param name="content" value="ec:additionalSource(.//fileDesc/seriesStmt/idno/text())"/>
                             <pb:template xmlns="" xml:space="preserve">
                                 <pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">
                                     <div slot="collapse-trigger">
-                                        <h4 class="block-title"><pb-i18n key="meta.addFill"/></h4>
+                                        <h4 class="block-title">
+                                            <pb-i18n key="meta.addFill"/>
+                                        </h4>
                                     </div>
                                     <div id="additional" slot="collapse-content">[[content]]</div>
                                 </pb-collapse>
                             </pb:template>
                         </model>
-
-                        <!-- TODO: model for addFill aka Additional Filiations -->
                     </modelSequence>
                     <model output="latex" behaviour="metadata"/>
                     <model output="fo" behaviour="omit"/>

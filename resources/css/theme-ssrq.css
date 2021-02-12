@@ -40,6 +40,7 @@ body {
 
 main, .facsimile, .register {
     height: calc(100vh - 130px);
+    --pb-facsimile-height: calc(100vh - 130px);
 }
 
 .facsimile {
@@ -199,8 +200,7 @@ footer {
     padding: 1rem;
 }
 
-footer p,
-address {
+footer p, address {
     font-family: var(--pb-base-font-family);
     font-size: 0.75rem;
     font-style: normal;
