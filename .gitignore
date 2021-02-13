@@ -12,4 +12,5 @@ resources/i18n/common
 .*
 !.gitignore
 !.existdb.json
+!.editorconfig
 local.*
