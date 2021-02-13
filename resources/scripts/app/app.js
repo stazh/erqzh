@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // wait for the transcription and metadata pb-view to update and remember its content root
     pbEvents.subscribe('pb-update', 'transcription', (ev) => {
-        document.body.setAttribute('data-view', ev.detail.data.odd === 'ssrq-norm.odd' ? 'normalized' : 'diplomatic');
+        document.body.setAttribute('data-view', ev.detail.data.odd === 'rqzh-norm.odd' ? 'normalized' : 'diplomatic');
         blocks.push(ev.detail.root);
         if (blocks.length === 2) {
             register.load();
