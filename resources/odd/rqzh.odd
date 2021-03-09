@@ -766,10 +766,10 @@
                     </modelSequence>
                     <model predicate="$parameters?view='volumes'" behaviour="block">
                         <param name="stmtTitle" value="seriesStmt/title"/>
-                        <param name="fileDescTitle" value="titleStmt/title"/>
+                        <param name="fileDescTitle" value="ec:short-title(titleStmt/title)"/>
                         <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <h3>[[stmtTitle]], [[fileDescTitle]]</h3>
+                            <h3>[[fileDescTitle]]</h3>
                             <p>
                                 <pb-i18n key="by">von</pb-i18n>
                                 [[fileDescPerson]]

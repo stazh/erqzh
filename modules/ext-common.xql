@@ -71,6 +71,12 @@ declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as x
     pmf:label($id, $upper, $plural, (session:get-attribute("ssrq.lang"), "de")[1])
 };
 
+declare function pmf:short-title($title as xs:string?) {
+    let $short-title := functx:substring-after-last($title, ':')
+    return
+        $short-title
+};
+
 declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer, $lang as xs:string) {
     if ($id) then
         let $spec := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']
@@ -362,7 +368,7 @@ declare function pmf:print-date($date as node()*) {
     		' ' || pmf:label('old-style-abbr', false())
     	else
     		()
- 
+
     	return $date-string || $old-style
 };
 
