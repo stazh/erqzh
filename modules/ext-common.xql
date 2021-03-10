@@ -71,8 +71,10 @@ declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as x
     pmf:label($id, $upper, $plural, (session:get-attribute("ssrq.lang"), "de")[1])
 };
 
+(: Shorten the full title to display only the last part after "Band xy:" :)
 declare function pmf:short-title($title as xs:string?) {
-    let $short-title := functx:substring-after-last($title, ':')
+    let $normalized-title := normalize-space($title)
+    let $short-title := functx:substring-after-last($normalized-title, ':')
     return
         $short-title
 };
