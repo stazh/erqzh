@@ -380,7 +380,6 @@ paper-input label {
 }
 
 .searchbox {
-    height: 100%;
     width: 100%;
     --paper-item-min-height: 24px;
 }
