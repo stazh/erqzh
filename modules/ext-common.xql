@@ -79,6 +79,31 @@ declare function pmf:short-title($title as xs:string?) {
         $short-title
 };
 
+(: Preprocess href attribute for obsolete, static links in TEI ref/@target
+    TODO: Retrieve and insert missing url part "collection-name" to $new-href (clear requirements)
+:)
+declare function pmf:ref-link($target as xs:string?) {
+    let $log := util:log('debug', 'pmf:ref-link, TARGET=' || $target)
+    let $href :=
+        if (starts-with($target, '/startseite/literaturverzeichnis'))
+        then (
+            replace(@target, '.+', '../literaturverzeichnis.html')
+        )
+        else if (starts-with($target, '/suche/detail'))
+        then (
+            let $volume-name := substring-after($target, 'detail')
+            let $new-href := concat('..', $volume-name, '.xml')
+            return
+                $new-href
+        )
+        else
+            $target
+
+    let $log := util:log('debug', 'pmf:ref-link, HREF=' || $href)
+    return
+        $href
+};
+
 declare function pmf:label($id as xs:string?, $upper as xs:boolean, $plural as xs:integer, $lang as xs:string) {
     if ($id) then
         let $spec := $config:schema-odd//tei:dataSpec[@ident='ssrq.labels']

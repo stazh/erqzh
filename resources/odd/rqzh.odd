@@ -1096,6 +1096,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
+                    <model behaviour="link" predicate="parent::bibl" cssClass="ref-link">
+                        <param name="text" value="."/>
+                        <param name="link" value="ec:ref-link(@target)"/>
+                    </model>
                     <model predicate="ancestor::div/@type='collection'" behaviour="link">
                         <desc>Link in Klammerdokument</desc>
                         <param name="link" value="string() || '.xml'"/>
@@ -1146,7 +1150,7 @@
                     <model behaviour="omit"/>
                 </elementSpec>
                 <elementSpec ident="bibl" mode="change">
-                    <model predicate="@type='url'" behaviour="inline">
+                    <model predicate="@type='url'" behaviour="inline" cssClass="bibl-link">
                         <param name="url" value="ref/@target"/>
                         <param name="text" value="."/>
                         <pb:template xmlns="" xml:space="preserve">
@@ -1156,16 +1160,6 @@
                         </pb:template>
                     </model>
                     <model predicate="ancestor::teiHeader" behaviour="listItem"/>
-                    <model predicate="child::ref/@target='/startseite/literaturverzeichnis'" behaviour="inline">
-                        <desc>Literaturverweise auf internes Literaturverzeichnis</desc>
-                        <param name="url" value="replace(ref[@target='/startseite/literaturverzeichnis']/@target, '(.+)','../literaturverzeichnis.html')"/>
-                        <param name="text" value="ref[@target='/startseite/literaturverzeichnis']/string()"/>
-                        <param name="content" value="$get(.)/text()"/>
-                        <pb:template xmlns="" xml:space="preserve">
-                            <a href="[[url]]">[[text]]</a>
-                            <span>[[content]]</span>
-                        </pb:template>
-                    </model>
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="additional" mode="add">
