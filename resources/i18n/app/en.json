@@ -13,7 +13,6 @@
   "abbreviations": "Abbreviations",
   "archive": "Archive",
   "articles": "Pieces",
-  "by": "by",
   "and": " and ",
   "canton": "Canton",
   "comment": "Comments",
@@ -77,5 +76,8 @@
   "upload": {
     "upload": "Select files...",
     "drop": "Upload TEI XML or ODD files into the test document set. Click on the button above or drag&amp;drop files on it."
-  }
+  },
+  "zitation": "Citation: ",
+  "lizenz": "Licence: ",
+  "by": "by "
 }

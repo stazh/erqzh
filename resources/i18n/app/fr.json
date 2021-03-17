@@ -13,7 +13,6 @@
   "abbreviations": "Abréviations",
   "archive": "Archives",
   "articles": "Articles",
-  "by": "de",
   "and": " et ",
   "canton": "Canton",
   "comment": "Commentaires",
@@ -77,5 +76,8 @@
   "upload": {
     "upload": "Sélectionner les fichiers...",
     "drop": "Envoyer les fichiers TEI XML ou ODD dans le jeu de documents de test. Cliquer sur le bouton ci-dessus ou glisser-déposer les fichiers dessus."
-  }
+  },
+  "zitation": "Citation: ",
+  "lizenz": "License: ",
+  "by": "de"
 }

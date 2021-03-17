@@ -13,7 +13,6 @@
   "abbreviations": "Abkürzungen",
   "archive": "Archiv",
   "articles": "Stücke",
-  "by": "von",
   "and": " und ",
   "canton": "Kanton",
   "comment": "Kommentar",
@@ -78,5 +77,8 @@
   "upload": {
     "upload": "Dateien auswählen...",
     "drop": "TEI XML oder ODD files hinzufügen. Klicke auf den Button oben oder ziehe Dateien darauf."
-  }
+  },
+  "zitation": "Zitation: ",
+  "lizenz": "Lizenz: ",
+  "by": "von"
 }
