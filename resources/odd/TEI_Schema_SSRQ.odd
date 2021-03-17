@@ -6163,6 +6163,14 @@
                             <desc xml:lang="en">month</desc>
                             <desc xml:lang="en" type="plural">months</desc>
                         </valItem>
+                        <valItem ident="week">
+                            <desc xml:lang="de">Woche</desc>
+                            <desc xml:lang="de" type="plural">Wochen</desc>
+                            <desc xml:lang="fr">semaine</desc>
+                            <desc xml:lang="fr" type="plural">semaines</desc>
+                            <desc xml:lang="en">week</desc>
+                            <desc xml:lang="en" type="plural">weeks</desc>
+                        </valItem>
                         <valItem ident="day">
                             <desc xml:lang="de">Tag</desc>
                             <desc xml:lang="de" type="plural">Tage</desc>

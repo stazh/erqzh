@@ -266,12 +266,27 @@ declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
         ()
 };
 
+declare function pmf:weeks-from-duration($duration as xs:string) {
+    let $week-number :=
+        if (matches($duration, 'W$'))
+        then
+            replace($duration, '(\D)', '')
+        else
+            0
+    return (
+        $week-number,
+        util:log('debug', 'pmf:weeks-from-duration, $duration=' || $duration),
+        util:log('debug', 'pmf:weeks-from-duration, $week-number=' || $week-number)
+    )
+};
+
 declare function pmf:format-duration($duration as xs:string) {
     try {
         let $duration := xs:duration($duration)
         let $components := map:merge((
             pmf:get-duration-label("year", years-from-duration($duration)),
             pmf:get-duration-label("month", months-from-duration($duration)),
+            pmf:get-duration-label("week", pmf:weeks-from-duration($duration)),
             pmf:get-duration-label("day", days-from-duration($duration)),
             pmf:get-duration-label("hour", hours-from-duration($duration))
         ))
