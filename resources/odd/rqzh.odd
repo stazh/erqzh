@@ -936,6 +936,16 @@
                         <param name="alternate"
                                value="(ec:label('duration'), ec:colon(), ec:translate(@period, 0, ()))"/>
                     </model>
+                    <model output="web" predicate="@dur[ends-with(., 'W')]" behaviour="alternate"
+                           cssClass="text-critical">
+                        <desc>
+                            Alternate (popover) for week duration labels in custom format e.g. 'R/P1W'.
+                        </desc>
+                        <param name="default" value="."/>
+                        <param name="alternate"
+                               value="(ec:label('repeated-duration'), ec:colon(),ec:format-week-duration(substring-after(@dur, 'R/')))"/>
+                    </model>
+
                     <model output="web" predicate="@dur[starts-with(., 'R/P')]" behaviour="alternate"
                            cssClass="text-critical">
                         <param name="default" value="."/>

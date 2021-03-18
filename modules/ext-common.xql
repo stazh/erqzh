@@ -266,6 +266,10 @@ declare function pmf:format-date($when as xs:string?, $language as xs:string?) {
         ()
 };
 
+(: Retrieve a number from the week
+:  $duration as String in custom time format e.g. "P1W"
+:  @return String e.g. "1"
+:)
 declare function pmf:weeks-from-duration($duration as xs:string) {
     let $week-number :=
         if (matches($duration, 'W$'))
@@ -280,13 +284,36 @@ declare function pmf:weeks-from-duration($duration as xs:string) {
     )
 };
 
+(: Construct the label, mapping a label text with the incoming number
+:  $duration as string e.g. "1"
+:  @return String containing a combined label text, or just the original value
+:)
+declare function pmf:format-week-duration($duration as xs:string) {
+    try {
+        let $components := map:merge((
+            pmf:get-duration-label("week", pmf:weeks-from-duration($duration))
+        ))
+        return
+            string-join(
+                map:for-each($components, function($key, $value) {
+                    if ($value > 0) then
+                        $value || " " || $key
+                    else
+                        ()
+                }),
+                " "
+            )
+    } catch * {
+        $duration
+    }
+};
+
 declare function pmf:format-duration($duration as xs:string) {
     try {
         let $duration := xs:duration($duration)
         let $components := map:merge((
             pmf:get-duration-label("year", years-from-duration($duration)),
             pmf:get-duration-label("month", months-from-duration($duration)),
-            pmf:get-duration-label("week", pmf:weeks-from-duration($duration)),
             pmf:get-duration-label("day", days-from-duration($duration)),
             pmf:get-duration-label("hour", hours-from-duration($duration))
         ))
