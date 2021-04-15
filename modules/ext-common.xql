@@ -87,7 +87,7 @@ declare function pmf:ref-link($target as xs:string?) {
     let $href :=
         if (starts-with($target, '/startseite/literaturverzeichnis'))
         then (
-            replace(@target, '.+', '../literaturverzeichnis.html')
+            replace($target, '.+', '../literaturverzeichnis.html')
         )
         else if (starts-with($target, '/suche/detail'))
         then (
