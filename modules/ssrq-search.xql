@@ -280,12 +280,14 @@ declare function query:filter($hits as element()*) {
                             for $node in $context
                             let $idno := $node/ancestor-or-self::tei:TEI//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno
                             let $filiations :=
-                                collection($config:data-root)//tei:teiHeader//tei:filiation/tei:idno[. = $idno]
+                                collection($config:data-root)//tei:idno[. = $idno]/ancestor::tei:teiHeader//tei:filiation
                             let $log := util:log("info", ($idno, count($filiations)))
                             return
                                 if ($value = "yes" and exists($filiations)) then
                                     $node
                                 else if ($value = "no" and empty($filiations)) then
+                                    $node
+                                else if ($value  and count($filiations[contains(., $value)])) then
                                     $node
                                 else
                                     ()
