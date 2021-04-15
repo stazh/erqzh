@@ -92,7 +92,6 @@ declare function pmf:ref-link($target as xs:string?) {
         else if (starts-with($target, '/suche/detail'))
         then (
             let $volume-name := substring-after($target, 'detail')
-            (: let $new-href := concat('../', $volume-name, '.xml') :)
             let $collection-name := substring-after(util:collection-name(.), $config:data-root)
             let $new-href := concat('../', $collection-name, $volume-name, '.xml')
             return
