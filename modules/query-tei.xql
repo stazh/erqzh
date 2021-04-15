@@ -42,10 +42,10 @@ declare function teis:query-default($fields as xs:string+, $query as xs:string, 
                     if ($target-texts) then
                         for $text in $target-texts
                         return
-                            $config:data-root ! doc(. || "/" || $text)//tei:div[ft:query(., $query, query:options($sortBy))] |
+                            (: $config:data-root ! doc(. || "/" || $text)//tei:div[ft:query(., $query, query:options($sortBy))] | :)
                             $config:data-root ! doc(. || "/" || $text)//tei:text[ft:query(., $query, query:options($sortBy))]
                     else
-                        collection($config:data-root)//tei:div[ft:query(., $query, query:options($sortBy))] |
+                        (: collection($config:data-root)//tei:div[ft:query(., $query, query:options($sortBy))] | :)
                         collection($config:data-root)//tei:text[ft:query(., $query, query:options($sortBy))]
     else ()
 };
@@ -181,7 +181,7 @@ declare %private function teis:query-default-view($context as element()*, $query
             case "head" return
                 $context[./descendant-or-self::tei:head[ft:query(., $query, $query:QUERY_OPTIONS)]]
             default return
-                $context[./descendant-or-self::tei:div[ft:query(., $query, $query:QUERY_OPTIONS)]] |
+                (: $context[./descendant-or-self::tei:div[ft:query(., $query, $query:QUERY_OPTIONS)]] | :)
                 $context[./descendant-or-self::tei:text[ft:query(., $query, $query:QUERY_OPTIONS)]]
 };
 
