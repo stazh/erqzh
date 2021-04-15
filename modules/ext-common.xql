@@ -92,10 +92,15 @@ declare function pmf:ref-link($target as xs:string?) {
         else if (starts-with($target, '/suche/detail'))
         then (
             let $volume-name := substring-after($target, 'detail')
-            let $new-href := concat($volume-name, '.xml')
+            (: let $new-href := concat('../', $volume-name, '.xml') :)
+            let $collection-name := substring-after(util:collection-name(.),'/db/apps/rqzh-data/data/')
+            let $new-href := concat('../', $collection-name, $volume-name, '.xml')
             return
                 $new-href
         )
+        else if (starts-with($target, 'http'))
+        then
+            $target
         else
             $target
 
@@ -203,7 +208,7 @@ declare function pmf:get-canton($id as xs:string?) {
     let $components := tokenize($id, "_")
     return
         $components[2]
-}; 
+};
 
 declare function pmf:format-id($id as xs:string?) {
     let $temp  := replace($id, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
