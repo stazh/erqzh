@@ -624,6 +624,16 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="measure" mode="change">
+                    <model predicate="ancestor::measureGrp and (session:get-attribute('ssrq.lang'), 'de')[1]!='de'" behaviour="alternate" cssClass="text-critical">
+                        <desc>Display summarized measures for a measure group in a tooltip (non German)</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="let $measures := ancestor::measureGrp//measure  return (  ec:translate($measures[1]/@type, 0, 'uppercase'), ec:colon(),           for $measure in $measures     return     (' ', $measure/@quantity, ' ', ec:translate($measure/@unit, $measure/@quantity, 'lowercase'), ' ', ec:translate($measure/@commodity, 0, 'lowercase'), ' ', ec:translate($measure/@origin, 0, 'lowercase')) )"/>
+                    </model>
+                    <model predicate="ancestor::measureGrp and (session:get-attribute('ssrq.lang'), 'de')[1]='de'" behaviour="alternate" cssClass="text-critical">
+                        <desc>Display summarized measures for a measure group in a tooltip (German)</desc>
+                        <param name="default" value="."/>
+                        <param name="alternate" value="let $measures := ancestor::measureGrp//measure  return (  ec:translate($measures[1]/@type, 0, 'uppercase'), ec:colon(),           for $measure in $measures     return     (' ', $measure/@quantity, ' ', ec:translate($measure/@origin, 0, 'lowercase'), ' ', ec:translate($measure/@unit, $measure/@quantity, 'lowercase'), ' ', ec:translate($measure/@commodity, 0, 'lowercase')) )"/>
+                    </model>
                     <model predicate="(session:get-attribute('ssrq.lang'), 'de')[1]='de'" behaviour="alternate"
                            cssClass="text-critical">
                         <desc>Display measurement with given parameters in tooltip and highlight text with color</desc>
