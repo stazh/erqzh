@@ -807,12 +807,11 @@
                         <param name="link"
                                value="'https://www.ssrq-sds-fds.ch/online/tei/' || ec:get-canton(seriesStmt/idno) || '/' "/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <pb-popover persistent="persistent" placement="bottom">
-                                <span class="id" slot="default">
-                                    [[idno-format]]
-                                    <iron-icon icon="icons:info"/>
-                                </span>
-                                <span slot="alternate">
+                            <span id="info">
+                                [[idno-format]]
+                                <iron-icon icon="icons:info"/>
+                            </span>
+                            <pb-popover placement="bottom" for="info">
                                     <p>
                                         [[stmtTitle]], [[fileDescTitle]],
                                         <pb-i18n key="by">von</pb-i18n>
@@ -824,9 +823,9 @@
                                     </p>
                                     <p>
                                         <pb-i18n key="lizenz">Lizenz:</pb-i18n>
-                                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de">CC BY-NC-SA</a>
+                                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de" target="_blank">CC BY-NC-SA</a>
                                     </p>
-                                </span>
+                                
                             </pb-popover>
                             <span id="credits" style="display: none">[[credits]]</span>
                         </pb:template>
