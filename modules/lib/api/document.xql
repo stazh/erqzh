@@ -71,7 +71,7 @@ declare function dapi:html($request as map(*)) {
             error($errors:BAD_REQUEST, "No document specified")
 };
 
-declare %private function dapi:postprocess($nodes as node()*, $styles as element()?, $odd as xs:string?, 
+declare function dapi:postprocess($nodes as node()*, $styles as element()?, $odd as xs:string?, 
     $base as xs:string?, $components as xs:boolean?) {
     for $node in $nodes
     return
@@ -86,6 +86,7 @@ declare %private function dapi:postprocess($nodes as node()*, $styles as element
                         else
                             (),
                         $node/node(),
+                        <link rel="stylesheet" type="text/css" href="transform/{replace($oddName, "^(.*)\.odd$", "$1")}.css"/>,
                         <link rel="stylesheet" type="text/css" href="transform/{replace($oddName, "^(.*)\.odd$", "$1")}-print.css" media="print"/>,
                         $styles,
                         if ($components) then (
@@ -124,7 +125,7 @@ declare %private function dapi:postprocess($nodes as node()*, $styles as element
                 return
                     element { node-name($node) } {
                         $node/@*,
-                        if ($components) then
+                        if ($components and not($node//pb-page)) then
                             <pb-page endpoint="{$base}">{$content}</pb-page>
                         else
                             $content

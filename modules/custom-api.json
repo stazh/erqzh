@@ -108,6 +108,49 @@
                     }
                 }
             }
+        },
+        "/api/document/{id}/html": {
+            "get": {
+                "summary": "Retrieve document content as HTML",
+                "description": "Retrieve whole document transformed to HTML via ODD",
+                "tags": [
+                    "documents"
+                ],
+                "operationId": "custom:html",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "test/F-rom.xml"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the entire document as HTML",
+                        "content": {
+                            "text/html": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Document not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "security": [
