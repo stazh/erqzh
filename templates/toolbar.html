@@ -4,6 +4,7 @@
         data-template="pages:parse-params">
         <paper-icon-button icon="icons:folder-open"></paper-icon-button>
     </a>
+    <paper-button id="openPrintDialog">Open print version</paper-button>
     <!-- paper-icon-button id="tocToggle" class="toc-toggle" icon="icons:view-list"/-->
     <pb-toggle-feature name="mode" properties-on='{"odd": "ssrq-norm"}' properties-off='{"odd": "ssrq"}' default="off" init-from-view="init-from-view"
         emit="transcription" subscribe="transcription"
@@ -13,7 +14,7 @@
             event="pb-refresh"
             title="Recompile ODD" data-i18n="[title]menu.admin.recompile">
             <h3 slot="title"><pb-i18n key="menu.admin.recompile"></pb-i18n></h3>
-            <paper-icon-button icon="icons:refresh"></paper-icon-button>
+            <paper-icon-button icon="icons:refresh">Tralal</paper-icon-button>
         </pb-ajax>
     </pb-restricted>
     <pb-zoom emit="transcription" direction="in" icon="icons:zoom-in"/>

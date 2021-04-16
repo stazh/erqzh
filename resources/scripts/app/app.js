@@ -128,4 +128,23 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });        
     }
+
+    const openPrintDialog = document.getElementById('openPrintDialog');
+    openPrintDialog.addEventListener('click', () => {
+
+      let currentOrigin = window.location.origin.toString();
+      let currentPath = window.location.pathname.toString();
+      let urlPart = "/exist/apps/rqzh2/";
+      let docPath = currentPath.substr(currentPath.indexOf(urlPart) + urlPart.length, currentPath.length);
+      console.log(docPath);
+      let updatedDocPath = docPath.replace('/', '%2F');
+      let newUrl = currentOrigin + urlPart + 'api/document/' + updatedDocPath + '/html'
+      console.log(newUrl);
+      window.open(newUrl);
+    });
+
+    window.addEventListener("beforeprint", function(event) {
+      console.log('hallo?')
+    });
+
 });
