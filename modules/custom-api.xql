@@ -107,6 +107,13 @@ declare function api:html($request as map(*)) {
                                         </h4>
                                         { $content }
                                     </pb-page>
+                                    <script>
+                                        window.addEventListener('WebComponentsReady', function() {{
+                                            document.querySelectorAll('pb-collapse').forEach(function(collapse) {{
+                                                collapse.opened = true;
+                                            }});
+                                        }});
+                                    </script>
                                 </body>
                             </html>
                     return
