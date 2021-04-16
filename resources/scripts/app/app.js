@@ -142,9 +142,4 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log(newUrl);
       window.open(newUrl);
     });
-
-    window.addEventListener("beforeprint", function(event) {
-      console.log('hallo?')
-    });
-
 });
