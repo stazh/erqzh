@@ -82,7 +82,7 @@ declare function pmf:short-title($title as xs:string?) {
 (: Preprocess href attribute for obsolete, static links in TEI ref/@target
     TODO: Retrieve and insert missing url part "collection-name" to $new-href (clear requirements)
 :)
-declare function pmf:ref-link($target as xs:string?) {
+declare function pmf:ref-link($target as xs:string?, $collection as xs:string?) {
     let $log := util:log('debug', 'pmf:ref-link, TARGET=' || $target)
     let $href :=
         if (starts-with($target, '/startseite/literaturverzeichnis'))
@@ -92,8 +92,9 @@ declare function pmf:ref-link($target as xs:string?) {
         else if (starts-with($target, '/suche/detail'))
         then (
             let $volume-name := substring-after($target, 'detail')
-            let $collection-name := substring-after(util:collection-name($target), $config:data-root)
-            let $new-href := concat('../', $collection-name, $volume-name, '.xml')
+            let $collection-name := substring-after($collection, $config:data-root)
+            let $new-href := concat('..', $collection-name, $volume-name, '.xml')
+            let $log := util:log('debug', 'pmf:ref-link, $collection-name=' || $collection-name)
             return
                 $new-href
         )
