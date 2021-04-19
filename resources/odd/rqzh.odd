@@ -756,13 +756,33 @@
                         <model behaviour="block" cssClass="header-short">
                             <param name="content" value="ec:format-id(seriesStmt/idno)"/>
                         </model>
+                        <model predicate="ancestor::TEI[@type='introduction'] or ends-with(util:document-name($get(.)), 'Einleitung.xml')" 
+                            behaviour="link" cssClass="header-short">
+                            <param name="content" value="'Einleitung'"/>
+                            <param name="link" value="$parameters?doc"/>
+                        </model>
+                        <model predicate="ancestor::TEI[@type='introduction'] or ends-with(util:document-name($get(.)), 'Einleitung.xml')"
+                           behaviour="block">
+                            <desc>Render titles for TEI type "Introduction"</desc>
+                            <param name="stmtTitle" value="seriesStmt/title"/>
+                            <param name="fileDescTitle" value="titleStmt/title"/>
+                            <pb:template xmlns="" xml:space="preserve">
+                                <h3>[[stmtTitle]]</h3>
+                                <h4>[[fileDescTitle]]</h4>
+                            </pb:template>
+                        </model>
                         <model behaviour="link" cssClass="header-short">
                             <param name="content" value="sourceDesc/msDesc/head"/>
                             <param name="link" value="$parameters?doc"/>
                         </model>
                         <model behaviour="block" cssClass="header-short">
                             <param name="content"
-                                   value="if (exists(sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then ec:print-date(sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) else ec:print-date(sourceDesc/msDesc/history/origin/origDate)"/>
+                                   value="if (exists(sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then 
+                                    ec:print-date(sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate) 
+                                   else if (exists(sourceDesc/msDesc/history/origin/origDate)) then
+                                    ec:print-date(sourceDesc/msDesc/history/origin/origDate)
+                                   else 
+                                     ()"/>
                         </model>
                         <model behaviour="block" cssClass="header-short">
                             <param name="content" value="editionStmt"/>

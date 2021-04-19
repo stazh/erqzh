@@ -127,29 +127,10 @@ declare function app:select-kanton() {
 declare function app:list-volumes($node as node(), $model as map(*), $root as xs:string?) {
     let $kanton := replace($model?root, "^/?(.*)$", "$1")
     for $volume in collection($config:data-root)/tei:TEI[@type='volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $kanton)]
-        let $idno := $volume//tei:seriesStmt/tei:idno[@type="machine"]
-        let $introduction := collection($config:data-root)/tei:TEI[@type='introduction'][.//tei:seriesStmt/tei:idno = $idno]
-        let $literature := collection($config:data-root)/tei:TEI[@type='biblio'][.//tei:seriesStmt/tei:idno = $idno]
         return
             <div class="volume">
-                { $pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "view": "volumes" }, $config:odd) }
-                {
-                    if ($introduction) then
-                        let $path := substring-after(document-uri(root($introduction)), $config:data-root || "/")
-                        return
-                            <span class="part"><a href="{$path}?template=introduction.html"><pb-i18n key="head">Vorspann</pb-i18n></a></span> 
-                    else 
-                        () 
-                }
-                <span class="part"><a href="#" data-collection="{substring-after(util:collection-name($volume), $config:data-root || "/")}"><pb-i18n key="articles">Stücke</pb-i18n></a></span>
-                {
-                    if ($literature) then
-                        let $path := substring-after(document-uri(root($literature)), $config:data-root || "/")
-                        return
-                            <span class="part"><a href="{$path}?volume={$idno}"><pb-i18n key="literature">Literatur</pb-i18n></a></span> 
-                    else 
-                        () 
-                }
+                <a href="#" data-collection="{substring-after(util:collection-name($volume), $config:data-root || "/")}">{ 
+                    $pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "view": "volumes" }, $config:odd) }</a>
                 {
                     session:set-attribute("ssrq.kanton", $kanton)
                 }

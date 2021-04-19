@@ -433,10 +433,11 @@ declare function pmf:print-date($date as node()*) {
     	        format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[D1]')
     	    else
     	        format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()) || ' – ' || format-date(xs:date($date/@to), '[MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())
-    	else
+    	else if (format-date(xs:date($date/@from), '[Y] [MNn] [D1]') and format-date(xs:date($date/@to), '[Y] [MNn] [D1]')) then
         	string-join((format-date(xs:date($date/@from), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ()),
         	' – ',
         	format-date(xs:date($date/@to), '[Y] [MNn] [D1]', (session:get-attribute('ssrq.lang'), 'de')[1], (), ())))
+        else ()
     let $old-style :=
     	if ($date/@calendar='Julian') then
     		' ' || pmf:label('old-style-abbr', false())
