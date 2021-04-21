@@ -198,13 +198,21 @@ footer {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     padding: 1rem;
-}
+} 
 
 footer p, address {
     font-family: var(--pb-base-font-family);
     font-size: 0.75rem;
     font-style: normal;
 }
+
+footer pb-view {
+    font: var(--pb-base-font);
+    --pb-view-max-width: auto;
+    background-color: var(--pb-toolbar-background-color);
+    color: var(--pb-toolbar-color);
+}
+
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--pb-heading-font-family);

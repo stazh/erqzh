@@ -751,27 +751,30 @@
                     <model output="web" behaviour="block"/>
                 </elementSpec>
                 <elementSpec ident="fileDesc" mode="change">
+                    <modelSequence predicate="$parameters?header='short' and ancestor::TEI[@type='introduction']">
+                        <desc>Output a short header to be used in document listings</desc>
+                        <model behaviour="block" cssClass="header-short">
+                            <param name="content" value="ec:format-id(seriesStmt/idno)"/>
+                        </model>
+                        <model behaviour="link" cssClass="header-short title">
+                            <param name="content" value="
+                            let $subtype := ancestor::TEI/@subtype 
+                            return switch ($subtype)
+                                case 'a' return 'Reihenvorwort'
+                                case 'b' return 'Vorwort'
+                                case 'c' return 'Einleitung'
+                                case 'd' return 'Quellenverzeihnis'
+                                default return 'Introduction'
+                                "/>
+                            <param name="link" value="$parameters?doc"/>
+                        </model>
+                    </modelSequence>
                     <modelSequence predicate="$parameters?header='short'">
                         <desc>Output a short header to be used in document listings</desc>
                         <model behaviour="block" cssClass="header-short">
                             <param name="content" value="ec:format-id(seriesStmt/idno)"/>
                         </model>
-                        <model predicate="ancestor::TEI[@type='introduction'] or ends-with(util:document-name($get(.)), 'Einleitung.xml')" 
-                            behaviour="link" cssClass="header-short">
-                            <param name="content" value="'Einleitung'"/>
-                            <param name="link" value="$parameters?doc"/>
-                        </model>
-                        <model predicate="ancestor::TEI[@type='introduction'] or ends-with(util:document-name($get(.)), 'Einleitung.xml')"
-                           behaviour="block">
-                            <desc>Render titles for TEI type "Introduction"</desc>
-                            <param name="stmtTitle" value="seriesStmt/title"/>
-                            <param name="fileDescTitle" value="titleStmt/title"/>
-                            <pb:template xmlns="" xml:space="preserve">
-                                <h3>[[stmtTitle]]</h3>
-                                <h4>[[fileDescTitle]]</h4>
-                            </pb:template>
-                        </model>
-                        <model behaviour="link" cssClass="header-short">
+                        <model behaviour="link" cssClass="header-short" >
                             <param name="content" value="sourceDesc/msDesc/head"/>
                             <param name="link" value="$parameters?doc"/>
                         </model>
@@ -1212,6 +1215,72 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="teiHeader" mode="change">
+                    <model predicate="$parameters?mode='footer-prev'" behaviour="block" cssClass="footer">
+                        <param name="target" value='
+                        let $idno := .//seriesStmt/idno
+                        let $col := substring-after(util:collection-name($idno), "/db/apps/rqzh-data/data/")
+                        let $temp  := replace($idno, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
+                        let $parts := tokenize($temp)
+                        let $start := $parts[1]
+                        let $id    :=
+                            if (matches($parts[2], "^\d{8}")) then
+                                replace($parts[2], "_", "-")
+                            else if (matches($parts[2], "^\d{4}_\d{3}")) then
+                                number(substring-before($parts[2], "_")) || "-" || number(substring-after($parts[2], "_"))
+                            else if (count($parts) eq 1)
+                            then ()
+                            else
+                                number($parts[2])
+
+                        let $next := xs:string($id - 1)
+                        let $len := string-length($next)
+                        let $next-id := if ($len > 2) then $next else substring("000", 1, 3 - $len) || $next 
+                        let $match := collection("/db/apps/rqzh-data/data")//idno[starts-with(., $start || "_" || $next-id)]
+                        let $link := if ($match) then $col || "/" || util:document-name($match) else ()
+
+                        return $link'/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <paper-button>
+                                <pb-link path="[[target]]" emit="transcription" class="part-nav">
+                                    <iron-icon icon="icons:first-page"/>
+                                    <pb-i18n key="navigation.previous">previous</pb-i18n>
+                                </pb-link>
+                            </paper-button>
+                        </pb:template>
+                    </model>
+                    <model predicate="$parameters?mode='footer-next'" behaviour="block" cssClass="footer">
+                        <param name="target" value='
+                        let $idno := .//seriesStmt/idno
+                        let $col := substring-after(util:collection-name($idno), "/db/apps/rqzh-data/data/")
+                        let $temp  := replace($idno, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
+                        let $parts := tokenize($temp)
+                        let $start := $parts[1]
+                        let $id    :=
+                            if (matches($parts[2], "^\d{8}")) then
+                                replace($parts[2], "_", "-")
+                            else if (matches($parts[2], "^\d{4}_\d{3}")) then
+                                number(substring-before($parts[2], "_")) || "-" || number(substring-after($parts[2], "_"))
+                            else if (count($parts) eq 1)
+                            then ()
+                            else
+                                number($parts[2])
+
+                        let $next := xs:string($id + 1)
+                        let $len := string-length($next)
+                        let $next-id := if ($len > 2) then $next else substring("000", 1, 3 - $len) || $next 
+                        let $match := collection("/db/apps/rqzh-data/data")//idno[starts-with(., $start || "_" || $next-id)]
+                        let $link := if ($match) then $col || "/" || util:document-name($match) else ()
+
+                        return $link'/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <paper-button>
+                                <pb-link path="[[target]]" emit="transcription" class="part-nav">
+                                    <pb-i18n key="navigation.next">next</pb-i18n>
+                                    <iron-icon icon="icons:last-page"/>
+                                </pb-link>
+                            </paper-button>
+                        </pb:template>
+                    </model>
                     <modelSequence predicate="$parameters?view='metadata'">
                         <model predicate="not(ends-with(util:document-name(.//sourceDesc), 'Introduction.xml'))"
                                behaviour="block">
