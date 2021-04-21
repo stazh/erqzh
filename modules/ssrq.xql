@@ -127,6 +127,8 @@ declare function app:select-kanton() {
 declare function app:list-volumes($node as node(), $model as map(*), $root as xs:string?) {
     let $kanton := replace($model?root, "^/?(.*)$", "$1")
     for $volume in collection($config:data-root)/tei:TEI[@type='volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $kanton)]
+        let $order := $volume/@n
+        order by $order
         return
             <div class="volume">
                 <a href="#" data-collection="{substring-after(util:collection-name($volume), $config:data-root || "/")}">{ 
