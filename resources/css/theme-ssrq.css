@@ -1,3 +1,10 @@
+:root {
+    --footer-height: 45px;
+    --footer-padding-top: 15px;
+    --footer-height-total: calc(var(--footer-height) + 1px + var(--footer-padding-top)); /* if border, then + 1px! */
+    --toolbar-height: 105px;
+}
+
 .logo {
     background-image: url("../images/logo.svg");
 }
@@ -32,15 +39,14 @@ body {
 }
 
 .grid {
-    /* margin: 2rem; */
-    margin: 0 1rem 1rem;
+    padding: 0 1rem;
     grid-template-columns: 3fr minmax(0, 3fr);
     /*grid-column-gap: 3rem;*/
 }
 
 main, .facsimile, .register {
-    height: calc(100vh - 130px);
-    --pb-facsimile-height: calc(100vh - 130px);
+    height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
+    --pb-facsimile-height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
 }
 
 .facsimile {
@@ -195,24 +201,32 @@ ul.control-list {
 }
 
 footer {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    padding: 1rem;
-} 
+    display: flex;
+	flex-direction: row;
+	justify-content: center;
+    height: var(--footer-height);
+    padding: 15px 0 0 0;
+    border-top: 1px solid #ebebeb;
+    -webkit-box-shadow: -3px 0px 14px -8px #ccc;
+    -moz-box-shadow: -3px 0px 14px -8px #ccc;
+    box-shadow: -3px 0px 14px -8px #ccc;
+}
 
 footer p, address {
-    font-family: var(--pb-base-font-family);
     font-size: 0.75rem;
     font-style: normal;
 }
-
-footer pb-view {
+footer-button {
     font: var(--pb-base-font);
-    --pb-view-max-width: auto;
-    background-color: var(--pb-toolbar-background-color);
     color: var(--pb-toolbar-color);
+    background-color: var(--pb-toolbar-background-color);
+    font-family: var(--pb-base-font-family);
 }
 
+.footer-button-next {
+    grid-column: 4;
+    text-align: end;
+}
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--pb-heading-font-family);
@@ -309,6 +323,7 @@ pb-login::part(group-invalid) {
 pb-view {
     font-weight: 300;
     color: var(--pb-color-primary);
+    font-family: var(--pb-base-font-family);
 }
 
 .place {
@@ -543,4 +558,3 @@ pb-browse-docs::part(delete-button) {
         display: none !important;
     }
 }
-

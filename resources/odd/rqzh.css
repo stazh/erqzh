@@ -129,3 +129,57 @@ section:first-child {
 pb-i18n[key="by"]::after {
     content: ' ';
 }
+
+.footer {
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+}
+
+.footer .part-nav a {
+    height: 45px;
+    color: #636363;
+    text-decoration: none;
+    font-size: 16px;
+    outline: none;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.footer .part-nav a:hover,
+.footer .part-nav a:focus,
+.footer .part-nav a:active {
+    color: #333;
+}
+
+.footer .part-nav a:hover iron-icon,
+.footer .part-nav a:focus iron-icon,
+.footer .part-nav a:active iron-icon {
+    background-color: rgb(235, 235, 235);
+    border: 1px solid rgb(235, 235, 235);
+    border-radius: 50%;
+    color: #333;
+}
+
+.footer iron-icon {
+    width: 24px;
+    padding: 3px;
+    margin: 0;
+    color: #636363;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.footer.button-prev iron-icon {
+    margin-right: 5px;
+}
+
+.footer.button-next  iron-icon {
+    margin-left: 5px;
+}
+
+.footer pb-i18n {
+    font-size: 16px;
+}

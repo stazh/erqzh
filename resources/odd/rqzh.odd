@@ -1215,7 +1215,7 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="teiHeader" mode="change">
-                    <model predicate="$parameters?mode='footer-prev'" behaviour="block" cssClass="footer">
+                    <model predicate="$parameters?mode='footer-prev'" behaviour="block" cssClass="footer button-prev">
                         <param name="target" value='
                         let $idno := .//seriesStmt/idno
                         let $col := substring-after(util:collection-name($idno), "/db/apps/rqzh-data/data/")
@@ -1249,7 +1249,7 @@
                             </paper-button>
                         </pb:template>
                     </model>
-                    <model predicate="$parameters?mode='footer-next'" behaviour="block" cssClass="footer">
+                    <model predicate="$parameters?mode='footer-next'" behaviour="block" cssClass="footer button-next">
                         <param name="target" value='
                         let $idno := .//seriesStmt/idno
                         let $col := substring-after(util:collection-name($idno), "/db/apps/rqzh-data/data/")
