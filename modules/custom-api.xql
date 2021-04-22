@@ -99,7 +99,16 @@ declare function api:html($request as map(*)) {
                                     <link rel="stylesheet" type="text/css" href="resources/css/theme.css"/>
                                     <link rel="stylesheet" type="text/css" href="resources/css/theme-ssrq.css"/>
                                 </head>
-                                <body>
+                                <body class="printPreview">
+                                    <paper-button id="closePage" class="hidden-print" onclick="window.close()" title="close this page">
+                                        <paper-icon-button icon="close"></paper-icon-button>
+                                        Close Page
+                                    </paper-button>
+                                    <paper-button id="printPage" class="hidden-print" onclick="window.print()" title="print this page">
+                                        <paper-icon-button icon="print"></paper-icon-button>
+                                        Print Page
+                                    </paper-button>
+
                                     <pb-page unresolved="unresolved" locales="{$locales}" locale-fallback-ns="app" require-language="require-language" api-version="1.0.0">
                                         { $metadata }
                                         <h4 class="block-title">
