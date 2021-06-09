@@ -35,18 +35,6 @@
                 }
             }
 
-            .tp-title {
-                font-family: "Oswald", Verdana, "Helvetica", sans-serif;
-                font-size: 36px;
-                font-weight: 400;
-            }
-
-            .tp-title span {
-                color: #9e9e9e;
-                font-size: 26px;
-                margin-top: 12px;
-            }
-
             pb-results {
                 overflow: scroll;
                 margin: 0 20px;
@@ -62,17 +50,14 @@
                     flex-direction: row;
                 }
 
+/*
                 .panels .doclist {
                     flex: 2 auto;
                 }
+*/
             }
 
-            .panels {
-                margin-bottom: 40px;
-            }
-
-
-            .panels .doclist {
+            .doclist {
                 --paper-tabs-selection-bar-color: #607D8B;
                 margin-right: 1rem;
                 --paper-tab-content: {
@@ -103,21 +88,8 @@
                 padding: 0;
             }
 
-            #document-list {
-                flex: 2;
-                padding-left: 20px;
-                padding-top: 20px;
-            }
-
             #document-list::part(sort-dropdown), #document-list::part(filter-dropdown), #document-list::part(filter-input) {
                 display: none;
-            }
-
-            .upload-panel {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                min-width: 360px;
             }
 
             aside .upload {
@@ -132,22 +104,6 @@
                     color: white;
                 }
                 ;
-            }
-
-            aside .upload {
-                width: 100%;
-            }
-
-            .parent-link iron-icon {
-                padding-right: 4px;
-            }
-
-            .parent-link {
-                display: block;
-                margin-bottom: 10px;
-                margin-top: 16px;
-                padding: 6px 0;
-                border-bottom: thin solid var(--paper-grey-300);
             }
 
             .documents ul {
@@ -167,48 +123,6 @@
 
             .documents .error {
                 color: #c02020;
-            }
-
-            .documents .header-short {
-                font-family: Oswald,Verdana,Helvetica,sans-serif;
-                font-weight: 400 !important;
-                font-size: 13px;
-            }
-
-            .title {
-                color: #345F9D;
-                display: block;
-                margin-top: 10px;
-                margin-block-end: 0.5em;
-                
-                font-family: var(--pb-heading-font-family);
-                font-weight: 400 !important;
-                line-height: 1.2;
-                font-size: 1.125rem !important;
-            }
-
-            .documents h4 {
-                color: #345F9D;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-
-            .documents a,
-            .documents a:visited {
-                color: #345F9D;
-                text-decoration: none;
-            }
-
-            .documents li {
-                display: flex;
-                flex-direction: row;
-                margin-bottom: 10px;
-                padding: 6px 0;
-                border-bottom: thin solid var(--paper-grey-300);
-            }
-
-            .documents li:last-child {
-                border: none;
             }
 
             .documents .document-select {
@@ -315,14 +229,16 @@
                                     <div>
                                         <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
                                     </div>
-                                    <div class="ripple-container"></div></a>
+                                    <div class="ripple-container"></div>
+                                </a>
                             </li>
                             <li>
                                 <a href="mailto:christian.sieber@ji.zh.ch" class="tp-menu-item">
                                     <div>
                                         <pb-i18n key="feedback">Feedback</pb-i18n>
                                     </div>
-                                    <div class="ripple-container"></div></a>
+                                    <div class="ripple-container"></div>
+                                </a>
                             </li>
                             <li>
                                 <pb-lang name="lang" data-template="pages:languages"/>
@@ -389,37 +305,44 @@
                 </app-header>
 
                 <section>
-                    <h1 class="tp-title"><pb-i18n key="doctitle"></pb-i18n></h1>
+                    <div class="pb-container">
+                        <h1 class="tp-title"><pb-i18n key="doctitle"></pb-i18n></h1>
+                    </div>
                 </section>
 
-                <div class="main-grid" data-template="search:set-default-params">
-                    <main>
-                        <section class="panels">
-                            <paper-card class="doclist" data-i18n="[heading]browse.documents" heading="documents">
-                                <div class="card-content">
+                <section>
+                    <div class="pb-container">
+                        <div class="main-grid" data-template="search:set-default-params">
+
+                            <!-- search sidebar -->
+                            <div data-template="templates:include" data-template-path="templates/search-form.html"></div>
+
+                            <main class="main-grid__item">
+                                <div class="header card-padding">
+                                    <h2>
+                                        <pb-i18n key="browse.documents">Documents</pb-i18n>
+                                    </h2>
+                                </div>
+
+                                <div class="card-content card-padding">
                                     <div class="browse" slot="page">
-                                            <!--pb-custom-form id="facets" url="api/search/facets" event="pb-results-received" subscribe="docs" emit="docs"/-->
-                                            <pb-browse-docs id="document-list" url="api/collection/" sort-options="[{&#34;label&#34;: &#34;browse.orig-date&#34;, &#34;value&#34;: &#34;idno&#34;},{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;}]" sort-by="idno" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" filter-by="title" auto="auto" history="history" login="login" emit="docs" subscribe="docs">
-                                                <pb-paginate slot="toolbar" id="paginate" per-page="20" range="5" emit="docs" subscribe="docs"/>
+                                        <!--pb-custom-form id="facets" url="api/search/facets" event="pb-results-received" subscribe="docs" emit="docs"/-->
+                                        <pb-browse-docs id="document-list" url="api/collection/" sort-options="[{&#34;label&#34;: &#34;browse.orig-date&#34;, &#34;value&#34;: &#34;idno&#34;},{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;}]" sort-by="idno" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" filter-by="title" auto="auto" history="history" login="login" emit="docs" subscribe="docs">
+                                            <pb-paginate slot="toolbar" id="paginate" per-page="20" range="5" emit="docs" subscribe="docs"/>
                                         </pb-browse-docs>
                                     </div>
                                 </div>
-                            </paper-card>
-                        </section>
-                    </main>
-                    <div class="search-panel">
-                        <pb-restricted class="upload-panel" login="login">
-                            <aside>
-                                <paper-card class="upload" data-i18n="[heading]upload.upload" heading="Upload">
-                                    <div class="card-content">
-                                        <pb-upload id="upload" emit="docs" accept=".xml, .tei, .odd, .docx" target="temp"/>
-                                    </div>
-                                </paper-card>
-                            </aside>
-                        </pb-restricted>
-                        <div data-template="templates:include" data-template-path="templates/search-form.html"></div>
+                            </main>
+
+                            <pb-restricted class="upload-panel main-grid__item" login="login">
+                                <aside class="upload" data-i18n="[heading]upload.upload" heading="Upload">
+                                    <pb-upload id="upload" emit="docs" accept=".xml, .tei, .odd, .docx" target="temp"/>
+                                </aside>
+                            </pb-restricted>
+
+                        </div>
                     </div>
-                </div>
+                </section>
 
                 <footer class="version" style="display:none">
                     App: v<span data-template="pages:version"/> /
@@ -457,7 +380,7 @@
 
     <div class="splash"/>
 
-    <footer class="footer">
+    <footer class="footer__imprint">
         <div class="footer-col">
             <h5>Kontakt</h5>
             <a href="http://www.staatsarchiv.zh.ch">Staatsarchiv des Kantons Zürich</a>
@@ -465,6 +388,12 @@
         <div class="footer-col">
             <h5>Realisierung</h5>
             <a href="http://existsolutions.com">eXistSolutions GmbH</a>
+        </div>
+        <div class="footer-col">
+            <h5>
+                Lizenz
+            </h5>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>
         </div>
         <div class="footer-col">
             <h5>
@@ -477,12 +406,6 @@
                     Datierungsrichtlinien
                 </a>
             </h5>
-        </div>
-        <div class="footer-col">
-            <h5>
-                Lizenz
-            </h5>
-            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>
         </div>
     </footer>
 </body>
