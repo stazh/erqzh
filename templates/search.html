@@ -69,16 +69,16 @@
                 padding:1.5rem 0 1rem 0;
             }
 
-            .search-panel paper-card {
+            .card-padding paper-card {
                 width: 100%;
             }
-            .search-panel .formrow{
+            .card-padding .formrow{
                 margin-top:1rem;
             }
-            .search-panel .formrow label{
+            .card-padding .formrow label{
                 padding:1.5rem 0 1rem 0;
             }
-            .search-panel .subtype{
+            .card-padding .subtype{
                 padding-left:2rem;
             }
 
@@ -87,7 +87,7 @@
             }
 
             #results a {
-                color:var(--ssrq-link-color);
+                color:var(--rqzh-link-color);
                 cursor: pointer;
             }
 
@@ -240,7 +240,7 @@
                                     </app-toolbar>
 
                                     <div class="card-content">
-                                        <pb-load id="results" class="search-panel" url="${app}/search-results.html" data-template="pages:parse-params" emit="results"/>
+                                        <pb-load id="results" class="card-padding" url="${app}/search-results.html" data-template="pages:parse-params" emit="results"/>
                                         <app-toolbar class="bottom-pagination">
                                             <pb-paginate per-page="20" range="5" subscribe="results"/>
                                         </app-toolbar>
@@ -249,7 +249,7 @@
                             </div>
                         </main>
 
-                        <div class="search-panel search-sidebar">
+                        <div class="card-padding search-sidebar">
                             <div data-template="templates:include" data-template-path="templates/search-form.html"></div>
                         </div>
                     </div>
