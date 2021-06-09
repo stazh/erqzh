@@ -23,12 +23,14 @@ body {
     --pb-heading-line-height: 1.2;
     --pb-breadcrumbs-font-size: 18px;
     --pb-color-primary: #303030;
-    --pb-color-inverse: #F0F0F0;
+    --pb-color-inverse: #FFFFFF;
+    --pb-color-inverse-darker: #fdfdfd;
     --pb-color-lighter: #35424b;
     --pb-color-focus: #f6a623;
     --pb-drawer-background-color: var(--pb-color-inverse);
     --pb-menubar-background-color: #35424b;
     --pb-menubar-color: var(--pb-color-inverse);
+    --pb-menubar-color-hover: var(--pb-color-inverse-darker);
     --pb-toolbar-background-color: #d1dae0;
     --pb-toolbar-color: var(--pb-color-primary);
     --paper-tooltip-delay-in: 200;
@@ -170,10 +172,26 @@ app-drawer-layout:not([narrow]) [drawer-toggle] {
     flex: 1 0;
 }
 
-.menubar a, .menubar paper-menu-button {
+.menubar a,
+.menubar a > *,
+.menubar paper-menu-button {
     margin: auto 8px;
     display: block;
     color: var(--pb-menubar-color);
+    text-decoration: none;
+    font-weight: var(--pb-heading-font-weight);
+}
+
+.menubar a:hover,
+.menubar a:active,
+.menubar a:focus,
+.menubar a:hover > *,
+.menubar a:active > *,
+.menubar a:focus > *,
+.menubar paper-menu-button:hover,
+.menubar paper-menu-button:active,
+.menubar paper-menu-button:focus {
+    color: var(--pb-menubar-color-hover);
     text-decoration: none;
 }
 
