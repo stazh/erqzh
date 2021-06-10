@@ -152,16 +152,6 @@ a:focus > * {
     font-family: var(--pb-content-font-family);
 }
 
-app-toolbar {
-    --app-toolbar-font-size: 16px;
-    font-family: var(--pb-base-font-family);
-    font-weight: var(--pb-base-font-weight);
-}
-
-app-toolbar pb-search {
-    --pb-search-focus-color: var(--paper-grey-900);
-}
-
 .content-body pb-navigation {
     position: fixed;
     bottom: 45%;
@@ -243,7 +233,7 @@ main pb-view {
 }
 
 .main-grid__item:not(last-child) {
-    /*margin-bottom: 2rem; */
+    margin-bottom: 2rem;
 }
 
 .main-grid__item .card-padding {
@@ -265,6 +255,7 @@ main pb-view {
 
     .main-grid__item {
         box-shadow: var(--pb-box-shadow);
+        height: max-content;
     }
 
     .main-grid__item:nth-child(1) {
@@ -651,8 +642,45 @@ paper-input label {
     font-size: 1rem;
 }
 
-.card-padding pb-select {
-    margin-top: 0px;
+/* pagination, result display, progressbar, and sorting */
+
+.bottom-item {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+pb-select#sort-select {
+    display: block;
+    margin-top: .5rem;
+    text-align: end;
+}
+
+.search__toolbar {
+    margin: 1.5rem 0;
+    display: block;
+}
+
+
+@media (min-width: 769px) {
+    .search__toolbar {
+        margin: 1.7rem 0 0;
+    }
+
+}
+
+@media (min-width: 1024px) {
+    .search__toolbar {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    pb-select#sort-select {
+        display: flex;
+        flex-direction: column;
+        margin-top: 1rem;
+    }
+
 }
 
 /* search and documents tile on start- and search-page */
