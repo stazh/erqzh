@@ -1,74 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <app-drawer slot="drawer" align="right">
     <div class="drawer-content">
-        <pb-media-query query="max-width: 1023px">
+        <pb-media-query query="(max-width: 1023px)">
             <!-- language selector -->
-            <pb-lang name="lang" data-template="pages:languages"/>
-            <pb-collapse>
-                <h3 slot="collapse-trigger">
-                    <pb-i18n key="menu.documentation">Documentation</pb-i18n>
-                </h3>
-                <paper-listbox slot="collapse-content">
-                    <paper-item>
-                        <a href="${app}/doc/documentation.xml?odd=docbook.odd" data-template="pages:parse-params">
-                            <pb-i18n key="menu.documentation">Documentation</pb-i18n>
-                        </a>
-                    </paper-item>
-                    <paper-item>
-                        <a href="https://faq.teipublisher.com/">FAQ</a>
-                    </paper-item>
-                    <paper-item>
-                        <a href="${app}/doc/blog/" data-template="pages:parse-params">
-                            <pb-i18n key="menu.news">News</pb-i18n>
-                        </a>
-                    </paper-item>
-                    <paper-item>
-                        <a href="https://unpkg.com/@teipublisher/pb-components@latest/dist/api.html" target="_blank">Webcomponents API</a>
-                    </paper-item>
-                </paper-listbox>
-            </pb-collapse>
-            <pb-collapse>
-                <h3 slot="collapse-trigger">
-                    <pb-i18n key="menu.download.title">Download</pb-i18n>
-                </h3>
-                <paper-listbox slot="collapse-content">
-                    <paper-item>
-                        <pb-edit-xml src="document1" data-i18n="[title]menu.download.view-tei" title="view-tei">
-                            XML
-                        </pb-edit-xml>
-                    </paper-item>
-                </paper-listbox>
-            </pb-collapse>
-            <pb-restricted login="login">
-                <pb-collapse>
-                    <h3 slot="collapse-trigger">
-                        <pb-i18n key="menu.admin.title">Admin</pb-i18n>
-                    </h3>
-                    <paper-listbox slot="collapse-content">
-                        <paper-item>
-                            <pb-download data-template="pages:edit-odd-link" src="document1">
-                                <pb-i18n key="menu.admin.edit-odd">Edit ODD</pb-i18n>
-                            </pb-download>
-                        </paper-item>
-                        <paper-item>
-                            <a href="${app}/manage.html" data-template="pages:parse-params">
-                                <pb-i18n key="menu.admin.appGenerator"/>
-                            </a>
-                        </paper-item>
-                    </paper-listbox>
-                </pb-collapse>
-            </pb-restricted>
+            <ul class="drawer-menu">
+                <li>
+                    <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
+                </li>
+                <li>
+                    <a href="${app}/abbr.html" class="tp-menu-item" title="abbr" data-template="pages:parse-params">
+                        <div>
+                            <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
+                        </div>
+                        <div class="ripple-container"></div>
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:christian.sieber@ji.zh.ch" class="tp-menu-item">
+                        <div>
+                            <pb-i18n key="feedback">Feedback</pb-i18n>
+                        </div>
+                        <div class="ripple-container"></div>
+                    </a>
+                </li>
+                <li>
+                    <pb-lang name="lang" data-template="pages:languages"/>
+                </li>
+            </ul>
         </pb-media-query>
-        <div class="settings">
-            <h3>Settings</h3>
-            <pb-toggle-feature emit="transcription" subscribe="transcription" name="view" on="page" off="div" init-from-view="init-from-view">
-                <pb-i18n key="document.view-type">Page View</pb-i18n>
-            </pb-toggle-feature>
-            <pb-edit-xml src="document1">
-                <paper-button alt="Edit source">
-                    <iron-icon icon="icons:code"/> <pb-i18n key="menu.download.view-tei"/>
-                </paper-button>
-            </pb-edit-xml>
-        </div>
     </div>
 </app-drawer>
