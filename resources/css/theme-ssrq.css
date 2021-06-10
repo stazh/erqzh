@@ -20,7 +20,7 @@
     background-size: 40%;
 }
 
-@media (min-width: 769px) {
+@media screen and (min-width: 769px) {
     .splash {
         background-size: 20rem auto;
     }
@@ -76,7 +76,7 @@ h5 {
     margin: 0.625rem 0;
 }
 
-@media (min-width: 769px) {
+@media screen and (min-width: 769px) {
     h1, h2, h3, h4, h5, h6 {
         line-height: 1.2;
     }
@@ -226,13 +226,13 @@ main pb-view {
     padding: 0;
 }
 
-@media (min-width: 769px) {
+@media screen and (min-width: 769px) {
     .main-grid__item .card-padding {
         padding: 16px;
     }
 }
 
-@media (min-width: 769px) {
+@media screen and (min-width: 769px) {
     .main-grid {
         display: grid;
         grid-template-columns: minmax(300px, 2fr) 5fr;
@@ -261,7 +261,7 @@ main pb-view {
 
 }
 
-@media (max-width: 769px) {
+@media screen and (max-width: 769px) {
     .content-body pb-navigation {
         display: none;
     }
@@ -408,7 +408,7 @@ main pb-view {
     border-bottom: thin solid var(--paper-grey-300);
 }
 
-@media (min-width: 769px) {
+@media screen and (min-width: 769px) {
     .documents li:last-child {
         border: none;
     }
@@ -474,7 +474,7 @@ pb-view {
     flex: 1 0;
 }
 
-@media (min-width: 1024px) {
+@media screen and (min-width: 1024px) {
     .grid {
         display: grid;
     }
@@ -501,7 +501,7 @@ pb-view {
     }
 }
 
-@media (min-width: 769px) {
+@media screen and (min-width: 769px) {
     .toolbar pb-navigation {
         display: none;
     }
@@ -648,14 +648,14 @@ pb-select#sort-select {
 }
 
 
-@media (min-width: 769px) {
+@media screen and (min-width: 769px) {
     .search__toolbar {
         margin: 1.7rem 0 0;
     }
 
 }
 
-@media (min-width: 1024px) {
+@media screen and (min-width: 1024px) {
     .search__toolbar {
         display: flex;
         justify-content: space-between;
@@ -770,7 +770,7 @@ footer p, address {
     margin-bottom: 1.5rem;
 }
 
-@media(min-width: 520px) {
+@media screen and (min-width: 520px) {
     .footer__imprint {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -779,13 +779,13 @@ footer p, address {
     }
 }
 
-@media(min-width: 961px) {
+@media screen and (min-width: 961px) {
     .footer__imprint {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
-@media(min-width: 1024px) {
+@media screen and (min-width: 1024px) {
     .footer__imprint {
         grid-template-columns: repeat(4, 1fr);
     }
