@@ -239,59 +239,9 @@
             </app-drawer>
 
             <app-header-layout>
+                
                 <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
-                    <app-toolbar class="menubar">
-                        <a href="${app}/index.html" class="logo" data-template="pages:parse-params"></a>
-                        <pb-media-query query="(min-width: 1024px)">
-                            <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
-                            <a href="abbr.html" class="tp-menu-item" title="abbr">
-                                <div>
-                                    <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
-                                </div>
-                                <div class="ripple-container"></div></a>
-                            <a href="mailto:christian.sieber@ji.zh.ch" class="tp-menu-item">
-                                <div>
-                                    <pb-i18n key="feedback">Feedback</pb-i18n>
-                                </div>
-                                <div class="ripple-container"></div></a>
-                            <pb-restricted login="login" group="tei">
-                                <paper-menu-button>
-                                    <a href="#" slot="dropdown-trigger">
-                                        <pb-i18n key="menu.admin.title">Admin</pb-i18n>
-                                    </a>
-                                    <paper-listbox slot="dropdown-content">
-                                        <paper-item data-template="pages:edit-odd-list" data-template-emit="docs"></paper-item>
-                                        <paper-item>
-                                            <a href="${app}/api.html" data-template="pages:parse-params" target="_blank">API Documentation</a>
-                                        </paper-item>
-                                    </paper-listbox>
-                                </paper-menu-button>
-                            </pb-restricted>
-                            <div main-title="main-title"></div>
-
-                            <!-- language selector -->
-                            <pb-lang name="lang" data-template="pages:languages"/>
-
-                        <pb-login id="login" group="tei">
-                            <iron-icon slot="icon" icon="account-circle"/>
-                                <p slot="information"><pb-i18n key="login-info"></pb-i18n></p>
-                        </pb-login>
-
-                        </pb-media-query>
-
-                    <pb-media-query query="(max-width: 1023px)">
-                            <div main-title="main-title"></div>
-
-                            <pb-login id="login" group="tei">
-                                <iron-icon slot="icon" icon="account-circle"/>
-                                <p slot="information"><pb-i18n key="login-info"></pb-i18n></p>
-                            </pb-login>
-                            <paper-icon-button icon="icons:menu" drawer-toggle="drawer-toggle"/>
-                    </pb-media-query>
-
-                        <pb-progress indeterminate="indeterminate" bottom-item="bottom-item" subscribe="docs"/>
-
-                    </app-toolbar>
+                    <app-toolbar data-template="templates:include" data-template-path="templates/menu.html"/>
                 </app-header>
 
                 <section>
