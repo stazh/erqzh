@@ -138,20 +138,6 @@ a:focus > * {
     margin-top: 12px;
 }
 
-.abbreviations {
-    padding: 1rem;
-}
-
-.abbreviations .abbr-list {
-    margin: 0 10vw;
-}
-
-.abbreviations .abbr-list li {
-    list-style-type: none;
-    padding-left: 1rem;
-    font-family: var(--pb-content-font-family);
-}
-
 .content-body pb-navigation {
     position: fixed;
     bottom: 45%;
@@ -738,6 +724,23 @@ pb-select#sort-select {
 
 pb-browse-docs::part(delete-button) {
     display: none;
+}
+
+/* ABBR.html*/
+
+.abbr-list {
+    margin-bottom: 2rem
+}
+
+.abbr-list li {
+    list-style-type: none;
+    font-family: var(--pb-content-font-family);
+}
+
+@media screen and (min-width: 769px) {
+    .abbr-list li {
+        padding-left: 1rem;
+    }
 }
 
 /**************** footers ******************/
