@@ -256,7 +256,6 @@ main pb-view {
     }
 
     .main-grid__item {
-        /*margin-bottom: 0;*/
         box-shadow: var(--pb-box-shadow);
     }
 
@@ -281,6 +280,11 @@ main pb-view {
     .content-body pb-navigation {
         display: none;
     }
+}
+
+/* custom behavior for upload panel, add box-shadow also for small screens */
+.main-grid__item.upload-panel {
+    box-shadow: var(--pb-box-shadow);
 }
 
 /******** custom search tile with filters **********/
