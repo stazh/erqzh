@@ -859,7 +859,7 @@ footer-button {
     .menubar,
     .splash,
     .toolbar {
-        display: none;
+        display: none !important;
     }
     body {font-size: 11pt;}
     h1 { font-size: 16pt;}
@@ -867,13 +867,8 @@ footer-button {
     h3 {font-size: 14pt;}
     h4 {font-size: 13pt;}
     .tei-summary, .footnotes {font-size: 11pt;}
-    a {
-        word-wrap: break-word;
-    }
-    .hidden-print {
-        display: none !important;
-    }
-    #info iron-icon {
-        display: none !important;
-    }
+    a { word-wrap: break-word; }
+    .hidden-print { display: none !important; }
+    #info iron-icon { display: none !important; }
+    pb-facsimile { page-break-inside: avoid; }
 }
