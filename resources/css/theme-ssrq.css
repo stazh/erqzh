@@ -193,13 +193,6 @@ ul.control-list {
     height: 1rem 1rem 3rem 1rem;
 }
 
-
-.block-title {
-    color: #607D8B;
-    font-size: 18px;
-    margin: 1em 0;
-}
-
 li.col-3 {
     display: grid;
     grid-template-columns: auto 40px 10px 40px;
@@ -275,6 +268,110 @@ main pb-view {
 /* custom behavior for upload panel, add box-shadow also for small screens */
 .main-grid__item.upload-panel {
     box-shadow: var(--pb-box-shadow);
+}
+
+/*********** document grid (used in view.html) **************/
+
+/* scrollable document with fixed footer navigation // mobile */
+.document__wrapper {
+    overflow: auto;
+    height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)))
+}
+
+/* scrollable document with fixed footer navigation // desktop */
+@media screen and (min-width: 769px) {
+    .document__wrapper {
+        /*overflow: hidden;*/
+        /*height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)))*/
+    }
+}
+
+.document-grid main {
+    grid-area: main;
+}
+
+.document-grid pb-facsimile {
+    grid-area: facsimile;
+    --pb-facsimile-height: 100vw; /* hack, because the component expects a fixed height here... */
+}
+
+.document-grid aside {
+    grid-area: register;
+}
+
+.document-grid__item {
+    height: auto;
+}
+
+.document-grid__item:not(.facsimile) {
+    margin-bottom: 2rem;
+}
+
+@media screen and (min-width: 769px) {
+    .document-grid__item {
+        height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
+        margin-bottom: 0;
+    }
+
+    .document-grid pb-facsimile {
+        --pb-facsimile-height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
+    }
+
+    .document-grid__item:not(.facsimile) {
+        overflow: auto;
+        margin-bottom: 0;
+    }
+
+    main.document-grid__item {
+        padding: 0 20px 0 0;
+        margin-bottom: 0;
+    }
+}
+
+/* DIPLOMATIC VIEW */
+
+body[data-view="diplomatic"] .document-grid {
+    display: block;
+}
+
+body[data-view="diplomatic"] aside {
+    display: none;
+}
+
+@media screen and (min-width: 769px) {
+    body[data-view="diplomatic"] .document-grid {
+        display: grid;
+        grid-template-columns: 60% auto;
+        grid-gap: 15px;
+        grid-template-areas:
+                "main   facsimile";
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    body[data-view="diplomatic"] .document-grid {
+        grid-template-columns: 50% auto;
+    }
+}
+
+/* NORMALIZED VIEW */
+
+body[data-view="normalized"] .document-grid {
+    display: block;
+}
+
+body[data-view="normalized"] .facsimile {
+    display: none;
+}
+
+@media screen and (min-width: 769px) {
+    body[data-view="normalized"] .document-grid {
+        display: grid;
+        grid-template-columns: auto 320px;
+        grid-gap: 30px;
+        grid-template-areas:
+                "main   register";
+    }
 }
 
 /******** custom search tile with filters **********/
@@ -442,79 +539,20 @@ pb-view {
 
 /*************** VIEW.html *****************/
 
-/* custom view.html layout for facsimile on the right and document on the left */
-
-.grid {
-    padding: 0 1rem;
-    grid-template-columns: 3fr minmax(0, 3fr);
-    /*grid-column-gap: 3rem;*/
 .toolbar-button__label {
     font-size: 12px;
 }
 
-.grid main,
-.grid .facsimile,
-.grid .register {
-    height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
-    --pb-facsimile-height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
-}
-
-.facsimile {
-    display: none;
-}
-
-.facsimile[loaded] {
-    display: block;
-    height: 100%;
-}
-
-.facsimile [slot='before'] {
-    font-size: 80%;
-}
-
-
-.facsimile, .facsimile[loaded], .register {
-    display: none;
-}
-[main-title] {
-    display: inline-block;
-    flex: 1 0;
-}
-
-@media screen and (min-width: 1024px) {
-    .grid {
-        display: grid;
-    }
-
-    body[data-view="normalized"] .grid {
-        grid-template-columns: auto 320px;
-    }
-    body[data-view="normalized"] .facsimile {
-        display: none;
-    }
-    body[data-view="diplomatic"] .grid {
-        grid-template-columns: 60% 40%;
-    }
-    body[data-view="diplomatic"] .facsimile[loaded]~.register {
-        display: none;
-    }
-    .facsimile, .facsimile[loaded], .register {
-        display: block;
-    }
-
-    .grid main,
-    .grid aside {
-        overflow: auto;
 @media screen and (min-width: 769px) {
     .toolbar-button__label {
         font-size: 1em;
     }
 }
 
-@media screen and (min-width: 769px) {
-    .toolbar pb-navigation {
-        display: none;
-    }
+.block-title {
+    color: #607D8B;
+    font-size: 18px;
+    margin: 1em 0;
 }
 
 .place {
@@ -758,13 +796,19 @@ pb-browse-docs::part(delete-button) {
 footer:not(footer.footer__imprint) {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     height: var(--footer-height);
-    padding: 15px 0 0 0;
     border-top: 1px solid #ebebeb;
     -webkit-box-shadow: -3px 0px 14px -8px #ccc;
     -moz-box-shadow: -3px 0px 14px -8px #ccc;
     box-shadow: -3px 0px 14px -8px #ccc;
+}
+
+@media screen and (min-width: 769px) {
+    footer:not(footer.footer__imprint) {
+        /*padding: 15px 0 0 0;*/
+        justify-content: center;
+    }
 }
 
 footer p, address {
