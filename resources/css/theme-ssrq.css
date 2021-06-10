@@ -564,10 +564,7 @@ pb-view {
 }
 
 .register {
-    /* max-width: 20vw; */
-    width: 320px;
     --paper-checkbox-size: 14px;
-    padding-left: 1em;
 }
 
 .register ul {
