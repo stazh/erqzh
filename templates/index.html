@@ -49,12 +49,6 @@
                     display: flex;
                     flex-direction: row;
                 }
-
-/*
-                .panels .doclist {
-                    flex: 2 auto;
-                }
-*/
             }
 
             .doclist {
@@ -104,10 +98,6 @@
                     color: white;
                 }
                 ;
-            }
-
-            .documents ul {
-                list-style: none;
             }
 
             .documents app-toolbar {
@@ -326,7 +316,6 @@
 
                                 <div class="card-content card-padding">
                                     <div class="browse" slot="page">
-                                        <!--pb-custom-form id="facets" url="api/search/facets" event="pb-results-received" subscribe="docs" emit="docs"/-->
                                         <pb-browse-docs id="document-list" url="api/collection/" sort-options="[{&#34;label&#34;: &#34;browse.orig-date&#34;, &#34;value&#34;: &#34;idno&#34;},{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;}]" sort-by="idno" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" filter-by="title" auto="auto" history="history" login="login" emit="docs" subscribe="docs">
                                             <pb-paginate slot="toolbar" id="paginate" per-page="20" range="5" emit="docs" subscribe="docs"/>
                                         </pb-browse-docs>

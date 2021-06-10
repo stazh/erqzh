@@ -37,63 +37,6 @@ body {
     color: var(--pb-color-primary);
 }
 
-.grid {
-    padding: 0 1rem;
-    grid-template-columns: 3fr minmax(0, 3fr);
-    /*grid-column-gap: 3rem;*/
-}
-.facsimile, .register {
-    height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
-    --pb-facsimile-height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
-}
-
-.facsimile {
-    display: none;
-}
-
-.facsimile[loaded] {
-    display: block;
-    height: 100%;
-}
-
-.facsimile [slot='before'] {
-    font-size: 80%;
-}
-
-@media (max-width: 1023px) {
-    .facsimile, .facsimile[loaded], .register {
-        display: none;
-    }
-    [main-title] {
-        display: inline-block;
-        flex: 1 0;
-    }
-}
-
-@media (min-width: 1024px) {
-    .grid {
-        display: grid;
-    }
-    body[data-view="normalized"] .grid {
-        grid-template-columns: auto 320px;
-    }
-    body[data-view="normalized"] .facsimile {
-        display: none;
-    }
-    body[data-view="diplomatic"] .grid {
-        grid-template-columns: 60% 40%;
-    }
-    body[data-view="diplomatic"] .facsimile[loaded]~.register {
-        display: none;
-    }
-}
-
-@media (min-width: 769px) {
-    .toolbar pb-navigation {
-        display: none;
-    }
-}
-
 /**************** Typography *****************/
 
 h1, h2, h3, h4, h5, h6 {
@@ -261,63 +204,6 @@ ul.control-list {
     height: 1rem 1rem 3rem 1rem;
 }
 
-footer:not(footer.footer__imprint) {
-    display: flex;
-	flex-direction: row;
-	justify-content: center;
-    height: var(--footer-height);
-    padding: 15px 0 0 0;
-    border-top: 1px solid #ebebeb;
-    -webkit-box-shadow: -3px 0px 14px -8px #ccc;
-    -moz-box-shadow: -3px 0px 14px -8px #ccc;
-    box-shadow: -3px 0px 14px -8px #ccc;
-}
-
-footer p, address {
-    font-size: 0.75rem;
-    font-style: normal;
-}
-
-.footer__imprint {
-    padding: 20px;
-}
-
-.footer__imprint .footer-col {
-    margin-bottom: 1.5rem;
-}
-
-@media(min-width: 520px) {
-    .footer__imprint {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 20px;
-        padding: 20px;
-    }
-}
-
-@media(min-width: 961px) {
-    .footer__imprint {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media(min-width: 1024px) {
-    .footer__imprint {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-footer-button {
-    font: var(--pb-base-font);
-    color: var(--pb-toolbar-color);
-    background-color: var(--pb-toolbar-background-color);
-    font-family: var(--pb-base-font-family);
-}
-
-.footer-button-next {
-    grid-column: 4;
-    text-align: end;
-}
 
 .block-title {
     color: #607D8B;
@@ -337,10 +223,6 @@ li.col-3 {
     width: 360px;
 }
 
-main, aside {
-    overflow: auto;
-}
-
 main pb-view {
     margin: 0;
     position: relative;
@@ -356,8 +238,14 @@ main pb-view {
     /*margin-bottom: 2rem; */
 }
 
-.main-grid__item .card-content {
-    /* padding: 0; */
+.main-grid__item .card-padding {
+    padding: 0;
+}
+
+@media (min-width: 769px) {
+    .main-grid__item .card-padding {
+        padding: 16px;
+    }
 }
 
 @media (min-width: 769px) {
@@ -429,8 +317,7 @@ main pb-view {
     color: var(--rqzh-link-color);
 }
 
-/*********** document lists *****************/
-
+/*********** INDEX.html - document lists *****************/
 
 .doclist > h2 {
     margin: 16px 0;
@@ -453,18 +340,6 @@ main pb-view {
     margin-bottom: 1rem;
 }
 
-.documents li {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 10px;
-    padding: 6px 0;
-    border-bottom: thin solid var(--paper-grey-300);
-}
-
-.documents li:last-child {
-    border: none;
-}
-
 /* Links to documents in document lists */
 .collection a:hover,
 .collection a:active,
@@ -481,21 +356,25 @@ main pb-view {
     margin-bottom: 2rem;
 }
 
-
 /* document list on document landing page */
 
 .parent-link iron-icon {
     padding-right: 4px;
+    bottom: 3px;
 }
 
 .parent-link {
     display: block;
-    margin-bottom: 10px;
-    margin-top: 16px;
-    padding: 6px 0;
+    margin: 16px 0 0 0;
+    padding: 16px 0;
     border-bottom: thin solid var(--paper-grey-300);
 }
 
+/* list of sub-collection in index.html */
+#document-list ul {
+    list-style-type: none;
+    padding-left: 0;
+}
 
 #document-list .document-info {
     font-family: var(--pb-heading-font-family);
@@ -532,12 +411,18 @@ main pb-view {
     font-size: inherit;
 }
 
-.panel-body ul {
-    list-style-type: none;
+.documents li {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    padding: 6px 0;
+    border-bottom: thin solid var(--paper-grey-300);
 }
 
-.panel-body>ul {
-    padding: 0;
+@media (min-width: 769px) {
+    .documents li:last-child {
+        border: none;
+    }
 }
 
 pb-lang {
@@ -559,6 +444,78 @@ pb-view {
     font-weight: 300;
     color: var(--pb-color-primary);
     font-family: var(--pb-base-font-family);
+}
+
+/*************** VIEW.html *****************/
+
+/* custom view.html layout for facsimile on the right and document on the left */
+
+.grid {
+    padding: 0 1rem;
+    grid-template-columns: 3fr minmax(0, 3fr);
+    /*grid-column-gap: 3rem;*/
+}
+
+.grid main,
+.grid .facsimile,
+.grid .register {
+    height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
+    --pb-facsimile-height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
+}
+
+.facsimile {
+    display: none;
+}
+
+.facsimile[loaded] {
+    display: block;
+    height: 100%;
+}
+
+.facsimile [slot='before'] {
+    font-size: 80%;
+}
+
+
+.facsimile, .facsimile[loaded], .register {
+    display: none;
+}
+[main-title] {
+    display: inline-block;
+    flex: 1 0;
+}
+
+@media (min-width: 1024px) {
+    .grid {
+        display: grid;
+    }
+
+    body[data-view="normalized"] .grid {
+        grid-template-columns: auto 320px;
+    }
+    body[data-view="normalized"] .facsimile {
+        display: none;
+    }
+    body[data-view="diplomatic"] .grid {
+        grid-template-columns: 60% 40%;
+    }
+    body[data-view="diplomatic"] .facsimile[loaded]~.register {
+        display: none;
+    }
+    .facsimile, .facsimile[loaded], .register {
+        display: block;
+    }
+
+    .grid main,
+    .grid aside {
+        overflow: auto;
+    }
+}
+
+@media (min-width: 769px) {
+    .toolbar pb-navigation {
+        display: none;
+    }
 }
 
 .place {
@@ -637,6 +594,8 @@ paper-input label {
     overflow: auto;
 }
 
+/**************** SEARCH.html *******************/
+
 .searchbox {
     --paper-item-min-height: 24px;
 }
@@ -644,10 +603,6 @@ paper-input label {
 #search-info {
     color: inherit;
     text-decoration: none;
-}
-
-.card-padding {
-    padding: 16px;
 }
 
 .card-padding [name="filter-language"] {
@@ -725,6 +680,14 @@ paper-input label {
     min-width: 200px;
 }
 
+.panel-body ul {
+    list-style-type: none;
+}
+
+.panel-body>ul {
+    padding: 0;
+}
+
 .upload .card-content {
     padding: 0;
 }
@@ -736,6 +699,67 @@ paper-input label {
 pb-browse-docs::part(delete-button) {
     display: none;
 }
+
+/**************** footers ******************/
+
+footer:not(footer.footer__imprint) {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: var(--footer-height);
+    padding: 15px 0 0 0;
+    border-top: 1px solid #ebebeb;
+    -webkit-box-shadow: -3px 0px 14px -8px #ccc;
+    -moz-box-shadow: -3px 0px 14px -8px #ccc;
+    box-shadow: -3px 0px 14px -8px #ccc;
+}
+
+footer p, address {
+    font-size: 0.75rem;
+    font-style: normal;
+}
+
+.footer__imprint {
+    padding: 20px;
+}
+
+.footer__imprint .footer-col {
+    margin-bottom: 1.5rem;
+}
+
+@media(min-width: 520px) {
+    .footer__imprint {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+        padding: 20px;
+    }
+}
+
+@media(min-width: 961px) {
+    .footer__imprint {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media(min-width: 1024px) {
+    .footer__imprint {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+footer-button {
+    font: var(--pb-base-font);
+    color: var(--pb-toolbar-color);
+    background-color: var(--pb-toolbar-background-color);
+    font-family: var(--pb-base-font-family);
+}
+
+.footer-button-next {
+    grid-column: 4;
+    text-align: end;
+}
+
 
 /* ==========================================================================
    Print styles.
