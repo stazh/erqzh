@@ -168,7 +168,12 @@ ul.control-list {
 }
 
 .drawer-menu li {
-    padding: 0;
+    padding: .8rem 0;
+}
+@media screen and (min-width: 769px) {
+    .drawer-menu li {
+        padding: 1rem 0;
+    }
 }
 
 .drawer-menu li a {
