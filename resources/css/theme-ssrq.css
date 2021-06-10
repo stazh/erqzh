@@ -448,6 +448,8 @@ pb-view {
     padding: 0 1rem;
     grid-template-columns: 3fr minmax(0, 3fr);
     /*grid-column-gap: 3rem;*/
+.toolbar-button__label {
+    font-size: 12px;
 }
 
 .grid main,
@@ -503,6 +505,9 @@ pb-view {
     .grid main,
     .grid aside {
         overflow: auto;
+@media screen and (min-width: 769px) {
+    .toolbar-button__label {
+        font-size: 1em;
     }
 }
 
