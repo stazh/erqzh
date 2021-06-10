@@ -14,8 +14,16 @@
     margin: 0 3px;
 }
 
+/* custom splash screen */
 .splash {
     background-image: url("../images/logo-inverted.svg");
+    background-size: 40%;
+}
+
+@media (min-width: 769px) {
+    .splash {
+        background-size: 20rem auto;
+    }
 }
 
 html {
