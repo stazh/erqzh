@@ -301,14 +301,6 @@ main pb-view {
     height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
 }
 
-/* scrollable document with fixed footer navigation // desktop */
-@media screen and (min-width: 769px) {
-    .document__wrapper {
-        /*overflow: hidden;*/
-        /*height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)))*/
-    }
-}
-
 .document-grid main {
     grid-area: main;
 }
@@ -357,12 +349,12 @@ body[data-view="diplomatic"] .document-grid {
     display: block;
 }
 
-body[data-view="diplomatic"] aside {
+body[data-view="diplomatic"] .facsimile[loaded]~.register {
     display: none;
 }
 
 @media screen and (min-width: 769px) {
-    body[data-view="diplomatic"] .document-grid {
+    body[data-view="diplomatic"] .document-grid__facsimile {
         display: grid;
         grid-template-columns: 60% auto;
         grid-gap: 15px;
@@ -371,9 +363,19 @@ body[data-view="diplomatic"] aside {
     }
 }
 
+@media screen and (min-width: 769px) {
+    body[data-view="diplomatic"] .document-grid__register {
+        display: grid;
+        grid-template-columns: 60% auto;
+        grid-gap: 15px;
+        grid-template-areas:
+                "main    register";
+    }
+}
+
 @media screen and (min-width: 1024px) {
-    body[data-view="diplomatic"] .document-grid {
-        grid-template-columns: 50% auto;
+    body[data-view="diplomatic"] .document-grid__facsimile {
+        grid-template-columns: 55% auto;
     }
 }
 
@@ -388,13 +390,21 @@ body[data-view="normalized"] .facsimile {
 }
 
 @media screen and (min-width: 769px) {
-    body[data-view="normalized"] .document-grid {
+    body[data-view="normalized"] .document-grid__register {
         display: grid;
-        grid-template-columns: auto 320px;
-        grid-gap: 30px;
+        grid-template-columns: 60% auto;
+        grid-gap: 15px;
         grid-template-areas:
                 "main   register";
     }
+}
+
+.facsimile[loaded] {
+    display: block;
+}
+
+.facsimile {
+    display: none;
 }
 
 /******** custom search tile with filters **********/

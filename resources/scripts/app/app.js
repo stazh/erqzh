@@ -142,4 +142,15 @@ window.addEventListener('DOMContentLoaded', () => {
       console.log(newUrl);
       window.open(newUrl);
     });
+
+    const facsimileLoaded = document.querySelector('pb-facsimile[loaded]');
+    const gridWrapper =  document.getElementById('gridWrapper');
+
+    if (facsimileLoaded) {
+      gridWrapper.setAttribute('class', 'document-grid document-grid__facsimile')
+    }
+    else {
+      gridWrapper.setAttribute('class', 'document-grid document-grid__register')
+    }
+
 });
