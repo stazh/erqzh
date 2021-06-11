@@ -1241,12 +1241,12 @@
 
                         return $link'/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <paper-button>
+                            <div>
                                 <pb-link path="[[target]]" emit="transcription" class="part-nav">
                                     <iron-icon icon="icons:first-page"/>
                                     <pb-i18n key="navigation.previous">previous</pb-i18n>
                                 </pb-link>
-                            </paper-button>
+                            </div>
                         </pb:template>
                     </model>
                     <model predicate="$parameters?mode='footer-next'" behaviour="block" cssClass="footer button-next">
@@ -1275,12 +1275,12 @@
 
                         return $link'/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <paper-button>
+                            <div>
                                 <pb-link path="[[target]]" emit="transcription" class="part-nav">
                                     <pb-i18n key="navigation.next">next</pb-i18n>
                                     <iron-icon icon="icons:last-page"/>
                                 </pb-link>
-                            </paper-button>
+                            </div>
                         </pb:template>
                     </model>
                     <modelSequence predicate="$parameters?view='metadata'">

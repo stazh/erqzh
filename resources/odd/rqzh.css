@@ -183,3 +183,12 @@ pb-i18n[key="by"]::after {
 .footer pb-i18n {
     font-size: 16px;
 }
+
+.footer-button {
+    font: var(--pb-base-font);
+    color: var(--pb-toolbar-color);
+    background-color: var(--pb-toolbar-background-color);
+    font-family: var(--pb-base-font-family);
+    padding: 10px 0;
+}
+
