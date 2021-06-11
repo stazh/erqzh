@@ -3,6 +3,7 @@
     --footer-height-total: calc(var(--footer-height) + 1px); /* if border, then + 1px! */
     --toolbar-height: 105px;
     --pb-box-shadow: 0px 0px 4px 0px #cdccce;
+    --pb-brand-color: #0076bd;
 }
 
 .logo {
@@ -34,7 +35,7 @@ body {
     --pb-menubar-background-color: var(--pb-brand-color);
     --pb-base-font-family: 'Open Sans', 'Verdana', 'Helvetica', sans-serif;
     --pb-content-font-family: "Lexia Fontes", Georgia, "Times New Roman", serif;
-    --pb-content-font-size: 14pt;
+    --pb-content-font-size: .95rem;
     --pb-popover-font-size: 80%;
     --pb-color-primary: #333333;
     --pb-view-max-width: 1024px;
@@ -42,6 +43,12 @@ body {
     --pb-logo-image-width: 70px;
     --pb-logo-image-height: 48px;
     color: var(--pb-color-primary);
+}
+
+@media screen and (min-width: 769px) {
+    body {
+        --pb-content-font-size: 1.1rem;
+    }
 }
 
 /**************** Typography *****************/
@@ -75,6 +82,15 @@ h5 {
     margin: 0.625rem 0;
 }
 
+/* Typography in TEI content / webcomponents */
+:root {
+    --pb-h1-font-size: 1.75rem;
+    --pb-h2-font-size: 1.55rem;
+    --pb-h3-font-size: 1.35rem;
+    --pb-h4-font-size: 1.15rem;
+    --pb-h5-font-size: 1rem;
+}
+
 @media screen and (min-width: 769px) {
     h1, h2, h3, h4, h5, h6 {
         line-height: 1.2;
@@ -84,7 +100,6 @@ h5 {
         font-size: 2.25rem;
         font-weight: 400;
     }
-
     h2 {
         font-size: 2rem;
     }
@@ -100,6 +115,14 @@ h5 {
     h5 {
         font-size: 1.15rem;
         margin: 0.625rem 0;
+    }
+
+    :root {
+        --pb-h1-font-size: 2.25rem;
+        --pb-h2-font-size: 2rem;
+        --pb-h3-font-size: 1.5rem;
+        --pb-h4-font-size: 1.3rem;
+        --pb-h5-font-size: 1.15rem;
     }
 }
 
@@ -549,8 +572,6 @@ pb-view {
 }
 
 .block-title {
-    color: #607D8B;
-    font-size: 18px;
     margin: 1em 0;
 }
 
@@ -608,6 +629,10 @@ paper-input {
 paper-input label {
     height: 0;
     display: none;
+}
+
+.tei-summary {
+    margin: 1rem 0;
 }
 
 .term {
