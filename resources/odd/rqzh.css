@@ -114,6 +114,7 @@ section:first-child {
 
 .document-heading #info {
     color: var(--pb-brand-color);
+    cursor: pointer;
 }
 
 .term {

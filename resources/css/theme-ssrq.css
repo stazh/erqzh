@@ -177,6 +177,7 @@ a:focus > * {
 
 .content pb-collapse {
     color: var(--pb-color-primary);
+    cursor: pointer;
 }
 
 ul.control-list {
@@ -323,10 +324,10 @@ main pb-view {
 
 .document-grid__item {
     height: auto;
+    margin-bottom: 2rem;
 }
 
 .document-grid__item:not(.facsimile) {
-    margin-bottom: 2rem;
 }
 
 @media screen and (min-width: 769px) {
