@@ -24,49 +24,8 @@
 <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app" require-language="require-language" api-version="1.0.0">
     <pb-document id="document1" data-template="pages:pb-document"/>
     <app-drawer-layout force-narrow="force-narrow">
-        <app-drawer slot="drawer" align="right">
-            <div class="drawer-content">
-                <pb-media-query query="(max-width: 1023px)">
-                    <!-- language selector -->
-                    <ul class="drawer-menu">
-                        <li>
-                            <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
-                        </li>
-                        <li>
-                            <a href="${app}/abbr.html" class="tp-menu-item" title="abbr" data-template="pages:parse-params">
-                                <div>
-                                    <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
-                                </div>
-                                <div class="ripple-container"/>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="mailto:christian.sieber@ji.zh.ch" class="tp-menu-item">
-                                <div>
-                                    <pb-i18n key="feedback">Feedback</pb-i18n>
-                                </div>
-                                <div class="ripple-container"/>
-                            </a>
-                        </li>
-                        <li>
-                            <h4 slot="collapse-trigger">
-                                <pb-i18n key="menu.download.title">Download</pb-i18n>
-                            </h4>
-                            <paper-listbox slot="collapse-content">
-                                <paper-item>
-                                    <pb-edit-xml src="document1" data-i18n="[title]menu.download.view-tei" title="view-tei">
-                                        XML
-                                    </pb-edit-xml>
-                                </paper-item>
-                            </paper-listbox>
-                        </li>
-                        <li>
-                            <pb-lang name="lang" data-template="pages:languages"/>
-                        </li>
-                    </ul>
-                </pb-media-query>
-            </div>
-        </app-drawer>
+        
+        <app-drawer data-template="templates:include" data-template-path="templates/drawer.html"/>
 
         <app-header-layout>
             <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
@@ -86,40 +45,45 @@
                     </pb-load>
                 </div>
             </pb-drawer>
-            <div class="grid">
-                <main>
-                    <header>
-                        <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription" map="ssrq">
-                            <pb-param name="view" value="metadata"/>
-                        </pb-view>
 
-                        <h4 class="block-title">
-                            <pb-i18n key="editiontext"/>
-                        </h4>
-                    </header>
-                    <div class="content-body">
-                        <pb-navigation direction="backward" unit="page" emit="transcription" subscribe="transcription">
-                            <paper-fab icon="icons:chevron-left"/>
-                        </pb-navigation>
-                        <pb-view id="view1" src="document1" xpath="//body" view="single" append-footnotes="append-footnotes" use-language="use-language" subscribe="transcription" emit="transcription" wait-for="metadata" map="ssrq"/>
-                        <pb-navigation direction="forward" unit="page" emit="transcription" subscribe="transcription">
-                            <paper-fab icon="icons:chevron-right"/>
-                        </pb-navigation>
+            <section class="document__wrapper">
+                <div class="pb-container">
+                    <div id="gridWrapper">
+                        <main class="document-grid__item">
+                            <header>
+                                <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription" map="ssrq">
+                                    <pb-param name="view" value="metadata"/>
+                                </pb-view>
+
+                                <h4 class="block-title">
+                                    <pb-i18n key="editiontext"/>
+                                </h4>
+                            </header>
+
+                            <div class="content-body">
+                                <pb-navigation direction="backward" unit="page" emit="transcription" subscribe="transcription">
+                                    <paper-fab icon="icons:chevron-left"/>
+                                </pb-navigation>
+                                <pb-view id="view1" src="document1" xpath="//body" view="single" append-footnotes="append-footnotes" use-language="use-language" subscribe="transcription" emit="transcription" wait-for="metadata" map="ssrq"/>
+                                <pb-navigation direction="forward" unit="page" emit="transcription" subscribe="transcription">
+                                    <paper-fab icon="icons:chevron-right"/>
+                                </pb-navigation>
+                            </div>
+                        </main>
+
+                        <pb-facsimile class="document-grid__item facsimile" base-uri="https://apps.existsolutions.com/cantaloupe/iiif/2/rqzh!" subscribe="transcription"></pb-facsimile>
+
+                        <aside class="document-grid__item register">
+                            <pb-load id="register" url="api/register/{doc}" expand="expand" src="document1" emit="register">
+                                <pb-i18n key="dialogs.loading"/>
+                            </pb-load>
+                        </aside>
+
                     </div>
-                </main>
-                <pb-facsimile class="facsimile" base-uri="https://apps.existsolutions.com/cantaloupe/iiif/2/rqzh!" subscribe="transcription">
-                    <!--p slot="before">
-                        <pb-i18n key="credits">Credits</pb-i18n> <span id="credits"/>
-                    </p-->
-                </pb-facsimile>
-                <aside class="register">
-                    <pb-load id="register" url="api/register/{doc}" expand="expand" src="document1" emit="register">
-                        <pb-i18n key="dialogs.loading"/>
-                    </pb-load>
-                </aside>
+                </div>
+            </section>
 
-            </div>
-            <footer>
+            <footer class="hidden-print">
                 <pb-view class="footer-button footer-button-prev" src="document1" subscribe="transcription" view="single" xpath="//teiHeader">
                     <pb-param name="mode" value="footer-prev"/>
                 </pb-view>

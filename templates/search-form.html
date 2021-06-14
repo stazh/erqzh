@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<paper-card class="searchbox">
-    <h3><pb-i18n key="browse.search">Suche</pb-i18n><a href="#" id="search-info"><iron-icon icon="info"></iron-icon></a></h3>
-    <div class="card-content">
+<aside  class="main-grid__item">
+    <div class="header card-padding">
+        <h2>
+            <pb-i18n key="browse.search">Suche</pb-i18n>
+            <a href="#" id="search-info">
+                <iron-icon icon="info"></iron-icon>
+            </a>
+        </h2>
+    </div>
+
+    <div class="card-content card-padding">
+
         <pb-search submit-buttons="true" id="search-form" action="${app}/search.html" subscribe="search" data-template="pages:parse-params" 
             value="${query}" submit-on-load="submit-on-load" redirect="redirect" data-i18n="[place-holder]search-query-attr">
             <pb-select name="type" value="${type}" data-template="pages:parse-params" slot="beforeInput">
@@ -14,9 +23,8 @@
             </pb-select>
             <input type="hidden" name="refresh" value="true"/>
             <input type="hidden" name="sort" id="hiddenSort" value="${sort}" data-template="pages:parse-params"/>
+
             <div class="panel-body">
-
-
                 <h4><pb-i18n key="genre"/></h4>
                 <paper-checkbox id="bearbeitungstext" checked="checked" data-template="pages:parse-params"><pb-i18n key="searchText"/></paper-checkbox>
                 <ul class="subtype">
@@ -113,47 +121,9 @@
                     <paper-item value="no"><pb-i18n key="no">nein</pb-i18n></paper-item>                                                
                 </pb-select>
 
-                <!--pb-select class="filter-canton" name="filter-kanton" data-i18n="[label]volume" data-template="templates:form-control" multi="multi">                                                
-                    <paper-item value="ZH">ZH</paper-item>
-                    <paper-item value="BE">BE</paper-item>
-                    <paper-item value="LU">LU</paper-item>
-                    <paper-item value="UR">UR</paper-item>
-                    <paper-item value="SZ">SZ</paper-item>
-                    <paper-item value="OW/NW">OW/NW</paper-item>
-                    <paper-item value="GL">GL</paper-item>
-                    <paper-item value="ZG">ZG</paper-item>
-                    <paper-item value="FR">FR</paper-item>
-                    <paper-item value="SO">SO</paper-item>
-                    <paper-item value="BS/BL">BS/BL</paper-item>
-                    <paper-item value="SH">SH</paper-item>
-                    <paper-item value="AR/AI">AR/AI</paper-item>
-                    <paper-item value="SG">SG</paper-item>
-                    <paper-item value="GR">GR</paper-item>
-                    <paper-item value="AG">AG</paper-item>
-                    <paper-item value="TG">TG</paper-item>
-                    <paper-item value="TI">TI</paper-item>
-                    <paper-item value="VD">VD</paper-item>
-                    <paper-item value="VS">VS</paper-item>
-                    <paper-item value="NE">NE</paper-item>
-                    <paper-item value="GE">GE</paper-item>
-                    <paper-item value="JU">JU</paper-item>
-                </pb-select-->                                    
-            
-                <!--
-                <div class="filter-grid formrow">
-
-                    <label class="flexend"><pb-i18n key="pubdate"/></label>
-                    <div class="right" data-template="search:pubdate-range">
-                        <paper-input type="number" name="filter-pubdate-min" placeholder="${min}" min="${min}" max="${max}" value="${filter-pubdate-min}" data-template="pages:parse-params"/>
-                        <span class="until">-</span>
-                        <paper-input type="number" name="filter-pubdate-max" placeholder="${max}" min="${min}" max="${max}" value="${filter-pubdate-max}" data-template="pages:parse-params"/>
-                    </div>
-
-                </div>
-                -->
                 <div class="buttons">
-                    <paper-button slot="searchButton"><pb-i18n key="search"></pb-i18n></paper-button>
                     <paper-button slot="resetButton"><pb-i18n key="reset"></pb-i18n></paper-button>
+                    <paper-button slot="searchButton"><pb-i18n key="search"></pb-i18n></paper-button>
                 </div>
 
             </div>
@@ -179,4 +149,4 @@
             document.getElementById('query-help-dialog').open();
         });
     </script>
-</paper-card>
+</aside>

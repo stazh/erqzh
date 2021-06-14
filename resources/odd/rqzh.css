@@ -1,5 +1,25 @@
-.body {
+.body,
+.body > *,
+.footnotes .footnote {
     font-family: var(--pb-content-font-family);
+    font-size: var(--pb-content-font-size);
+}
+
+h1, .body h1 { font-size: var(--pb-h1-font-size); }
+h2, .body h2 { font-size: var(--pb-h2-font-size); }
+h3, .body h3 { font-size: var(--pb-h3-font-size); }
+h4, .body h4 { font-size: var(--pb-h4-font-size); }
+h5, .body h5 { font-size: var(--pb-h5-font-size); }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--pb-heading-font-family);
+    line-height: 1.1;
+    font-weight: 300;
+}
+
+.body h1, .body h2, .body h3, .body h4 {
+    font-family: var(--pb-content-font-family);
+    font-weight: 700;
 }
 
 .content {
@@ -17,9 +37,21 @@
 }
 
 .block-title {
-    color: #607D8B;
-    font-size: 18px;
-    margin: 1em 0;
+    margin: .3em 0;
+}
+
+.tei-summary {
+    margin: 1rem 0;
+    padding: 0 0 0 1.7rem;
+}
+
+pb-collapse ul, pb-collapse ol {
+    list-style-type: none;
+    padding: 0 0 0 1.7rem;
+}
+
+.tei-p, pb-collapse ul, pb-collapse ol {
+    margin-top: 0;
 }
 
 .footnotes {
@@ -41,30 +73,6 @@ h1 a[rel="footnote"] {
     vertical-align: text-top;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--pb-heading-font-family);
-    line-height: 1.1;
-    font-weight: 300;
-}
-
-h2 {
-    font-size: 30px;
-}
-
-h4 {
-    color: #607D8B;
-}
-
-.body h1, .body h2, .body h3, .body h4 {
-    font-family: var(--pb-content-font-family);
-    font-size: 1em;
-    font-weight: 700;
-}
-
-.body h1 {
-    font-size: 1.15em;
-}
-
 .highlight {
     background-color: #FFEB3B;
 }
@@ -73,15 +81,6 @@ iron-icon {
     width: 20px;
     margin-top: -4px;
     margin-left: 4px;
-}
-
-.tei-p, pb-collapse ul, pb-collapse ol {
-    margin-top: 0;
-}
-
-pb-collapse ul, pb-collapse ol {
-    list-style-type: none;
-    padding: 0;
 }
 
 .semantic {
@@ -109,9 +108,13 @@ section:first-child {
 }
 
 .document-heading {
-    color: #607D8B;
-    padding: 10px 10px 10px 0;
+    padding: 10px 0;
     font-family: var(--pb-heading-font-family);
+}
+
+.document-heading #info {
+    color: var(--pb-brand-color);
+    cursor: pointer;
 }
 
 .term {
@@ -181,5 +184,14 @@ pb-i18n[key="by"]::after {
 }
 
 .footer pb-i18n {
-    font-size: 16px;
+    font-size: 1rem;
 }
+
+.footer-button {
+    font: var(--pb-base-font);
+    color: var(--pb-toolbar-color);
+    background-color: var(--pb-toolbar-background-color);
+    font-family: var(--pb-base-font-family);
+    padding: 10px 0;
+}
+

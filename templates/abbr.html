@@ -19,104 +19,27 @@
 <body>
 <pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" unresolved="unresolved" require-language="require-language" api-version="1.0.0">
     <app-drawer-layout force-narrow="force-narrow">
-        <app-drawer align="right" slot="drawer">
-            <div class="drawer-content">
-                <pb-media-query query="(max-width: 1023px)">
-                    <!-- language selector -->
-                    <ul class="drawer-menu">
-                        <li>
-                            <a data-template="pages:parse-params" href="${app}/index.html">Start</a>
-                        </li>
-                        <li>
-                            <a class="tp-menu-item" href="abbr.html" title="abbr">
-                                <div>
-                                    <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
-                                </div>
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="tp-menu-item" href="mailto:christian.sieber@ji.zh.ch">
-                                <div>
-                                    <pb-i18n key="feedback">Feedback</pb-i18n>
-                                </div>
-                                <div class="ripple-container"></div>
-                            </a>
-                        </li>
-                        <li>
-                            <pb-lang data-template="pages:languages" name="lang"/>
-                        </li>
-                    </ul>
-                </pb-media-query>
-            </div>
-        </app-drawer>
+        <app-drawer data-template="templates:include" data-template-path="templates/drawer.html"/>
+
         <app-header-layout>
             <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
-                <app-toolbar class="menubar">
-                    <a href="${app}/index.html" class="logo" data-template="pages:parse-params"></a>
-                    <pb-media-query query="(min-width: 1024px)">
-                        <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
-                        <a href="abbr.html" class="tp-menu-item" title="abbr">
-                            <div>
-                                <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
-                            </div>
-                            <div class="ripple-container"></div></a>
-                        <a href="mailto:christian.sieber@ji.zh.ch" class="tp-menu-item">
-                            <div>
-                                <pb-i18n key="feedback">Feedback</pb-i18n>
-                            </div>
-                            <div class="ripple-container"></div></a>
-                        <pb-restricted login="login" group="tei">
-                            <paper-menu-button>
-                                <a href="#" slot="dropdown-trigger">
-                                    <pb-i18n key="menu.admin.title">Admin</pb-i18n>
-                                </a>
-                                <paper-listbox slot="dropdown-content">
-                                    <paper-item data-template="pages:edit-odd-list" data-template-emit="docs"></paper-item>
-                                    <paper-item>
-                                        <a href="${app}/api.html" data-template="pages:parse-params" target="_blank">API Documentation</a>
-                                    </paper-item>
-                                </paper-listbox>
-                            </paper-menu-button>
-                        </pb-restricted>
-                        <div main-title="main-title"></div>
-
-                        <!-- language selector -->
-                        <pb-lang name="lang" data-template="pages:languages"/>
-
-                        <pb-login id="login" group="tei">
-                            <iron-icon slot="icon" icon="account-circle"/>
-                            <p slot="information"><pb-i18n key="login-info"></pb-i18n></p>
-                        </pb-login>
-
-                    </pb-media-query>
-
-                    <pb-media-query query="(max-width: 1023px)">
-                        <div main-title="main-title"></div>
-
-                        <pb-login id="login" group="tei">
-                            <iron-icon slot="icon" icon="account-circle"/>
-                            <p slot="information"><pb-i18n key="login-info"></pb-i18n></p>
-                        </pb-login>
-                        <paper-icon-button icon="icons:menu" drawer-toggle="drawer-toggle"/>
-                    </pb-media-query>
-
-                    <pb-progress indeterminate="indeterminate" bottom-item="bottom-item" subscribe="docs"/>
-
-                </app-toolbar>
+                <app-toolbar data-template="templates:include" data-template-path="templates/menu.html"/>
             </app-header>
 
-            <main class="abbreviations">
-                <header>
-                    <h1>
-                        <pb-i18n key="abbreviations"></pb-i18n>
-                    </h1>
-                </header>
-
-                <div class="abbr-list" id="abbreviations">
-                    <pb-load url="api/abbreviations" use-language="use-language" auto="auto"></pb-load>
+            <section>
+                <div class="pb-container">
+                    <h1 class="tp-title"><pb-i18n key="abbreviations"></pb-i18n></h1>
                 </div>
-            </main>
+            </section>
+
+            <section>
+                <div class="pb-container">
+                    <main class="abbr-list" id="abbreviations">
+                        <pb-load url="api/abbreviations" use-language="use-language" auto="auto"></pb-load>
+                    </main>
+                </div>
+            </section>
+
         </app-header-layout>
     </app-drawer-layout>
 </pb-page>

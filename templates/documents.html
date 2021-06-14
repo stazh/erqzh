@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <div>
     <div data-template="browse:dispatch-action"/>
+    <paper-button class="parent-link" data-template="browse:parent-collection">
+        <iron-icon icon="icons:arrow-upward"></iron-icon>
+        <pb-i18n key="browse.up">Up</pb-i18n>
+    </paper-button>
     <div data-template="browse:list-works">
-        <paper-button class="parent-link" data-template="browse:parent-collection">
-            <iron-icon icon="icons:arrow-upward"></iron-icon>
-            <pb-i18n key="browse.up">Up</pb-i18n>
-        </paper-button>
         <ul class="documents" data-template="browse:browse" data-template-per-page="10">
             <li class="document">
                 <div class="document-info">

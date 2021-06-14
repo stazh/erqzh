@@ -19,23 +19,6 @@
 
         <style>
 
-            .search-results paper-card {
-                width: 100%;
-                height: 100%;
-            }
-            h1.search{
-                margin:2rem 1rem 1rem 1rem;
-            }
-            .main-grid {
-                display: grid;
-                grid-template-columns: auto 460px;
-                grid-auto-rows: 1fr;
-                padding: 0;
-            }
-
-            .main-grid main {
-                padding: 1rem;
-            }
             .search-results {
                 width: 100%;
                 height: 100%;
@@ -69,16 +52,16 @@
                 padding:1.5rem 0 1rem 0;
             }
 
-            .search-panel paper-card {
+            .card-padding paper-card {
                 width: 100%;
             }
-            .search-panel .formrow{
+            .card-padding .formrow{
                 margin-top:1rem;
             }
-            .search-panel .formrow label{
+            .card-padding .formrow label{
                 padding:1.5rem 0 1rem 0;
             }
-            .search-panel .subtype{
+            .card-padding .subtype{
                 padding-left:2rem;
             }
 
@@ -87,7 +70,7 @@
             }
 
             #results a {
-                color:var(--ssrq-link-color);
+                color:var(--rqzh-link-color);
                 cursor: pointer;
             }
 
@@ -180,77 +163,52 @@
         <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language" api-version="1.0.0">
             <app-drawer-layout force-narrow="force-narrow">
 
-                <app-drawer slot="drawer" align="right">
-                    <div class="drawer-content">
-                        <pb-media-query query="(max-width: 1023px)">
-                            <!-- language selector -->
-                            <ul class="drawer-menu">
-                                <li>
-                                    <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
-                                </li>
-                                <li>
-                                    <a href="${app}/abbr.html" class="tp-menu-item" title="abbr" data-template="pages:parse-params">
-                                        <div>
-                                            <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
-                                        </div>
-                                        <div class="ripple-container"></div></a>
-                                </li>
-                                <li>
-                                    <a href="mailto:christian.sieber@ji.zh.ch" class="tp-menu-item">
-                                        <div>
-                                            <pb-i18n key="feedback">Feedback</pb-i18n>
-                                        </div>
-                                        <div class="ripple-container"></div></a>
-                                </li>
-                                <li>
-                                    <pb-lang name="lang" data-template="pages:languages"/>
-                                </li>
-                            </ul>
-                        </pb-media-query>
-                    </div>
-                </app-drawer>
+                <app-drawer data-template="templates:include" data-template-path="templates/drawer.html"/>
 
                 <app-header-layout>
 
                     <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
                         <app-toolbar data-template="templates:include" data-template-path="templates/menu.html"/>
-
                     </app-header>
 
                     <section>
-                        <h1 class="tp-title"><pb-i18n key="doctitle"></pb-i18n></h1>
+                        <div class="pb-container">
+                            <h1 class="tp-title"><pb-i18n key="doctitle"></pb-i18n></h1>
+                        </div>
                     </section>
 
-                    <div class="main-grid" data-template="search:set-default-params">
-                        <main>
-                            <div class="search-results">
-                                <paper-card>
-                                    <h3><pb-i18n key="search-results">Search Results</pb-i18n></h3>
-                                    <app-toolbar>
+                    <div class="pb-container">
+                        <div class="main-grid" data-template="search:set-default-params">
+                            <main class="main-grid__item">
+                                <div class="header card-padding">
+                                    <h2>
+                                        <pb-i18n key="search-results">Search Results</pb-i18n>
+                                    </h2>
+                                </div>
+
+                                <div class="search__toolbar card-padding">
+                                    <pb-paginate per-page="20" range="5" subscribe="results"/>
+
+
+                                    <pb-progress class="bottom-item" indeterminate="indeterminate" bottom-item="bottom-item"/>
+                                    <pb-select id="sort-select" name="sort" data-i18n="[label]sorting" value="${sort}" data-template="pages:parse-params">
+                                        <paper-item value="date"><pb-i18n key="browse.orig-date">Date</pb-i18n></paper-item>
+                                        <paper-item value="idno"><pb-i18n key="work-id">Stücknummer</pb-i18n></paper-item>
+                                        <paper-item value="title"><pb-i18n key="title">Title</pb-i18n></paper-item>
+                                    </pb-select>
+                                </div>
+
+                                <div class="card-content">
+                                    <pb-load id="results" class="card-padding" url="${app}/search-results.html" data-template="pages:parse-params" emit="results"/>
+                                    <app-toolbar class="bottom-pagination">
                                         <pb-paginate per-page="20" range="5" subscribe="results"/>
-                                        <!-- label for="sort-select"><pb-i18n key="sorting">Sorting</pb-i18n>: </label-->
-                                        <div main-title="main-title"></div>
-                                        <pb-select id="sort-select" name="sort" data-i18n="[label]sorting" value="${sort}" data-template="pages:parse-params">
-                                            <paper-item value="date"><pb-i18n key="browse.orig-date">Date</pb-i18n></paper-item>
-                                            <paper-item value="idno"><pb-i18n key="work-id">Stücknummer</pb-i18n></paper-item>
-                                            <paper-item value="title"><pb-i18n key="title">Title</pb-i18n></paper-item>
-                                        </pb-select>
-
-                                        <pb-progress indeterminate="indeterminate" bottom-item="bottom-item"/>
                                     </app-toolbar>
-
-                                    <div class="card-content">
-                                        <pb-load id="results" class="search-panel" url="${app}/search-results.html" data-template="pages:parse-params" emit="results"/>
-                                        <app-toolbar class="bottom-pagination">
-                                            <pb-paginate per-page="20" range="5" subscribe="results"/>
-                                        </app-toolbar>
-                                    </div>
-                                </paper-card>
-                            </div>
-                        </main>
-
-                        <div class="search-panel search-sidebar">
+                                </div>
+                            </main>
+                            
+                            <!-- search sidebar -->
                             <div data-template="templates:include" data-template-path="templates/search-form.html"></div>
+
                         </div>
                     </div>
 
