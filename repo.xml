@@ -11,4 +11,12 @@
     <target>rqzh2</target>
     <permissions user="rqzh" group="tei" mode="rw-r--r--"/>
     <deployed>2021-02-08T13:54:30.56+01:00</deployed>
+    <changelog>
+        <change version="1.0.0">
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>Apply responsive layout</li>
+                <li>Update to latest pb-webcomponents v1.23.2</li>
+            </ul>
+        </change>
+    </changelog>
 </meta>
