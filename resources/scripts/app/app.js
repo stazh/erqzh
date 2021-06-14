@@ -143,14 +143,21 @@ window.addEventListener('DOMContentLoaded', () => {
       window.open(newUrl);
     });
 
-    const facsimileLoaded = document.querySelector('pb-facsimile[loaded]');
-    const gridWrapper =  document.getElementById('gridWrapper');
-
-    if (facsimileLoaded) {
-      gridWrapper.setAttribute('class', 'document-grid document-grid__facsimile')
-    }
-    else {
-      gridWrapper.setAttribute('class', 'document-grid document-grid__register')
-    }
-
+  /**
+   * Get the current status of pb-facsimile (loaded or not)
+   * and apply the appropriate grid class to the wrapping element "gridWrapper"
+   * If the facsimile has not been loaded, display the register in the sidebar as grid item.
+   */
+  window.addEventListener('load', () => {
+      const gridWrapper =  document.getElementById('gridWrapper');
+      window.pbEvents.subscribe('pb-facsimile-status', null, (ev) => {
+        //console.log('facsimile status', ev.detail.status);
+        if (ev.detail.status === 'loaded') {
+          gridWrapper.setAttribute('class', 'document-grid document-grid__facsimile')
+        }
+        else {
+          gridWrapper.setAttribute('class', 'document-grid document-grid__register')
+        }
+      });
+    });
 });
