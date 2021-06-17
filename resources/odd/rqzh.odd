@@ -1307,7 +1307,7 @@
                                 </pb-collapse>
                             </pb:template>
                         </model>
-                        <model predicate="not(ends-with(util:document-name(.//sourceDesc), 'Einleitung.xml'))"
+                        <model predicate="root(.)/TEI/@type != 'introduction'"
                                behaviour="block">
                             <param name="content" value=".//sourceDesc"/>
                             <pb:template xmlns="" xml:space="preserve">

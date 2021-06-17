@@ -4,11 +4,11 @@
         data-template="pages:parse-params">
         <paper-icon-button icon="icons:folder-open"></paper-icon-button>
     </a>
-    <paper-button class="toolbar-button__label" id="openPrintDialog">Open print version</paper-button>
     <!-- paper-icon-button id="tocToggle" class="toc-toggle" icon="icons:view-list"/-->
     <pb-toggle-feature class="toolbar-button__label" name="mode" properties-on='{"odd": "rqzh-norm"}' properties-off='{"odd": "rqzh"}' default="off" init-from-view="init-from-view"
         emit="transcription" subscribe="transcription"
         data-i18n="[title]view-switch" title=""><pb-i18n key="view-normalized"></pb-i18n></pb-toggle-feature>
+    <paper-icon-button class="toolbar-button__label" id="openPrintDialog" icon="print"></paper-icon-button>
     <pb-restricted login="login">
         <pb-ajax subscribe="transcription" emit="transcription" url="api/odd" method="post"
             event="pb-refresh"

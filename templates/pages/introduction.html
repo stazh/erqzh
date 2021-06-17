@@ -113,31 +113,35 @@
                                 </pb-load>
                             </div>
                         </pb-drawer>
-                        <div class="grid">
-                            <main>
-                                <header>
-                                    <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription">
-                                        <pb-param name="view" value="metadata"/>
-                                    </pb-view>
-                                </header>
+                        <section class="document__wrapper">
+                            <div class="pb-container">
+                                <div id="gridWrapper">
+                                    <main class="document-grid__item">
+                                        <header>
+                                            <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription">
+                                                <pb-param name="view" value="metadata"/>
+                                            </pb-view>
+                                        </header>
 
-                                <div class="content-body">
-                                    <pb-navigation direction="backward" unit="page" emit="transcription" subscribe="transcription">
-                                        <paper-fab icon="icons:chevron-left"/>
-                                    </pb-navigation>
-                                    <pb-view id="view1" src="document1" xpath="//body" view="single" append-footnotes="append-footnotes" use-language="use-language"
-                                        subscribe="transcription" emit="transcription" wait-for="metadata"></pb-view>
-                                    <pb-navigation direction="forward" unit="page" emit="transcription" subscribe="transcription">
-                                        <paper-fab icon="icons:chevron-right"/>
-                                    </pb-navigation>
+                                        <div class="content-body">
+                                            <pb-navigation direction="backward" unit="page" emit="transcription" subscribe="transcription">
+                                                <paper-fab icon="icons:chevron-left"/>
+                                            </pb-navigation>
+                                            <pb-view id="view1" src="document1" xpath="//body" view="single" append-footnotes="append-footnotes" use-language="use-language"
+                                                subscribe="transcription" emit="transcription" wait-for="metadata"></pb-view>
+                                            <pb-navigation direction="forward" unit="page" emit="transcription" subscribe="transcription">
+                                                <paper-fab icon="icons:chevron-right"/>
+                                            </pb-navigation>
+                                        </div>
+                                    </main>
+                                    <aside class="document-grid__item register">
+                                        <pb-load id="register" url="api/register/{doc}" expand="expand" src="document1" emit="register">
+                                            <pb-i18n key="dialogs.loading"/>
+                                        </pb-load>
+                                    </aside>
                                 </div>
-                            </main>
-                            <aside class="register">
-                                <pb-load id="register" url="api/register/{doc}" expand="expand" src="document1" emit="register">
-                                    <pb-i18n key="dialogs.loading"/>
-                                </pb-load>
-                            </aside>
-                        </div>
+                            </div>
+                        </section>
                     </app-header-layout>
                 </app-drawer-layout>
             </pb-page>
