@@ -385,12 +385,13 @@ body[data-view="normalized"] .document-grid {
     display: block;
 }
 
+/* Always display the register in normalized view! */
 body[data-view="normalized"] .facsimile {
     display: none;
 }
 
 @media screen and (min-width: 769px) {
-    body[data-view="normalized"] .document-grid__register {
+    body[data-view="normalized"] .document-grid {
         display: grid;
         grid-template-columns: 60% auto;
         grid-gap: 15px;
