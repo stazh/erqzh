@@ -3,22 +3,24 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald"/>
-    <title data-template="config:app-title"/>
+    
+    <pb-head data-template="app:meta">
+        <title data-template="app:meta-title"/>
+        <meta name="description" content="${description}" data-template="pages:parse-params"/>
+        <meta itemprop="name" content="${title}" data-template="pages:parse-params"/>
+        <meta itemprop="description" content="${description}" data-template="pages:parse-params"/>
 
-    <meta name="description" content="Rechtsquellen des Kantons Zürich">
-    <meta itemprop="name" content="Rechtsquellen des Kantons Zürich">
-    <meta itemprop="description" content="Rechtsquellen des Kantons Zürich">
+        <meta property="og:locale" content="de"/>
+        <meta property="og:url" content="${url}" data-template="pages:parse-params"/>
+        <meta property="og:site_name" content="${site}" data-template="pages:parse-params"/>
+        <meta property="og:title" content="${title}" data-template="pages:parse-params"/>
+        <meta property="og:description" content="${description}" data-template="pages:parse-params"/>
 
-    <meta property="og:locale" content="de">
-    <meta property="og:url" content="">
-    <meta property="og:site_name" content="Rechtsquellen des Kantons Zürich">
-    <meta property="og:title" content="Rechtsquellen des Kantons Zürich">
-    <meta property="og:description" content="Rechtsquellen des Kantons Zürich">
-
-    <meta content="summary_large_image" name="twitter:card">
-    <meta name="twitter:title" content="Rechtsquellen des Kantons Zürich">
-    <meta name="twitter:description" content="Rechtsquellen des Kantons Zürich">
-    <link rel="canonical" href="">
+        <meta content="summary_large_image" name="twitter:card"/>
+        <meta name="twitter:title" content="${title}" data-template="pages:parse-params"/>
+        <meta name="twitter:description" content="${description}" data-template="pages:parse-params"/>
+        <link rel="canonical" href="${url}" data-template="pages:parse-params"/>
+    </pb-head>
 
     <link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico"/>
     <link rel="shortcut icon" type="image/png" href="resources/images/favicon-16.png" sizes="16x16"/>
