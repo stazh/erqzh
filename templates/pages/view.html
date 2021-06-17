@@ -1,21 +1,35 @@
-<html>
+<html lang="de">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald"/>
+    
+    <pb-head data-template="app:meta">
+        <title data-template="app:meta-title"/>
+        <meta name="description" content="${description}" data-template="pages:parse-params"/>
+        <meta itemprop="name" content="${title}" data-template="pages:parse-params"/>
+        <meta itemprop="description" content="${description}" data-template="pages:parse-params"/>
+
+        <meta property="og:locale" content="de"/>
+        <meta property="og:url" content="${url}" data-template="pages:parse-params"/>
+        <meta property="og:site_name" content="${site}" data-template="pages:parse-params"/>
+        <meta property="og:title" content="${title}" data-template="pages:parse-params"/>
+        <meta property="og:description" content="${description}" data-template="pages:parse-params"/>
+
+        <meta content="summary_large_image" name="twitter:card"/>
+        <meta name="twitter:title" content="${title}" data-template="pages:parse-params"/>
+        <meta name="twitter:description" content="${description}" data-template="pages:parse-params"/>
+        <link rel="canonical" href="${url}" data-template="pages:parse-params"/>
+    </pb-head>
+
     <link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico"/>
     <link rel="shortcut icon" type="image/png" href="resources/images/favicon-16.png" sizes="16x16"/>
     <link rel="shortcut icon" type="image/png" href="resources/images/favicon-24.png" sizes="24x24"/>
     <link rel="shortcut icon" type="image/png" href="resources/images/favicon-32.png" sizes="32x32"/>
     <link rel="shortcut icon" type="image/png" href="resources/images/favicon-64.png" sizes="64x64"/>
-
-    <title data-template="config:app-title"/>
-    <meta name="description" content="Default single text layout"/>
-    <meta name="pb-template" content="view.html"/>
-
-    <link rel="stylesheet" type="text/css" href="resources/fonts/font.css"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald&amp;display=swap"/>
     <link rel="stylesheet" href="resources/css/theme.css"/>
     <link rel="stylesheet" href="resources/css/theme-ssrq.css"/>
+
     <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
     <script src="resources/scripts/app/app.js"/>
 </head>

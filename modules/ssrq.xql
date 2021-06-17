@@ -11,6 +11,7 @@ import module namespace http="http://expath.org/ns/http-client" at "java:org.exp
 import module namespace query="http://www.tei-c.org/tei-simple/query" at "query.xql";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
+declare namespace expath="http://expath.org/ns/pkg";
 
 declare variable $app:TEMP_DOCS := collection($config:temp-root)/tei:TEI;
 declare variable $app:ALL_DOCS := collection($config:data-root);
@@ -315,4 +316,25 @@ function app:show-list-items($node as node(), $model as map(*)) {
     order by $item/a collation "?lang=de_CH"
     return
         $item
+};
+
+declare function app:meta($node as node(), $model as map(*)) {
+    let $data := config:get-document($model?doc)
+    let $site := config:expath-descriptor()/expath:title/string()
+    let $title := $data//tei:sourceDesc/tei:msDesc/tei:head => normalize-space()
+    let $description := $data//tei:sourceDesc/tei:msDesc/tei:msContents/tei:summary => normalize-space()
+    return
+        map {
+            "title": string-join(($site, $title), ': '),
+            "description": $description,
+            "language": "de",
+            "url": "https://rechtsquellen.sources-online.org/" || $model?doc,
+            "site": $site
+        }
+};
+
+declare 
+    %templates:wrap
+function app:meta-title($node as node(), $model as map(*)) {
+    $model?title
 };
