@@ -338,3 +338,31 @@ declare
 function app:meta-title($node as node(), $model as map(*)) {
     $model?title
 };
+
+(:~
+ : Display a facsimile thumbnail in the collection list next to each document, if available,
+ : and link it to the document
+ :)
+declare
+    %templates:replace
+function app:short-header-link($node as node(), $model as map(*)) {
+    let $work := root($model("work"))/*
+    let $href := config:get-identifier($work)
+    let $thumbnail-src := $work//tei:body//tei:pb[@n='1']/@facs/string()
+
+    return (
+        if (exists($thumbnail-src))
+        then (
+            element { node-name($node) } {
+                $node/@*,
+                attribute href { $href },
+                element img {
+                    attribute src { $config:iiif-base-uri || $thumbnail-src || '/full/178,/0/default.jpg'},
+                    attribute class { 'document-thumbnail-image' },
+                    templates:process($node/node(), $model)
+                }
+            }
+        )
+        else ()
+    )
+};

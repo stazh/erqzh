@@ -504,6 +504,16 @@ body[data-view="normalized"] .facsimile {
 #document-list .document-info {
     font-family: var(--pb-heading-font-family);
     font-weight: 400;
+    flex: 1 auto;
+}
+
+#document-list .document-thumbnail-link {
+    cursor: pointer;
+}
+
+#document-list .document-thumbnail-image {
+    max-height: 100px;
+    width: auto;
 }
 
 #document-list .documents .header-short {
@@ -547,6 +557,8 @@ body[data-view="normalized"] .facsimile {
 @media screen and (min-width: 769px) {
     .documents li:last-child {
         border: none;
+        margin-bottom: 0;
+        pading-bottom: 0;
     }
 }
 
