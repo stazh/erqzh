@@ -4,6 +4,29 @@
     --toolbar-height: 105px;
     --pb-box-shadow: 0px 0px 4px 0px #cdccce;
     --pb-brand-color: #0076bd;
+    --scrollbarBG: #ffffff;
+    --thumbBG: #d1d3d6;
+}
+
+/* Custom scrollbar: Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+}
+
+/* Custom scrollbar: Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--scrollbarBG);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--thumbBG);
+    border-radius: 8px;
+    border: 2px solid var(--scrollbarBG);
 }
 
 .logo {
@@ -301,6 +324,12 @@ main pb-view {
     height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
 }
 
+/* No navigation footers in introduction templates */
+.document__wrapper--introduction {
+    overflow: auto;
+    height: calc(100vh - (var(--toolbar-height)));
+}
+
 .document-grid main {
     grid-area: main;
 }
@@ -326,6 +355,10 @@ main pb-view {
     .document-grid__item {
         height: calc(100vh - (var(--toolbar-height) + var(--footer-height-total)));
         margin-bottom: 0;
+    }
+
+    .document__wrapper--introduction .document-grid__item {
+        height: calc(100vh - (var(--toolbar-height)));
     }
 
     .document-grid pb-facsimile {

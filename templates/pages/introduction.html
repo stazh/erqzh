@@ -113,9 +113,9 @@
                                 </pb-load>
                             </div>
                         </pb-drawer>
-                        <section class="document__wrapper">
+                        <section class="document__wrapper--introduction">
                             <div class="pb-container">
-                                <div id="gridWrapper">
+                                <div id="gridWrapper" class="document-grid document-grid__register">
                                     <main class="document-grid__item">
                                         <header>
                                             <pb-view id="metadata" src="document1" view="single" use-language="use-language" emit="metadata" subscribe="transcription">
@@ -124,14 +124,14 @@
                                         </header>
 
                                         <div class="content-body">
-                                            <pb-navigation direction="backward" unit="page" emit="transcription" subscribe="transcription">
+                                            <!--pb-navigation direction="backward" unit="page" emit="transcription" subscribe="transcription">
                                                 <paper-fab icon="icons:chevron-left"/>
-                                            </pb-navigation>
+                                            </pb-navigation-->
                                             <pb-view id="view1" src="document1" xpath="//body" view="single" append-footnotes="append-footnotes" use-language="use-language"
                                                 subscribe="transcription" emit="transcription" wait-for="metadata"></pb-view>
-                                            <pb-navigation direction="forward" unit="page" emit="transcription" subscribe="transcription">
+                                            <!--pb-navigation direction="forward" unit="page" emit="transcription" subscribe="transcription">
                                                 <paper-fab icon="icons:chevron-right"/>
-                                            </pb-navigation>
+                                            </pb-navigation-->
                                         </div>
                                     </main>
                                     <aside class="document-grid__item register">
