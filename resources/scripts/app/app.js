@@ -3,6 +3,7 @@ window.addEventListener("DOMContentLoaded", () => {
   let blocks = [];
 
   pbEvents.subscribe("pb-start-update", ["transcription", "metadata"], () => {
+    register.innerHTML = 'Lade ...';
     if (blocks.length === 2) {
       blocks = [];
     }
