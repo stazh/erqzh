@@ -441,6 +441,10 @@ body[data-view="normalized"] .facsimile {
     display: none;
 }
 
+.facsimile::part(image) {
+    height: var(--pb-facsimile-height);
+}
+
 /******** custom search tile with filters **********/
 /* button wrapper */
 #search-form .buttons {
