@@ -137,7 +137,7 @@ window.addEventListener("DOMContentLoaded", () => {
     let docPath = currentPath.replace(/^.*\/([^/]+\/.*)$/, "$1");
     let urlPart = currentPath.replace(/^(.*)\/[^/]+\/.*$/, "$1");
     let updatedDocPath = docPath.replace("/", "%2F");
-    let newUrl = urlPart + "/api/document/" + updatedDocPath + "/html";
+    let newUrl = `${urlPart}/api/document/${updatedDocPath}/html?odd=rqzh-norm.odd`;
     console.log(newUrl);
     window.open(newUrl);
   });
