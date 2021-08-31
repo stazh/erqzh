@@ -11,7 +11,7 @@
 
     <div class="card-content card-padding">
 
-        <pb-search submit-buttons="true" id="search-form" action="${app}/search.html" subscribe="search" data-template="pages:parse-params" 
+        <pb-search submit-buttons="true" id="search-form" action="${app}/search.html" subscribe="search" data-template="pages:parse-params"
             value="${query}" submit-on-load="submit-on-load" redirect="redirect" data-i18n="[place-holder]search-query-attr">
             <pb-select name="type" value="${type}" data-template="pages:parse-params" slot="beforeInput">
                 <paper-item value="text"><pb-i18n key="text">Text</pb-i18n></paper-item>
@@ -66,7 +66,7 @@
                 <pb-select id="filter-language" name="filter-language" data-template="templates:form-control" multi="multi">
                     <paper-item value="de">de</paper-item>
                     <paper-item value="fr">fr</paper-item>
-                    <paper-item value="la">la</paper-item>
+                    <paper-item value="la">lat</paper-item>
                 </pb-select>
 
                 <pb-select name="filter-archive" data-i18n="[label]archive" value="${filter-archive}" data-template="pages:parse-params">
@@ -78,12 +78,12 @@
                     <paper-item value="yes"><pb-i18n key="yes">ja-falsch</pb-i18n></paper-item>
                     <paper-item value="no"><pb-i18n key="no">nein-falsch</pb-i18n></paper-item>
                 </pb-select>
-                        
+
                 <pb-select name="filter-author" data-i18n="[label]scribe" value="${filter-author}" data-template="pages:parse-params">
                     <paper-item value=""></paper-item>
                     <paper-item value="yes"><pb-i18n key="yes">ja-falsch</pb-i18n></paper-item>
                     <paper-item value="no"><pb-i18n key="no">nein-falsch</pb-i18n></paper-item>
-                </pb-select>                                            
+                </pb-select>
 
                 <pb-select name="filter-seal" data-i18n="[label]seal" value="${filter-seal}" data-template="pages:parse-params">
                     <paper-item value=""></paper-item>
@@ -116,7 +116,7 @@
                 <pb-select name="filter-condition" data-i18n="[label]condition" value="${filter-condition}" data-template="pages:parse-params">
                     <paper-item value=""/>
                     <paper-item value="yes"><pb-i18n key="yes">ja</pb-i18n></paper-item>
-                    <paper-item value="no"><pb-i18n key="no">nein</pb-i18n></paper-item>                                                
+                    <paper-item value="no"><pb-i18n key="no">nein</pb-i18n></paper-item>
                 </pb-select>
 
                 <div class="buttons">
@@ -138,7 +138,7 @@
                     <pb-i18n key="dialogs.close">Close</pb-i18n>
                 </paper-button>
             </div>
-        </paper-dialog>                         
+        </paper-dialog>
     </div>
     <script defer="defer">
         const trigger = document.getElementById('search-info');
