@@ -5,6 +5,10 @@
     "comment": "Commentaire",
     "addFill": "Présentation de la situation de tradition"
   },
+  "navigation": {
+    "next": "[FR] zum nächsten Stück",
+    "prev": "[FR] zum vorherigen Stück"
+  },
   "browse": {
     "orig-date": "Datation",
     "title": "Titre",

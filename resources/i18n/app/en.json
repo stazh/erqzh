@@ -5,6 +5,10 @@
     "comment": "Comment",
     "addFill": "Additional Filiations"
   },
+  "navigation": {
+    "next": "[EN] zum nächsten Stück",
+    "prev": "[EN] zum vorherigen Stück"
+  },
   "browse": {
     "orig-date": "Date",
     "title": "Title",

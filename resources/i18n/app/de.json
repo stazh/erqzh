@@ -5,6 +5,10 @@
     "comment": "Kommentar",
     "addFill": "Weitere Überlieferungen"
   },
+  "navigation": {
+    "next": "zum nächsten Stück",
+    "prev": "zum vorherigen Stück"
+  },
   "browse": {
     "orig-date": "Datum",
     "title": "Titel",
