@@ -1,8 +1,8 @@
 {
   "meta": {
-    "regest": "Regest",
+    "regest": "Summary",
     "metadata": "Metadata",
-    "comment": "Comments",
+    "comment": "Comment",
     "addFill": "Additional Filiations"
   },
   "browse": {
