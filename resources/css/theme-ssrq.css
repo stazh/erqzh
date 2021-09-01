@@ -595,7 +595,7 @@ body[data-view="normalized"] .facsimile {
     .documents li:last-child {
         border: none;
         margin-bottom: 0;
-        pading-bottom: 0;
+        padding-bottom: 0;
     }
 }
 
@@ -632,8 +632,9 @@ pb-view {
     }
 }
 
-.block-title {
-    margin: 1em 0;
+/* other "block-title" headings are styled via rqzh.css!! */
+.block-title.edition {
+    margin: 1.2em 0 0 0;
 }
 
 .place {

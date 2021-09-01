@@ -111,7 +111,7 @@ declare function api:html($request as map(*)) {
 
                                     <pb-page unresolved="unresolved" locales="{$locales}" locale-fallback-ns="app" require-language="require-language" api-version="1.0.0">
                                         { $metadata }
-                                        <h4 class="block-title">
+                                        <h4 class="block-title edition">
                                             <pb-i18n key="editiontext"/>
                                         </h4>
                                         { $content }
