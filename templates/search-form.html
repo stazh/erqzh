@@ -27,6 +27,7 @@
             <div class="panel-body">
                 <h4><pb-i18n key="genre"/></h4>
                 <paper-checkbox id="bearbeitungstext" checked="checked" data-template="pages:parse-params"><pb-i18n key="searchText"/></paper-checkbox>
+
                 <ul class="subtype">
                     <li>
                         <paper-checkbox name="subtype" class="bearbeitungstext" value="title" data-template="templates:form-control"><pb-i18n key="title"/></paper-checkbox>
@@ -62,12 +63,25 @@
                     </div>
 
                 </div>
-                <label for="filter-language"><pb-i18n key="language"></pb-i18n></label>
-                <pb-select id="filter-language" name="filter-language" data-template="templates:form-control" multi="multi">
-                    <paper-item value="de">de</paper-item>
-                    <paper-item value="fr">fr</paper-item>
-                    <paper-item value="la">lat</paper-item>
-                </pb-select>
+
+                <fieldset class="sidebar fieldset">
+                    <legend class="sr-only">Filter search results by language</legend>
+                    <label for="filter-language"><pb-i18n key="language"></pb-i18n></label>
+                    <ul id="filter-language" class="filter-language-form" name="filter-language" data-template="templates:form-control">
+                        <li>
+                            <input type="checkbox" id="de" name="filter-language" value="de" />
+                            <label for="de">DE</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="fr" name="filter-language" value="fr" />
+                            <label for="fr">FR</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="lat" name="filter-language" value="lat" />
+                            <label for="lat">LAT</label>
+                        </li>
+                    </ul>
+                </fieldset>
 
                 <pb-select name="filter-archive" data-i18n="[label]archive" value="${filter-archive}" data-template="pages:parse-params">
                     <paper-item  data-template="search:list-archives"> </paper-item>
