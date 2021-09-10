@@ -279,9 +279,9 @@ declare variable $config:context-path :=
 (:~
  : The root of the collection hierarchy containing data.
  :)
-declare variable $config:data-root := "/db/apps/rqzh-data/data";
+declare variable $config:data-root := "/db/apps/rqzh-data";
 
-declare variable $config:temp-root := "/db/apps/rqzh-data/data/temp";
+declare variable $config:temp-root := "/db/apps/rqzh-data/temp";
 
 (:~
  : The root of the collection hierarchy whose files should be displayed
