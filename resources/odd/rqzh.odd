@@ -688,12 +688,14 @@
                                 <param name="facs" value="@facs"/>
                                 <param name="alternate" value="ec:label('pb')"/>
                                 <pb:template xmlns="" xml:space="preserve">
-                                    <pb-facs-link facs="[[facs]].ptif" emit="transcription">
+                                    <a href="#">
+                                    <pb-facs-link facs="[[facs]].ptif" emit="transcription" trigger="click">
                                         <pb-popover>
                                             [[content]]
                                             <template slot="alternate">[[alternate]]</template>
                                         </pb-popover>
                                     </pb-facs-link>
+                                    </a>
                                 </pb:template>
                             </model>
                         </modelGrp>
