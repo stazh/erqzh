@@ -38,6 +38,17 @@
     margin: 0 3px;
 }
 
+#browseToParentCollection,
+#browseToParentCollection > * {
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+#browseToParentCollection:hover,
+#browseToParentCollection:hover > * {
+    text-decoration: none;
+}
+
 /* custom splash screen */
 .splash {
     background-image: url("../images/logo-inverted.svg");

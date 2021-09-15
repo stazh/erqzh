@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <app-toolbar class="toolbar" sticky="sticky">
-    <a href="${app}/index.html?collection=${collection}" data-i18n="[title]browse.${collection}.title" title=""
-        data-template="pages:parse-params">
+    <a href="${app}/index.html?collection=${collection}"
+        data-template="pages:parse-params" id="browseToParentCollection">
         <paper-icon-button icon="icons:folder-open"></paper-icon-button>
+        <span data-template="app:collection-title"/>
     </a>
-    <!-- paper-icon-button id="tocToggle" class="toc-toggle" icon="icons:view-list"/-->
+    <pb-popover for="browseToParentCollection" theme="light-border">
+        <pb-i18n key="browse.up"/>
+        <span data-template="app:collection-title"/>
+    </pb-popover>
+
     <pb-toggle-feature class="toolbar-button__label" name="mode" properties-on='{"odd": "rqzh-norm"}' properties-off='{"odd": "rqzh"}' default="off" init-from-view="init-from-view"
         emit="transcription" subscribe="transcription"
         data-i18n="[title]view-switch" title=""><pb-i18n key="view-normalized"></pb-i18n></pb-toggle-feature>

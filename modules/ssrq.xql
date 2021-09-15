@@ -366,3 +366,13 @@ function app:short-header-link($node as node(), $model as map(*)) {
         else ()
     )
 };
+
+declare
+    %templates:wrap
+function app:collection-title($node as node(), $model as map(*)) {
+    let $collection-title := substring-before($model?doc, '/')
+    return (
+       ' ' || $collection-title
+    )
+};
+
