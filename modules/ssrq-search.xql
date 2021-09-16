@@ -239,7 +239,7 @@ declare function query:filter($hits as element()*) {
                             return
                                 $c
                         case "filter-language" return
-                            $context[ancestor-or-self::tei:TEI/@xml:lang = $value]
+                            $context[ancestor-or-self::tei:TEI//tei:textLang = $value]
                         case "filter-condition" return
                             if ($value = "yes") then
                                 $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition]
