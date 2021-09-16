@@ -1244,10 +1244,13 @@
                         return $link'/>
                         <pb:template xmlns="" xml:space="preserve">
                             <div>
-                                <pb-link path="[[target]]" emit="transcription" class="part-nav">
+                                <pb-link id="prev" path="[[target]]" emit="transcription" class="part-nav">
                                     <iron-icon icon="icons:chevron-left"/>
-                                    <pb-i18n class="tooltip" key="navigation.prev"/>
+                                    <pb-i18n class="sr-only" key="navigation.prev"/>
                                 </pb-link>
+                                <pb-popover for="prev" theme="light-border">
+                                    <pb-i18n class="tooltip" key="navigation.prev"/>
+                                </pb-popover>
                             </div>
                         </pb:template>
                     </model>
@@ -1278,10 +1281,13 @@
                         return $link'/>
                         <pb:template xmlns="" xml:space="preserve">
                             <div>
-                                <pb-link path="[[target]]" emit="transcription" class="part-nav">
-                                    <pb-i18n class="tooltip" key="navigation.next"/>
+                                <pb-link id="next" path="[[target]]" emit="transcription" class="part-nav">
+                                    <pb-i18n class="sr-only" key="navigation.next"/>
                                     <iron-icon icon="icons:chevron-right"/>
                                 </pb-link>
+                                <pb-popover for="next" theme="light-border">
+                                    <pb-i18n class="tooltip" key="navigation.next"/>
+                                </pb-popover>
                             </div>
                         </pb:template>
                     </model>

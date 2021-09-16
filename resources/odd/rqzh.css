@@ -207,3 +207,6 @@ pb-i18n[key="by"]::after {
     padding: 10px 0;
 }
 
+.sr-only {
+    display: none;
+}
