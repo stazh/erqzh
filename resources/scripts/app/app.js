@@ -100,6 +100,32 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  /**
+   * Retrieve search parameters from URL
+   */
+  function getUrlParameter(sParam) {
+    let urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(sParam);
+  }
+
+  /**
+   * Retrieve current parameter value of language filter
+   */
+  function getLanguageFilters() {
+    let languageFilterValue = getUrlParameter('filter-language');
+    return languageFilterValue.toString();
+  }
+
+  /**
+   * Check for active language filter params in URL and check the according checkboxes
+   */
+  document.querySelectorAll(".filter-language-input").forEach((item) => {
+    let languagesSelected = getLanguageFilters();
+    if (languagesSelected.includes(item.value)) {
+      item.setAttribute("checked", "checked");
+    }
+  });
+
   const bearbeitungstext = document.getElementById("bearbeitungstext");
   if (bearbeitungstext) {
     bearbeitungstext.addEventListener("iron-change", (ev) => {
