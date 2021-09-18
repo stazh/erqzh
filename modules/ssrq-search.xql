@@ -385,6 +385,21 @@ declare function query:highlight-annotations($nodes as node()*, $ids as xs:strin
             default return $node
 };
 
+(:~
+    Display an info text in case there are no search results, otherwise, the results pane will be rendered empty
+:)
+declare
+    %templates:replace
+function query:show-no-results-info($node as node()*, $model as map(*)) {
+    let $result := count($model?hits)
+    let $success := $result > 0
+    return
+        if ($success)
+        then ()
+        else (
+            <p><pb-i18n key="no-search-results">Ihre Suche erzielte keinen Treffer.</pb-i18n></p>
+        )
+};
 
 (:~
     Output the actual search result as a div, using the kwic module to summarize full text matches.

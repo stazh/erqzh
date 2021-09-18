@@ -82,6 +82,7 @@
     "upload": "Dateien auswählen...",
     "drop": "TEI XML oder ODD files hinzufügen. Klicke auf den Button oben oder ziehe Dateien darauf."
   },
+  "no-search-results": "Ihre Suche erzielte keinen Treffer.",
   "zitation": "Zitation: ",
   "lizenz": "Lizenz: ",
   "by": "von"

@@ -81,6 +81,7 @@
     "upload": "Select files...",
     "drop": "Upload TEI XML or ODD files into the test document set. Click on the button above or drag&amp;drop files on it."
   },
+  "no-search-results": "[EN] Ihre Suche erzielte keinen Treffer.",
   "zitation": "Citation: ",
   "lizenz": "Licence: ",
   "by": "by "
