@@ -113,7 +113,7 @@ window.addEventListener("DOMContentLoaded", () => {
    */
   function getLanguageFilters() {
     let languageFilterValue = getUrlParameter('filter-language');
-    return languageFilterValue.toString();
+    return languageFilterValue;
   }
 
   /**
