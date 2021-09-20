@@ -157,17 +157,23 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  /**
+   * Trigger for print icon (only available in TEI document templates)
+   * Will redirect to a printable HTML page of the document
+   */
   const openPrintDialog = document.getElementById("openPrintDialog");
-  openPrintDialog.addEventListener("click", () => {
-    let currentOrigin = window.location.origin.toString();
-    let currentPath = window.location.pathname.toString();
-    let docPath = currentPath.replace(/^.*\/([^/]+\/.*)$/, "$1");
-    let urlPart = currentPath.replace(/^(.*)\/[^/]+\/.*$/, "$1");
-    let updatedDocPath = docPath.replace("/", "%2F");
-    let newUrl = `${urlPart}/api/document/${updatedDocPath}/html?odd=rqzh-norm.odd`;
-    console.log(newUrl);
-    window.open(newUrl);
-  });
+  if (openPrintDialog) {
+    openPrintDialog.addEventListener( "click", () => {
+      let currentOrigin = window.location.origin.toString();
+      let currentPath = window.location.pathname.toString();
+      let docPath = currentPath.replace( /^.*\/([^/]+\/.*)$/, "$1" );
+      let urlPart = currentPath.replace( /^(.*)\/[^/]+\/.*$/, "$1" );
+      let updatedDocPath = docPath.replace( "/", "%2F" );
+      let newUrl = `${urlPart}/api/document/${updatedDocPath}/html?odd=rqzh-norm.odd`;
+      //console.log( newUrl );
+      window.open( newUrl );
+    } )
+  }
 
   /**
    * Get the current status of pb-facsimile (loaded or not)
