@@ -49,7 +49,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tei-summary {
-    margin: 1rem 0;
+    margin: 0 0 1rem;
     padding: 0 0 0 1.7rem;
 }
 
