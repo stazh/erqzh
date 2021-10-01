@@ -372,7 +372,7 @@ declare
 function app:collection-title($node as node(), $model as map(*)) {
     let $collection-title := substring-before($model?doc, '/')
     return (
-       ' ' || $collection-title
+       common:format-id($collection-title)
     )
 };
 
