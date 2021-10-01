@@ -654,52 +654,69 @@
                         <desc>If followed by an lb, process the lb first, then the pb</desc>
                         <param name="content" value="(following-sibling::lb[1], $node)"/>
                     </model>
-                    <modelSequence output="web">
-                        <model predicate="@facs" behaviour="webcomponent">
-                            <desc>Facsimile image links will be extracted via javascript</desc>
-                            <param name="facs" value="@facs"/>
+                    <modelGrp output="web">
+                        <model predicate="ancestor::body and not(preceding::pb[ancestor::body])" behaviour="webcomponent">
+                            <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
+                            <param name="facs" value="normalize-space(@facs)"/>
                             <param name="name" value="'pb-facs-link'"/>
                             <outputRendition xml:space="preserve">
                                 display: none;
                             </outputRendition>
                         </model>
-                        <modelGrp>
-                            <model predicate="ancestor::body and not(preceding::pb[ancestor::body])" behaviour="omit">
-                                <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
-                            </model>
-                            <model predicate="not(@n)" behaviour="alternate" cssClass="pb-empty">
-                                <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
-                                <param name="default" value="'|'"/>
-                                <param name="alternate" value="ec:label('pb')"/>
-                            </model>
-                            <model predicate="@n and matches(@n, '[vr]$')" behaviour="alternate"
-                                   cssClass="pb-foliation">
-                                <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains
-                                    a number+string combination
-                                </desc>
-                                <param name="default" value="'[fol. ' || @n || ']'"/>
-                                <param name="alternate" value="ec:label('pb')"/>
-                            </model>
-                            <model predicate="@n" behaviour="inline" cssClass="pb-pagination">
-                                <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only
-                                    contains a number
-                                </desc>
-                                <param name="content" value="('[', ec:label('page-abbr', false()), ' ', @n, '] ')"/>
-                                <param name="facs" value="@facs"/>
-                                <param name="alternate" value="ec:label('pb')"/>
-                                <pb:template xmlns="" xml:space="preserve">
-                                    <a href="#">
-                                    <pb-facs-link facs="[[facs]].ptif" emit="transcription" trigger="click">
-                                        <pb-popover>
-                                            [[content]]
-                                            <template slot="alternate">[[alternate]]</template>
-                                        </pb-popover>
-                                    </pb-facs-link>
-                                    </a>
-                                </pb:template>
-                            </model>
-                        </modelGrp>
-                    </modelSequence>
+                        <model predicate="not(@n)" behaviour="pass-through" cssClass="pb-empty">
+                            <desc>Show tooltip on pagebreaks that don't contain attributes</desc>
+                            <param name="content" value="'|'"/>
+                            <param name="alternate" value="ec:label('pb')"/>
+                            <param name="facs" value="normalize-space(@facs)"/>
+                            <pb:template xmlns="" xml:space="preserve">
+                                <a href="#">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click">
+                                    <pb-popover>
+                                        [[content]]
+                                        <template slot="alternate">[[alternate]]</template>
+                                    </pb-popover>
+                                </pb-facs-link>
+                                </a>
+                            </pb:template>
+                        </model>
+                        <model predicate="@n and matches(@n, '[vr]$')" behaviour="pass-through"
+                                cssClass="pb-foliation">
+                            <desc>Show pagebreak with a label, if pb contains a @n attribute and its value contains
+                                a number+string combination
+                            </desc>
+                            <param name="content" value="'[fol. ' || @n || ']'"/>
+                            <param name="alternate" value="ec:label('pb')"/>
+                            <param name="facs" value="normalize-space(@facs)"/>
+                            <pb:template xmlns="" xml:space="preserve">
+                                <a href="#">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click">
+                                    <pb-popover>
+                                        [[content]]
+                                        <template slot="alternate">[[alternate]]</template>
+                                    </pb-popover>
+                                </pb-facs-link>
+                                </a>
+                            </pb:template>
+                        </model>
+                        <model predicate="@n" behaviour="inline" cssClass="pb-pagination">
+                            <desc>Show pagebreak with a label, if pb contains a @n attribute and its value only
+                                contains a number
+                            </desc>
+                            <param name="content" value="('[', ec:label('page-abbr', false()), ' ', @n, '] ')"/>
+                            <param name="facs" value="normalize-space(@facs)"/>
+                            <param name="alternate" value="ec:label('pb')"/>
+                            <pb:template xmlns="" xml:space="preserve">
+                                <a href="#">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click">
+                                    <pb-popover>
+                                        [[content]]
+                                        <template slot="alternate">[[alternate]]</template>
+                                    </pb-popover>
+                                </pb-facs-link>
+                                </a>
+                            </pb:template>
+                        </model>
+                    </modelGrp>
                 </elementSpec>
                 <elementSpec ident="q" mode="change">
                     <model behaviour="inline">
