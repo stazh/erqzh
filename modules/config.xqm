@@ -341,7 +341,7 @@ declare variable $config:session-prefix := $config:expath-descriptor/@abbrev/str
 
 declare variable $config:default-fields := ();
 
-declare variable $config:iiif-base-uri := 'https://apps.existsolutions.com/cantaloupe/iiif/2/rqzh!';
+declare variable $config:iiif-base-uri := 'https://apps.existsolutions.com/cantaloupe/iiif/2/erqzh!';
 
 declare variable $config:dts-collections := map {
     "id": "default",
