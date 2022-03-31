@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <html lang="de">
 <head>
     <meta charset="utf-8"/>
@@ -89,9 +90,9 @@
                         <pb-facsimile class="document-grid__item facsimile" base-uri="https://apps.existsolutions.com/cantaloupe/iiif/2/erqzh!" subscribe="transcription"></pb-facsimile>
 
                         <aside class="document-grid__item register">
-                            <pb-load id="register" url="api/register/{doc}" expand="expand" src="document1" emit="register">
-                                <pb-i18n key="dialogs.loading"/>
-                            </pb-load>
+                            <pb-view id="register" src="document1" subscribe="transcription" emit="register" view="single">
+                                <pb-param name="header" value="context"/>
+                            </pb-view>
                         </aside>
 
                     </div>
@@ -102,7 +103,7 @@
                 <pb-view class="footer-button footer-button-prev" src="document1" subscribe="transcription" view="single" xpath="//teiHeader">
                     <pb-param name="mode" value="footer-prev"/>
                 </pb-view>
-                <pb-view class="footer-button footer-button-next"  src="document1" subscribe="transcription" view="single" xpath="//teiHeader">
+                <pb-view class="footer-button footer-button-next" src="document1" subscribe="transcription" view="single" xpath="//teiHeader">
                     <pb-param name="mode" value="footer-next"/>
                 </pb-view>
             </footer>

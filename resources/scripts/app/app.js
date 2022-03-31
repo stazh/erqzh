@@ -2,24 +2,24 @@ window.addEventListener("DOMContentLoaded", () => {
   const register = document.getElementById("register");
   let blocks = [];
 
-  pbEvents.subscribe("pb-start-update", ["transcription", "metadata"], () => {
-    register.innerHTML = 'Lade ...';
-    if (blocks.length === 2) {
-      blocks = [];
-    }
-  });
+//   pbEvents.subscribe("pb-start-update", ["transcription", "metadata"], () => {
+//     register.innerHTML = 'Lade ...';
+//     if (blocks.length === 2) {
+//       blocks = [];
+//     }
+//   });
 
   // wait for the transcription and metadata pb-view to update and remember its content root
-  pbEvents.subscribe("pb-update", "transcription", (ev) => {
-    document.body.setAttribute(
-      "data-view",
-      ev.detail.data.odd === "rqzh-norm.odd" ? "normalized" : "diplomatic"
-    );
-    blocks.push(ev.detail.root);
-    if (blocks.length === 2) {
-      register.load();
-    }
-  });
+//   pbEvents.subscribe("pb-update", "transcription", (ev) => {
+//     document.body.setAttribute(
+//       "data-view",
+//       ev.detail.data.odd === "rqzh-norm.odd" ? "normalized" : "diplomatic"
+//     );
+//     blocks.push(ev.detail.root);
+//     if (blocks.length === 2) {
+//       register.load();
+//     }
+//   });
   pbEvents.subscribe("pb-update", "metadata", (ev) => {
     const credits = ev.detail.root.querySelector("#credits");
     const creditsTarget = document.getElementById("credits");
@@ -57,48 +57,48 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // wait until register content has been loaded, then walk trough the transcription
   // and extend all persName, placeName etc. popovers with the additional information
-  pbEvents.subscribe("pb-end-update", "register", (ev) => {
-    document.querySelectorAll(".register li[data-ref]").forEach((li) => {
-      const id = li.getAttribute("data-ref");
-      findPopovers(id, (ref) => {
-        // is it a popover?
-        if (ref.alternate) {
-          // check if it is a nested popover: target will be in one of the list items
-          const inList = ref.alternate.querySelector(`li[data-ref^="${id}"]`);
-          if (inList) {
-            inList.appendChild(document.createTextNode(li.textContent));
-          } else {
-            ref.alternate.appendChild(document.createTextNode(li.textContent));
-          }
-        } else {
-          ref.appendChild(document.createTextNode(li.textContent));
-        }
-        // click on reference should open database entry in new tab
-        ref.addEventListener("click", () => {
-          li.querySelector("div a").click();
-        });
-      });
-      // scribes are handled separately:
-      find(`.scribe[data-ref^="${id}"]`, function (span) {
-        span.innerHTML = li.textContent;
-      });
+//   pbEvents.subscribe("pb-end-update", "register", (ev) => {
+//     document.querySelectorAll(".register li[data-ref]").forEach((li) => {
+//       const id = li.getAttribute("data-ref");
+//       findPopovers(id, (ref) => {
+//         // is it a popover?
+//         if (ref.alternate) {
+//           // check if it is a nested popover: target will be in one of the list items
+//           const inList = ref.alternate.querySelector(`li[data-ref^="${id}"]`);
+//           if (inList) {
+//             inList.appendChild(document.createTextNode(li.textContent));
+//           } else {
+//             ref.alternate.appendChild(document.createTextNode(li.textContent));
+//           }
+//         } else {
+//           ref.appendChild(document.createTextNode(li.textContent));
+//         }
+//         // click on reference should open database entry in new tab
+//         ref.addEventListener("click", () => {
+//           li.querySelector("div a").click();
+//         });
+//       });
+//       // scribes are handled separately:
+//       find(`.scribe[data-ref^="${id}"]`, function (span) {
+//         span.innerHTML = li.textContent;
+//       });
 
-      const checkbox = li.querySelector("paper-checkbox");
-      checkbox.addEventListener("change", () => {
-        findPopovers(id, (ref) => {
-          if (checkbox.checked) {
-            ref.classList.add("highlight");
-            const collapse = ref.closest("pb-collapse");
-            if (collapse) {
-              collapse.open();
-            }
-          } else {
-            ref.classList.remove("highlight");
-          }
-        });
-      });
-    });
-  });
+//       const checkbox = li.querySelector("paper-checkbox");
+//       checkbox.addEventListener("change", () => {
+//         findPopovers(id, (ref) => {
+//           if (checkbox.checked) {
+//             ref.classList.add("highlight");
+//             const collapse = ref.closest("pb-collapse");
+//             if (collapse) {
+//               collapse.open();
+//             }
+//           } else {
+//             ref.classList.remove("highlight");
+//           }
+//         });
+//       });
+//     });
+//   });
 
   /**
    * Retrieve search parameters from URL
