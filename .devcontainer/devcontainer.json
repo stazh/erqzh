@@ -4,7 +4,9 @@
         "dockerfile": "Dockerfile.dev",
         "args": {
             "HTTP_PORT": "8080",
-            "HTTPS_PORT": "8443"
+            "HTTPS_PORT": "8443",
+            "GITHUB_USER": "wolfgangmm",
+            "GITHUB_TOKEN": "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"
         }
     },
     "forwardPorts": [ 8080 ],
