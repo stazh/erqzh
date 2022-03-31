@@ -283,6 +283,15 @@ declare variable $config:data-root := "/db/apps/rqzh-data";
 
 declare variable $config:temp-root := "/db/apps/rqzh-data/temp";
 
+(: Storage file for external metadata "Register" /db/apps/rqzh-data/register-data.xml :)
+declare variable $config:person-id-file-name := 'person-Id-data.xml';
+declare variable $config:key-id-file-name := 'key-Id-data.xml';
+declare variable $config:place-id-file-name := 'place-Id-data.xml';
+declare variable $config:organization-id-file-name := 'organization-Id-data.xml';
+
+declare variable $config:metadata-file-name := 'register-data.xml';
+declare variable $config:metadata-file := doc($config:data-root || '/' || $config:metadata-file-name);
+
 (:~
  : The root of the collection hierarchy whose files should be displayed
  : on the entry page. Can be different from $config:data-root.
