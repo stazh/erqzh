@@ -1227,7 +1227,7 @@
                                         <h4 class="block-title accordion">
                                             <pb-i18n key="meta.metadata"/>
                                         </h4>
-                                    </div>s
+                                    </div>
                                     <div id="sourceDesc" slot="collapse-content">[[content]]</div>
                                 </pb-collapse>
                             </pb:template>
