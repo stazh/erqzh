@@ -490,7 +490,7 @@ declare function config:get-document($idOrName as xs:string) {
     else if (starts-with($idOrName, '/')) then
         doc(xmldb:encode-uri($idOrName))
     else
-        doc(xmldb:encode-uri($config:data-root || "/" || $idOrName))
+        doc(xmldb:encode-uri($config:data-root || "/" || $idOrName || ".xml"))
 };
 
 (:~
