@@ -62,7 +62,7 @@
   "title": "Title",
   "to": "bis",
   "view-switch": "Switch between normalized and diplomatic view",
-  "view-normalized": "Normalized",
+  "view-normalized": "Normalized text with register",
   "volume": "Volume",
   "work-id": "Part Number",
   "register": {
