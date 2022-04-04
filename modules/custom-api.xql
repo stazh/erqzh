@@ -132,3 +132,30 @@ declare function api:html($request as map(*)) {
         else
             error($errors:BAD_REQUEST, "No document specified")
 };
+
+declare function api:timeline($request as map(*)) {
+    let $entries := session:get-attribute($config:session-prefix || '.hits')
+    let $datedEntries := filter($entries, function($entry) {
+            let $date := ft:field($entry, "notBefore", "xs:date")
+            return
+                exists($date) and year-from-date($date) != 1000
+        })
+    let $undatedEntries := $entries except $datedEntries
+    return
+        map:merge((
+            for $entry in $datedEntries
+            group by $date := ft:field($entry, "notBefore", "xs:date")
+            return
+                map:entry(format-date($date, "[Y0001]-[M01]-[D01]"), map {
+                    "count": count($entry),
+                    "info": ''
+                }),
+            if ($undatedEntries) then
+                map:entry("?", map {
+                    "count": count($undatedEntries),
+                    "info": ''
+                })
+            else
+                ()
+        ))
+};

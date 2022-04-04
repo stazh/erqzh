@@ -21,6 +21,8 @@ body {
     --pb-heading-font-family: "Oswald", Verdana, "Helvetica", sans-serif;
     --pb-heading-font-weight: 400 !important;
     --pb-heading-line-height: 1.2;
+    --pb-font-size-small: 0.8rem;
+    --pb-font-size-smallest: 0.64em;
     --pb-breadcrumbs-font-size: 18px;
     --pb-color-primary: #303030;
     --pb-color-inverse: #FFFFFF;

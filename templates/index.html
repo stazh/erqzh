@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="resources/css/theme.css"/>
     <link rel="stylesheet" href="resources/css/theme-rqzh.css"/>
     <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
+    <script src="resources/scripts/app/index.js"></script>
     <custom-style>
         <style>
 
@@ -213,6 +214,11 @@
             pb-i18n[key="by"]::after {
                 content: ' ';
             }
+
+            .timeline {
+                --pb-timeline-padding: 0 20px;
+                margin-bottom: 20px;
+            }
         </style>
     </custom-style>
 </head>
@@ -250,9 +256,22 @@
 
                                 <div class="card-content card-padding">
                                     <div class="browse" slot="page">
-                                        <pb-browse-docs id="document-list" url="api/collection/" sort-options="[{&#34;label&#34;: &#34;browse.orig-date&#34;, &#34;value&#34;: &#34;idno&#34;},{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;}]" sort-by="idno" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" filter-by="title" auto="auto" history="history" login="login" emit="docs" subscribe="docs">
+                                        <pb-browse-docs id="document-list" url="api/collection/" 
+                                            sort-options="[{&#34;label&#34;: &#34;browse.orig-date&#34;, &#34;value&#34;: &#34;idno&#34;},{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;}]" 
+                                            sort-by="idno" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" 
+                                            filter-by="title" auto="auto" history="history" login="login" subforms="#options" emit="docs" subscribe="docs">
+                                            <div slot="header" class="timeline">
+                                                <pb-timeline url="api/timeline" scopes='["D", "M", "Y", "5Y", "10Y"]'
+                                                    resettable=""
+                                                    subscribe="docs" emit="timeline">
+                                                    <span slot="label">Angezeigter Zeitraum: </span>
+                                                </pb-timeline>
+                                            </div>
                                             <pb-paginate slot="toolbar" id="paginate" per-page="20" range="5" emit="docs" subscribe="docs"/>
                                         </pb-browse-docs>
+                                        <pb-custom-form id="options" emit="docs" style="display: none">
+                                            <input slot="searchButtonBottom" type="hidden" name="dates" value="" data-template="templates:form-control"/>
+                                        </pb-custom-form>
                                     </div>
                                 </div>
                             </main>

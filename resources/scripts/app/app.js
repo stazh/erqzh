@@ -1,7 +1,6 @@
 window.addEventListener("DOMContentLoaded", () => {
   const register = document.getElementById("register");
 
-  // wait for the transcription and metadata pb-view to update and remember its content root
   pbEvents.subscribe("pb-update", "transcription", (ev) => {
     document.body.setAttribute(
       "data-view",

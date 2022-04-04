@@ -77,6 +77,10 @@ body {
     --rqzh-link-color: var(--pb-brand-color);
     --pb-logo-image-width: 70px;
     --pb-logo-image-height: 48px;
+    --pb-timeline-color-highlight: var(--pb-color-focus);
+    --pb-timeline-background-color-title: var(--pb-menubar-background-color);
+    --pb-timeline-title-font-size: var(--pb-font-size-small);
+    --pb-timeline-tooltip-font-size: var(--pb-font-size-small);
     color: var(--pb-color-primary);
 }
 
@@ -796,6 +800,11 @@ pb-view {
     font-weight: 300;
     color: var(--pb-color-primary);
     font-family: var(--pb-base-font-family);
+}
+
+/*************** timeline ******************/
+pb-timeline::part(tooltip-link)  {
+    color: var(--pb-color-inverse);
 }
 
 /*************** VIEW.html *****************/
