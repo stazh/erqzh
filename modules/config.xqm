@@ -507,7 +507,7 @@ declare function config:get-id($node as node()) {
  declare function config:get-relpath($node as node()) {
      let $root := if (ends-with($config:data-root, "/")) then $config:data-root else $config:data-root || "/"
      return
-         substring-after(document-uri(root($node)), $root)
+         substring-before(substring-after(document-uri(root($node)), $root), '.xml')
  };
 
 declare function config:get-identifier($node as node()) {
