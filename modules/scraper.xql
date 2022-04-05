@@ -17,7 +17,7 @@ declare variable $scraper:taxonomy := "taxonomy";
 declare variable $scraper:place := "place";
 declare variable $scraper:person := "person";
 
-declare variable $scraper:blacklist := ("per001535", "per013523", "per014195", "per023953","per024601","per026014","per026513", "per026513", "per027014", "per027107","per027180","per027178","per027183", "per027341","per027408","per027478","per027477","per027566","per027567");
+declare variable $scraper:blacklist := ("per001535", "per013523", "per014195", "per023953","per024601","per026014","per026513", "per026513", "per027014", "per027107","per027180","per027178","per027183", "per027341","per027408","per027478","per027477","per027566","per027567","per028081","per027587","per0275921","per028140", "per028188","per028914","per028982","per029333","per029464","per027623","per027670","per027671");
 
 
 declare variable $scraper:json-serialization-options := 

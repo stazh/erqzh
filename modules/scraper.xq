@@ -15,9 +15,17 @@ import module namespace scraper="http://existsolutions.com/rqzsh/scraper" at "sc
 (: scraper:persons-all(10):)
 (:scraper:generate-persons():)
 (:batch:generate-and-store-person-id-batches(10):)
-(:scraper:download-persons-batch-number(276):)
+(: for $number in 290 to 329:)
+(:    return:)
+(:        scraper:download-persons-batch-number($number):)
+(:(:scraper:download-persons-batch-from(282):):)
+(:scraper:download-persons-batch-number(285):)
+
 (:scraper:analyze-json-batches():)
-scraper:download-persons-batch-from(282)
+ let $errors := scraper:analyze-json-batches()
+ return
+     string-join($errors[@category="organization"]//error/text(),",")
+
 
 (: TAXONOMIES  :)
  
