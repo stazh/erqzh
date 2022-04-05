@@ -84,19 +84,20 @@ declare function batch:generate-and-store-person-id-batches($items-per-batch) {
  : small batches for better post-processing
  :)
 declare function batch:get-person-ids($items-per-sequence) {
-    let $unsorted-person-ids :=
-        collection($config:data-root)//tei:persName/@ref |
-        collection($config:data-root)//@scribe[starts-with(., 'per')]
+    let $unsorted-person-ids := (
+        collection($config:data-root)//tei:persName/@ref/string(),
+        collection($config:data-root)//@scribe[starts-with(., 'per')]/string()
+    )
     
     let $sorted-person-ids :=
         for $person-id in $unsorted-person-ids
             group by $person-id
             order by $person-id
                 return
-                    $person-id/string()
+                    $person-id[1]
     
     return
-        batch:generate-entry(distinct-values($sorted-person-ids), $items-per-sequence)
+        batch:generate-entry($sorted-person-ids, $items-per-sequence)
 };
 
 declare function batch:generate-and-store-place-id-batches($items-per-batch) {

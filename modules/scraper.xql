@@ -17,7 +17,7 @@ declare variable $scraper:taxonomy := "taxonomy";
 declare variable $scraper:place := "place";
 declare variable $scraper:person := "person";
 
-declare variable $scraper:blacklist := ("per001535");
+declare variable $scraper:blacklist := ("per001535", "per013523", "per014195", "per023953","per024601","per026014","per026513", "per026513", "per027014", "per027107","per027180","per027178","per027183", "per027341","per027408","per027478","per027477","per027566","per027567");
 
 
 declare variable $scraper:json-serialization-options := 
@@ -33,7 +33,7 @@ declare function scraper:all() {
     scraper:persons-all($batch:ITEMS-PER-BATCH-DEFAULT),
     scraper:taxonomy-all($batch:ITEMS-PER-BATCH-DEFAULT)
 };
-declare function scraper:rescraper-errors() {
+declare function scraper:analyze-json-batches() {
     scraper:analyze-json($scraper:person), 
     scraper:analyze-json($scraper:organization)
 };
@@ -108,9 +108,13 @@ declare function scraper:analyze-json($category) {
                     
             ) else ()
         )
+    let $sorted-errors := for $error in $batch-errors
+                            order by $error/@file
+                            return 
+                                $error
     return
         <errors category="{$category}">
-            {$batch-errors}
+            {$sorted-errors}
         </errors>
         
 };
@@ -249,6 +253,27 @@ declare function scraper:download-persons() {
             return
                 scraper:process-batch-json($scraper:person, $batch, $index)
 };
+declare function scraper:download-persons-batch-number($batch as xs:integer*) {
+    for $number in $batch 
+        return
+            scraper:download-persons-batch-from-to($number,$number)
+};
+
+declare function scraper:download-persons-batch-from($start as xs:integer) {
+    scraper:download-persons-batch-from-to($start, ())
+};
+declare function scraper:download-persons-batch-from-to($start as xs:integer, $end as xs:integer?) {
+    let $rows := doc($config:temp-root || '/' || $config:person-id-file-name)//row
+    let $last := if($end) then ($end) else (count($rows))
+    return
+        for $batch at $index in $rows
+            return
+                if($index >= $start and $index <= $last)
+                then (
+                    scraper:process-batch-json($scraper:person, $batch, $index)
+                ) else ()
+
+};
 
 declare function scraper:generate-persons() {
     let $resources := xmldb:get-child-resources($config:temp-root || "/" || $scraper:person)
@@ -331,11 +356,30 @@ declare function scraper:generate-places() {
 
 declare function scraper:conv-place($info){
     let $id := $info/@id
-    let $placeName := $info/stdName/text()
+    let $short-name := $info/stdName/text()
+    let $location := 
+        if(string-length( $info/location/text() ) > 0 ) 
+        then ( "(" || $info/location/text() || ")" ) else ()
+    let $types := string-join($info/type/text(), ", ")
+    let $long-name := $location || " " || $types 
+    let $regions := for $region in $info/region
+                        return
+                            <region xmlns="http://www.tei-c.org/ns/1.0">{$region/text()}</region>
+    
+    let $trait-types := for $type in $info/type
+                    return
+                        <trait xmlns="http://www.tei-c.org/ns/1.0" type="type"><label>{$type/text()}</label></trait>
+                                       
 (:    let $log := util:log("info", "id: " || $id || " - name: " || $placeName):)
     return
-        <place xmlns="http://www.tei-c.org/ns/1.0" xml:id="{$id}">
-               <placeName type="main">{  $placeName }</placeName>
+        <place xmlns="http://www.tei-c.org/ns/1.0" xml:id="{$id}" n="{$short-name}">
+               <placeName type="main">{$short-name}</placeName>
+               <placeName type="add">{$long-name}</placeName>
+               {$regions}
+               {$trait-types}
+               <location>
+                    <geo></geo>
+                </location>
         </place>
 };
 
