@@ -143,7 +143,7 @@
         <paper-dialog id="query-help-dialog">
             <h2><pb-i18n key="help-title">Erläuterungen zur Suche</pb-i18n></h2>
             <paper-dialog-scrollable>
-                <pb-document id="help-text" path="help.xml" odd="rqzh"/>
+                <pb-document id="help-text" path="help" odd="rqzh"/>
                 <pb-view src="help-text" view="single" use-language="use-language" xpath="//div[@xml:lang=tokenize(request:get-parameter('user.language', ()), '-')[1] or @xml:lang='de'][1]">
                 </pb-view>
             </paper-dialog-scrollable>
