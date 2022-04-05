@@ -80,7 +80,7 @@ window.addEventListener("DOMContentLoaded", () => {
    */
   document.querySelectorAll(".filter-language-input").forEach((item) => {
     let languagesSelected = getLanguageFilters();
-    if (languagesSelected.includes(item.value)) {
+    if (languagesSelected && languagesSelected.includes(item.value)) {
       item.setAttribute("checked", "checked");
     }
   });
