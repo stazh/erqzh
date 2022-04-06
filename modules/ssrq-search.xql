@@ -529,13 +529,9 @@ declare function query:sort($items as element()*, $sortBy as xs:string?) {
         default return
             (: sort($items, (), ft:field(?, "idno")) :)
             for $item in $items
+            let $date := ft:field($item, 'date-min', 'xs:date')
             (: order by root($item)//tei:teiHeader/tei:fileDesc/tei:seriesStmt/tei:idno :)
-            order by 
-                try {
-                    xs:date(root($item)//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history/tei:origin/tei:origDate/(@when|@from))
-                } catch * {
-                    ()
-                }
+            order by $date
             return            
                 $item
 };
