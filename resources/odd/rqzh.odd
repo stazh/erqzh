@@ -786,7 +786,7 @@
             </model>
             <model behaviour="link" cssClass="header-short">
                 <param name="content" value="sourceDesc/msDesc/head"/>
-                <param name="link" value="substring-before($parameters?doc, '.xml')"/>
+                <param name="link" value="$parameters?doc"/>
             </model>
             <model behaviour="block" cssClass="header-short">
                 <param name="content" value="if (exists(sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then                                      ec:print-date(sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate)                                     else if (exists(sourceDesc/msDesc/history/origin/origDate)) then                                     ec:print-date(sourceDesc/msDesc/history/origin/origDate)                                    else                                       ()"/>
@@ -805,13 +805,12 @@
             <param name="stmtTitle" value="seriesStmt/title"/>
             <param name="fileDescTitle" value="ec:short-title(titleStmt/title)"/>
             <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
-            <pb:template xmlns="" xml:space="preserve">
-                            <h3>[[fileDescTitle]]</h3>
+            <param name="count" value="$parameters?count"/>
+            <pb:template xmlns="" xml:space="preserve"><h3>[[fileDescTitle]] <span class="count">[[count]]</span></h3>
                             <p>
                                 <pb-i18n key="by">von</pb-i18n>
                                 [[fileDescPerson]]
-                            </p>
-                        </pb:template>
+</p></pb:template>
         </model>
                     <model predicate="$parameters?view='metadata' and ends-with(util:document-name($get(.)), 'Einleitung.xml')" behaviour="block">
             <desc>Render page titles for TEI type "Introduction"</desc>
