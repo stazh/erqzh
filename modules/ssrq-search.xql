@@ -14,7 +14,7 @@ import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "nav
 import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
-
+import module namespace queryDef="http://www.tei-c.org/tei-simple/query" at "query.xql";
 
 declare variable $query:QUERY_OPTIONS :=
     <options>
@@ -61,7 +61,7 @@ function query:query($node as node()*, $model as map(*), $type as xs:string, $su
                     default return
                         query:query-api($type, $subtype, $query)
             else map {
-                "hits": query:filter(collection($config:data-root)/tei:TEI//tei:body)
+                "hits": query:filter(collection($config:data-root)//tei:body[ft:query(., 'type:document', queryDef:options(()))])
             }
         let $debug := util:log("info", "hits: " || count($hits))
         let $hitCount := count($hits?hits)
@@ -72,6 +72,7 @@ function query:query($node as node()*, $model as map(*), $type as xs:string, $su
         (:Store the result in the session.:)
         let $store := (
             session:set-attribute("ssrq", $hitsToShow),
+            session:set-attribute($config:session-prefix || '.hits', $hitsToShow),
             session:set-attribute("ssrq.hitCount", $hitCount),
             session:set-attribute("ssrq.query", $query),
             session:set-attribute("ssrq.type", $type),
@@ -99,28 +100,29 @@ declare function query:form-current-doc($node as node(), $model as map(*), $doc 
  : Editionstext durchsuchen
  :)
 declare function query:query-texts($subtypes as xs:string*, $query as xs:string) {
+    util:log('INFO', ("options: ", queryDef:options(()))),
     let $hits :=
         for $subtype in $subtypes
         return
             switch ($subtype)
                 case "title" return
-                    $query:DOCS//tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query, $query:QUERY_OPTIONS)]
+                    $query:DOCS//tei:teiHeader//tei:msDesc/tei:head[ft:query(., $query, queryDef:options(()))]
                 case "idno" return
-                    $query:DOCS//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno[ft:query(., $query, $query:QUERY_OPTIONS)]
+                    $query:DOCS//tei:teiHeader//tei:msDesc/tei:msIdentifier/tei:idno[ft:query(., $query, queryDef:options(()))]
                 case "regest" return
-                    $query:DOCS//tei:teiHeader//tei:msContents/tei:summary[ft:query(., $query, $query:QUERY_OPTIONS)]
+                    $query:DOCS//tei:teiHeader//tei:msContents/tei:summary[ft:query(., $query, queryDef:options(()))]
                 case "comment" return
-                    $query:DOCS//tei:back[ft:query(., $query, $query:QUERY_OPTIONS)]
+                    $query:DOCS//tei:back[ft:query(., $query, queryDef:options(()))]
                 case "notes" return
-                    $query:DOCS//tei:body//tei:note[ft:query(., $query, $query:QUERY_OPTIONS)] |
-                    $query:DOCS//tei:back//tei:note[ft:query(., $query, $query:QUERY_OPTIONS)]
+                    $query:DOCS//tei:body//tei:note[ft:query(., $query, queryDef:options(()))] |
+                    $query:DOCS//tei:back//tei:note[ft:query(., $query, queryDef:options(()))]
                 case "seal" return
-                    $query:DOCS//tei:teiHeader//tei:msDesc/tei:physDesc/tei:sealDesc/tei:seal[ft:query(., $query, $query:QUERY_OPTIONS)]
+                    $query:DOCS//tei:teiHeader//tei:msDesc/tei:physDesc/tei:sealDesc/tei:seal[ft:query(., $query, queryDef:options(()))]
                 (: Editionstext: body + orig in Kommentar und Fussnoten :)
                 default return
-                    $query:DOCS//tei:body[ft:query(., $query, $query:QUERY_OPTIONS)] |
-                    $query:DOCS//tei:back[.//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]] |
-                    $query:DOCS//tei:body[.//tei:note//tei:orig[ft:query(., $query, $query:QUERY_OPTIONS)]]
+                    $query:DOCS//tei:body[ft:query(., $query, queryDef:options(()))] |
+                    $query:DOCS//tei:back[.//tei:orig[ft:query(., $query, queryDef:options(()))]] |
+                    $query:DOCS//tei:body[.//tei:note//tei:orig[ft:query(., $query, queryDef:options(()))]]
     let $debug := util:log("info", "query:query-texts: $hits: " || count($hits))                    
 
     return
@@ -216,7 +218,7 @@ declare function query:api-filter-subtype($id as xs:string*, $type as xs:string,
  :)
 declare function query:filter($hits as element()*) {
     (: Entferne Dokumente ohne body :)
-    let $hits := $hits[root(.)//tei:text/tei:body/*]
+    let $hits := $hits intersect $query:DOCS//tei:body[ft:query(., 'type:document')]
     let $debug:= util:log("info", "query:filter hits: " || count($hits))
     (: let $debug:= util:log("warn", serialize($hits)) :)
     
@@ -224,7 +226,7 @@ declare function query:filter($hits as element()*) {
         fold-right(request:get-parameter-names()[starts-with(., 'filter-')], $hits, function($filter, $context) {
             let $value := filter(request:get-parameter($filter, ()), function($param) { $param != "" })
             return
-                if (exists($value)) then
+                if (exists($value) and $value != '') then
                     switch ($filter)
                         case "filter-period-min" return
                             let $dateMin := xs:date($value || "-01-01")

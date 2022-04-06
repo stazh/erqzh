@@ -29,15 +29,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function find(selector, callback) {
-    blocks.forEach((content) => {
-      content.querySelectorAll(selector).forEach(callback);
-      content.querySelectorAll("template").forEach((template) => {
-        template.content.querySelectorAll(selector).forEach(callback);
-      });
-    });
-  }
-
   // wait until register content has been loaded, then walk trough the transcription
   // and extend all persName, placeName etc. popovers with the additional information
   pbEvents.subscribe("pb-end-update", "register", (ev) => {

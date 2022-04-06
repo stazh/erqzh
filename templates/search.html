@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="resources/css/theme-rqzh.css"/>
 
         <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
+        <script src="resources/scripts/app/index.js"></script>
         <script src="resources/scripts/app/app.js"></script>
 
         <style>
@@ -201,11 +202,17 @@
                                     </h2>
                                 </div>
 
+                                <div class="card-padding">
+                                    <pb-timeline url="api/timeline" scopes='["D", "M", "Y", "5Y", "10Y"]'
+                                        resettable="" max-interval="80"
+                                        subscribe="docs" emit="timeline">
+                                        <span slot="label">Angezeigter Zeitraum: </span>
+                                    </pb-timeline>
+                                </div>
                                 <div class="search__toolbar card-padding">
+
                                     <pb-paginate per-page="20" range="5" subscribe="docs"/>
 
-
-                                    <pb-progress class="bottom-item" indeterminate="indeterminate" bottom-item="bottom-item"/>
                                     <pb-select id="sort-select" name="sort" data-i18n="[label]sorting" value="${sort}" data-template="pages:parse-params">
                                         <paper-item value="date"><pb-i18n key="browse.orig-date">Date</pb-i18n></paper-item>
                                         <paper-item value="idno"><pb-i18n key="work-id">Stücknummer</pb-i18n></paper-item>
@@ -218,6 +225,9 @@
                                     <app-toolbar class="bottom-pagination">
                                         <pb-paginate per-page="20" range="5" subscribe="docs"/>
                                     </app-toolbar>
+                                    <pb-custom-form id="options" emit="search" style="display: none">
+                                        <input slot="searchButtonBottom" type="hidden" name="dates" value="" data-template="templates:form-control"/>
+                                    </pb-custom-form>
                                 </div>
                             </main>
                             

@@ -128,16 +128,21 @@ declare function app:select-kanton() {
 declare function app:list-volumes($node as node(), $model as map(*), $root as xs:string?) {
     let $kanton := replace($model?root, "^/?(.*)$", "$1")
     for $volume in collection($config:data-root)/tei:TEI[@type='volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $kanton)]
-        let $order := $volume/@n
-        order by $order
-        return
+    let $order := $volume/@n
+    let $count := count($model?all intersect collection(util:collection-name($volume))//tei:TEI[ft:query(., 'type:document')])
+    order by $order
+    return
+        if ($count > 0) then
             <div class="volume">
                 <a href="#" data-collection="{substring-after(util:collection-name($volume), $config:data-root || "/")}">{ 
-                    $pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "view": "volumes" }, $config:odd) }</a>
+                    $pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "count": $count, "view": "volumes" }, $config:odd)
+                }</a>
                 {
                     session:set-attribute("ssrq.kanton", $kanton)
                 }
             </div>
+        else
+            ()
 };
 
 declare function app:api-lookup($api as xs:string, $list as map(*)*, $param as xs:string) {
