@@ -472,7 +472,7 @@
             <param name="content" value="."/>
             <param name="ref" value="@ref"/>
             <param name="label" value="ec:label('term')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/taxonomy/taxonomy.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$target/desc/string()}&lt;/a&gt;, if ($target/gloss) then( &lt;span&gt; ( {$target/gloss/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
+            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/taxonomy/taxonomy.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$target/desc/string()}&lt;/a&gt;, if ($target/gloss) then( &lt;span&gt; ({$target/gloss/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
   <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
 	[[value]]
@@ -483,7 +483,7 @@
             <param name="content" value="."/>
             <param name="ref" value="@ref"/>
             <param name="label" value="ec:label('term')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/taxonomy/taxonomy.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$target/desc/string()}&lt;/a&gt;, if ($target/gloss) then( &lt;span&gt; ( {$target/gloss/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
+            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/taxonomy/taxonomy.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$target/desc/string()}&lt;/a&gt;, if ($target/gloss) then( &lt;span&gt; ({$target/gloss/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
             <pb:template xmlns="" xml:space="preserve">
                             <pb-popover data-ref="[[ref]]">
                                 <span slot="default">[[content]]</span>
@@ -504,7 +504,7 @@
             <param name="content" value="."/>
             <param name="ref" value="@ref"/>
             <param name="label" value="ec:label('person')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/persName/string()}&lt;/a&gt;, if ($target/note) then( &lt;span&gt; ( {$target/note/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
+            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/persName/string()}&lt;/a&gt;, if ($target/note) then( &lt;span&gt; ({$target/note/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
   <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
 	[[value]]
@@ -515,7 +515,7 @@
             <param name="content" value="."/>
             <param name="ref" value="@ref"/>
             <param name="label" value="ec:label('person')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/persName/string()}&lt;/a&gt;, if ($target/note) then( &lt;span&gt; ( {$target/note/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
+            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/persName/string()}&lt;/a&gt;, if ($target/note) then( &lt;span&gt; ({$target/note/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
             <pb:template xmlns="" xml:space="preserve">
                             <pb-popover data-ref="[[ref]]">
                                 <span slot="default">[[content]]</span>
@@ -529,7 +529,7 @@
             <param name="context" value="."/>
             <param name="ref" value="@ref"/>
             <param name="label" value="ec:label('organisation')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/orgName/string()}&lt;/a&gt;, if ($target/@type) then( &lt;span&gt; ( {$target/@type/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
+            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/orgName/string()}&lt;/a&gt;, if ($target/@type) then( &lt;span&gt; ({$target/@type/string()})&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
   <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
 	[[value]]
@@ -540,7 +540,7 @@
             <param name="content" value="."/>
             <param name="ref" value="@ref"/>
             <param name="label" value="ec:label('organisation')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/orgName/string()}&lt;/a&gt;, if ($target/@type) then( &lt;span&gt; ( {$target/@type/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
+            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/orgName/string()}&lt;/a&gt;, if ($target/@type) then( &lt;span&gt; ({$target/@type/string()})&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
             <pb:template xmlns="" xml:space="preserve">
                             <pb-popover data-ref="[[ref]]">
                                 <span slot="default">[[content]]</span>
@@ -555,7 +555,7 @@
             <param name="content" value="."/>
             <param name="ref" value="@ref"/>
             <param name="label" value="ec:label('place')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$target/placeName[@type=&#34;main&#34;]/string()}&lt;/a&gt;, &lt;span&gt;{&#34; &#34; ||$target/placeName[@type=&#34;add&#34;]/string()}&lt;/span&gt;) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
+            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$target/placeName[@type=&#34;main&#34;]/string()}&lt;/a&gt;, &lt;span&gt;{&#34; &#34; || $target/placeName[@type=&#34;add&#34;]/string()}&lt;/span&gt;) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
   <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
 	[[value]]
@@ -566,7 +566,7 @@
             <param name="content" value="."/>
             <param name="label" value="ec:label('place')"/>
             <param name="ref" value="@ref"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$target/placeName[@type=&#34;main&#34;]/string()}&lt;/a&gt;, &lt;span&gt;{&#34; &#34; ||$target/placeName[@type=&#34;add&#34;]/string()}&lt;/span&gt;) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
+            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$target/placeName[@type=&#34;main&#34;]/string()}&lt;/a&gt;, &lt;span&gt;{&#34; &#34; || $target/placeName[@type=&#34;add&#34;]/string()}&lt;/span&gt;) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
             <pb:template xmlns="" xml:space="preserve">
                             <pb-popover data-ref="[[ref]]">
                                 <span slot="default">[[content]]</span>
