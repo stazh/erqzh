@@ -93,7 +93,7 @@ declare function pmf:ref-link($target as xs:string?, $collection as xs:string?) 
         then (
             let $volume-name := substring-after($target, 'detail')
             let $collection-name := substring-after($collection, $config:data-root)
-            let $new-href := concat('..', $collection-name, $volume-name, '.xml')
+            let $new-href := concat('..', $collection-name, $volume-name)
             let $log := util:log('debug', 'pmf:ref-link, $collection-name=' || $collection-name)
             return
                 $new-href
