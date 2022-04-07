@@ -11,17 +11,17 @@ window.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll('[name=dates]').forEach(input => { input.value = categories.join(';') });
         facets.submit();
 
-        timeRangeLabel.innerHTML = ev.detail.label;
+        timeRangeLabel.innerHTML = ev.detail.label === '' ? 'alles' : ev.detail.label;
     };
     pbEvents.subscribe('pb-timeline-date-changed', 'timeline', timelineChanged);
     pbEvents.subscribe('pb-timeline-daterange-changed', 'timeline', timelineChanged);
     pbEvents.subscribe('pb-timeline-reset-selection', 'timeline', () => {
         document.querySelectorAll('[name=dates]').forEach(input => { input.value = '' });
-        timeRangeLabel.innerHTML = '';
+        timeRangeLabel.innerHTML = 'alles';
         facets.submit();
     });
     pbEvents.subscribe('pb-timeline-loaded', 'timeline', (ev) => {
-        timeRangeLabel.innerHTML = ev.detail.label;
+        timeRangeLabel.innerHTML = ev.detail.label === '' ? 'alles' : ev.detail.label;
     });
 
     // pbEvents.subscribe('pb-collection', 'docs', (ev) => {
