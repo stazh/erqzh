@@ -558,11 +558,19 @@ declare function query:view-origDate($work as element()) {
     let $origDate := $work//tei:teiHeader/tei:fileDesc//tei:msDesc/tei:history//tei:origDate
     return
         if ($origDate/@when) then
-            format-date(xs:date($origDate/@when), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
+            try {
+                format-date(xs:date($origDate/@when), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
+            } catch * {
+                $origDate/@when/string()
+            }
         else
-            format-date(xs:date($origDate/@from), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()) ||
-            ' - ' ||
-            format-date(xs:date($origDate/@to), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
+            try {
+                format-date(xs:date($origDate/@from), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()) ||
+                ' - ' ||
+                format-date(xs:date($origDate/@to), '[Y] [MNn] [D01]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
+            } catch * {
+                $origDate/@from || " - " || $origDate/@to
+            }
 };
 
 (:~
