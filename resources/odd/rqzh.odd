@@ -1264,7 +1264,7 @@
             <param name="value" value="( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={@xml:id}&#34; target=&#34;_blank&#34;&gt;{./persName/string()}&lt;/a&gt;, if (./note) then( &lt;span&gt; ({./note/string()})&lt;/span&gt;) else () )"/>
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
   <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
-	[[value]]
+  <div>[[value]]</div>
 </li></pb:template>
         </model>
                 </elementSpec>
@@ -1275,7 +1275,7 @@
             <param name="value" value="(&lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={@xml:id}&#34; target=&#34;_blank&#34;&gt;{placeName[@type=&#34;main&#34;]/string()}&lt;/a&gt;, &lt;span&gt;{&#34; &#34; || placeName[@type=&#34;add&#34;]/string()}&lt;/span&gt;)"/>
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
   <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
-	[[value]]
+  <div>[[value]]</div>
 </li></pb:template>
         </model>
                 </elementSpec>
@@ -1286,7 +1286,7 @@
             <param name="value" value="(&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={@xml:id}&#34; target=&#34;_blank&#34;&gt;{orgName/string()}&lt;/a&gt;, if (@type) then( &lt;span&gt; ({@type/string()})&lt;/span&gt;) else ())"/>
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
   <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
-	[[value]]
+  <div>[[value]]</div>
 </li></pb:template>
         </model>
                 </elementSpec>
@@ -1297,7 +1297,7 @@
             <param name="value" value="(&lt;a href=&#34;https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={@xml:id}&#34; target=&#34;_blank&#34;&gt;{desc/string()}&lt;/a&gt;, if(gloss) then(&lt;span&gt; ({gloss/string()})&lt;/span&gt;) else ())"/>
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
   <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
-	[[value]]
+  <div>[[value]]</div>
 </li></pb:template>
         </model>
                 </elementSpec>

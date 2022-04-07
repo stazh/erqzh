@@ -22,6 +22,26 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
 }
 
+a {
+    background-color: transparent;
+    text-decoration: none;
+    color: #00558a; /* hsl(203, 100%, 27%) a tad darker than the brand color */
+}
+
+a > * {
+    color: #00558a; /* hsl(203, 100%, 27%) a tad darker than the brand color */
+}
+
+a:hover,
+a:active,
+a:focus,
+a:hover > *,
+a:active > *,
+a:focus > * {
+    color: #00558a; /* hsl(203, 100%, 27%) a tad darker than the brand color */
+    text-decoration: underline;
+}
+
 .content {
     hyphens: auto;
     -webkit-hyphens: auto;
