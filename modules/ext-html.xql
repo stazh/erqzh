@@ -39,7 +39,11 @@ declare function pmf:output-date($config as map(*), $node as element(), $class a
         else
             pmf:show-if-exists($node, $origDate/@when, function() {
                 string-join((
-                    format-date(xs:date($origDate/@when), '[Y] [MNn] [D1]', (session:get-attribute("ssrq.lang"), "de")[1], (), ()),
+                    try {
+                        format-date(xs:date($origDate/@when), '[Y] [MNn] [D1]', (session:get-attribute("ssrq.lang"), "de")[1], (), ())
+                    } catch * {
+                        $origDate/@when/string()
+                    },
                     $origPlace
                 ), ". ")
             })  
