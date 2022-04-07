@@ -1,17 +1,27 @@
 window.addEventListener("DOMContentLoaded", () => {
   const register = document.getElementById("register");
+  let blocks = [];
 
   pbEvents.subscribe("pb-update", "transcription", (ev) => {
     document.body.setAttribute(
       "data-view",
       ev.detail.data.odd === "rqzh-norm.odd" ? "normalized" : "diplomatic"
-    );
+      );
+      blocks.push(ev.detail.root);
+      if (blocks.length === 2) {
+        register._refresh();
+      }  
   });
+
   pbEvents.subscribe("pb-update", "metadata", (ev) => {
     const credits = ev.detail.root.querySelector("#credits");
     const creditsTarget = document.getElementById("credits");
     if (credits && creditsTarget) {
       creditsTarget.innerHTML = credits.innerHTML;
+    }
+    blocks.push(ev.detail.root);
+    if (blocks.length === 2) {
+      register._refresh();
     }
   });
 
@@ -31,14 +41,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // wait until register content has been loaded, then walk trough the transcription
   // and extend all persName, placeName etc. popovers with the additional information
-  pbEvents.subscribe("pb-end-update", "register", (ev) => {
-    document.querySelectorAll(".register li[data-ref]").forEach((li) => {
+  pbEvents.subscribe("pb-update", "register", (ev) => {
+    console.log('register updated');
+    ev.detail.root.querySelectorAll("li[data-ref]").forEach((li) => {
+      const id = li.getAttribute('data-ref');
       const checkbox = li.querySelector("paper-checkbox");
       checkbox.addEventListener("change", () => {
         findPopovers(id, (ref) => {
+          console.log(ref);
           if (checkbox.checked) {
             ref.classList.add("highlight");
             const collapse = ref.closest("pb-collapse");
+            console.log('ref: %o; collapse: %o', ref, collapse);
             if (collapse) {
               collapse.open();
             }
