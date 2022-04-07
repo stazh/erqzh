@@ -1296,7 +1296,6 @@
             <param name="ref" value="@xml:id"/>
             <param name="value" value="(&lt;a href=&#34;https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={@xml:id}&#34; target=&#34;_blank&#34;&gt;{desc/string()}&lt;/a&gt;, if(gloss) then(&lt;span&gt; ({gloss/string()})&lt;/span&gt;) else ())"/>
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
-  <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
   <div>[[value]]</div>
 </li></pb:template>
         </model>
