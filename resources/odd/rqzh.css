@@ -237,6 +237,9 @@ pb-i18n[key="by"]::after {
     margin-right: 10px;
 }
 
+.register .hidden {
+    display:none;
+}
 
 .narrow-item {
     padding: 0;

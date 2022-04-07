@@ -1153,20 +1153,24 @@
             <param name="places" value="let $register := doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;) let $entries:=     for $p in root(.)//text//(placeName[@ref]|origPlace[@ref])          group by $k := $p/@ref   return     id($p[1]/@ref,$register)   return  for $p in $entries   order by $p/@n ascending   return    $p"/>
             <param name="organizations" value=" let $register := doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)  let $entries:=      for $p in root(.)//text//orgName[@ref]             group by $k := $p/@ref    return          id($p[1]/@ref, $register)      return   for $p in $entries          order by $p/orgName ascending             return                 $p                    "/>
             <param name="taxonomies" value="let $register := doc(&#34;/db/apps/rqzh-data/taxonomy/taxonomy.xml&#34;) let $entries:=     for $p in root(.)//keywords//term[starts-with(@ref, &#34;key&#34;)]         group by $k := $p/@ref             return                 id($p[1]/@ref, $register)  return  for $p in $entries      order by $p/desc ascending          return                 $p"/>
+            <param name="emptyPlace" value="if(root(.)//text//(placeName[@ref]|origPlace[@ref])) then () else (&#34;hidden&#34;) "/>
+            <param name="emptyPerson" value="if(root(.)//persName[@ref]) then () else (&#34;hidden&#34;) "/>
+            <param name="emptyOrg" value="if(root(.)//text//orgName[@ref]) then () else (&#34;hidden&#34;) "/>
+            <param name="emptyTerm" value="if(root(.)//keywords//term[starts-with(@ref, &#34;key&#34;)]) then () else (&#34;hidden&#34;) "/>
             <pb:template xmlns="" xml:space="preserve"><div class="context register">
-  <h3 class="place"><pb-i18n key="register.place"/></h3>
+  <h3 class="place [[emptyPlace]]"><pb-i18n key="register.place"/></h3>
   <ul class="places">
     [[places]]
   </ul>
-  <h3 class="person"><pb-i18n key="register.person"/></h3>
+  <h3 class="person [[emptyPerson]]"><pb-i18n key="register.person"/></h3>
   <ul class="persons">
     [[persons]]
   </ul>
-  <h3 class="organization"><pb-i18n key="register.organisation"/></h3>
+  <h3 class="organization [[emptyOrg]]"><pb-i18n key="register.organisation"/></h3>
   <ul class="organizations">
     [[organizations]]
   </ul>
-  <h3 class="term"><pb-i18n key="register.keywords"/></h3>
+  <h3 class="term [[emptyTerm]]"><pb-i18n key="register.keywords"/></h3>
   <ul class="keywords">
     [[taxonomies]]
   </ul>
