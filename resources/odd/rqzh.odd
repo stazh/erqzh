@@ -468,16 +468,6 @@
         </model>
                 </elementSpec>
                 <elementSpec ident="term" mode="change">
-                    <model predicate="$parameters?header='context' and @ref" behaviour="pass-through">
-            <param name="content" value="."/>
-            <param name="ref" value="@ref"/>
-            <param name="label" value="ec:label('term')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/taxonomy/taxonomy.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$target/desc/string()}&lt;/a&gt;, if ($target/gloss) then( &lt;span&gt; ({$target/gloss/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
-            <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
-  <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
-	[[value]]
-</li></pb:template>
-        </model>
                     <model predicate="@ref" behaviour="inline" cssClass="semantic term">
             <desc>Semantic highlighting of keywords and lemmata with dark-red text color</desc>
             <param name="content" value="."/>
@@ -499,17 +489,6 @@
             </outputRendition>
         </model>
                     <model predicate="parent::respStmt" behaviour="inline"/>
-                    <model predicate="$parameters?header='context' and @ref" behaviour="pass-through">
-            <desc>Person with detail information</desc>
-            <param name="content" value="."/>
-            <param name="ref" value="@ref"/>
-            <param name="label" value="ec:label('person')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/persName/string()}&lt;/a&gt;, if ($target/note) then( &lt;span&gt; ({$target/note/string()} )&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
-            <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
-  <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
-	[[value]]
-</li></pb:template>
-        </model>
                     <model predicate="@ref" behaviour="inline" cssClass="semantic person">
             <desc>Person with detail information</desc>
             <param name="content" value="."/>
@@ -525,42 +504,20 @@
         </model>
                 </elementSpec>
                 <elementSpec ident="orgName" mode="add">
-                    <model predicate="$parameters?header='context' and @ref" behaviour="pass-through">
-            <param name="context" value="."/>
-            <param name="ref" value="@ref"/>
-            <param name="label" value="ec:label('organisation')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/orgName/string()}&lt;/a&gt;, if ($target/@type) then( &lt;span&gt; ({$target/@type/string()})&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
-            <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
-  <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
-	[[value]]
-</li></pb:template>
-        </model>
                     <model predicate="@ref" behaviour="inline" cssClass="semantic organization">
             <desc>Semantic highlighting of organization names with tooltip and blue text color</desc>
             <param name="content" value="."/>
             <param name="ref" value="@ref"/>
             <param name="label" value="ec:label('organisation')"/>
             <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$target/orgName/string()}&lt;/a&gt;, if ($target/@type) then( &lt;span&gt; ({$target/@type/string()})&lt;/span&gt;) else () ) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
-            <pb:template xmlns="" xml:space="preserve">
-                            <pb-popover data-ref="[[ref]]">
-                                <span slot="default">[[content]]</span>
-                                <span slot="alternate">[[label]] [[value]]</span>
-                            </pb-popover>
+            <pb:template xmlns="" xml:space="preserve"><pb-popover data-ref="[[ref]]">
+  <span slot="default">[[content]]</span>
+  <span slot="alternate">[[label]] [[value]]</span>
+</pb-popover>
                         </pb:template>
         </model>
                 </elementSpec>
                 <elementSpec ident="placeName" mode="add">
-                    <model predicate="$parameters?header='context' and @ref" behaviour="pass-through">
-            <desc>Place with detail information</desc>
-            <param name="content" value="."/>
-            <param name="ref" value="@ref"/>
-            <param name="label" value="ec:label('place')"/>
-            <param name="value" value="let $id := replace(@ref, ' ', '-') let $target:= id($id, doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;)) let $letter := substring($id, 1, 1) =&gt; upper-case() return     if ($target) then ( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$target/placeName[@type=&#34;main&#34;]/string()}&lt;/a&gt;, &lt;span&gt;{&#34; &#34; || $target/placeName[@type=&#34;add&#34;]/string()}&lt;/span&gt;) else (&lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={$id}&#34; target=&#34;_blank&#34;&gt;{$id}&lt;/a&gt;)"/>
-            <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
-  <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
-	[[value]]
-</li></pb:template>
-        </model>
                     <model predicate="@ref" behaviour="inline" cssClass="semantic place">
             <desc>Semantic highlighting of place names with tooltip and green text color</desc>
             <param name="content" value="."/>
@@ -849,7 +806,7 @@
                                         <pb-i18n key="lizenz">Lizenz:</pb-i18n>
                                         <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.de" target="_blank">CC BY-NC-SA</a>
                                     </p>
-                                
+
                             </pb-popover>
                             <span id="credits" style="display: none">[[credits]]</span>
                         </pb:template>
@@ -1192,25 +1149,27 @@
                 </elementSpec>
                 <elementSpec ident="teiHeader" mode="change">
                     <model predicate="$parameters?header='context'" behaviour="pass-through">
-            <param name="persons" value="let $label := &lt;head type=&#34;context&#34;&gt;Personen&lt;/head&gt;  let $entries:=   for $p in root(.)//text//persName[@ref]       let $k := $p/@ref group by $k order by $k return $p[1]  return   (if (count($entries)) then $label else (), $entries)"/>
-            <param name="places" value="let $label := &lt;head type=&#34;context&#34;&gt;Orte&lt;/head&gt;  let $entries:=   for $p in root(.)//text//(placeName[@ref]|origPlace[@ref])       let $k := $p/@ref group by $k order by $k return $p[1]  return   (if (count($entries)) then $label else (), $entries)"/>
-            <param name="organizations" value="let $label := &lt;head type=&#34;context&#34;&gt;Family/Organisation&lt;/head&gt;  let $entries:=   for $p in root(.)//text//orgName[@ref]       let $k := $p/@ref group by $k order by $k return $p[1]  return   (if (count($entries)) then $label else (), $entries)"/>
-            <param name="taxonomies" value="let $label := &lt;head type=&#34;context&#34;&gt;Keywords&lt;/head&gt;  let $entries:=   for $p in root(.)//keywords//term[starts-with(@ref, &#34;key&#34;)]   let $k := $p/@ref group by $k order by $k return $p[1]  return   (if (count($entries)) then $label else (), $entries)"/>
-            <pb:template xmlns="" xml:space="preserve"><div class="context">
-  <h1>Kontexte</h1>
+            <param name="persons" value="let $register := doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;) let $entries:=     for $p in root(.)//persName[@ref]   group by $k := $p/@ref     return     id($p[1]/@ref , $register)  return  for $p in $entries   order by $p/persName ascending   return    $p"/>
+            <param name="places" value="let $register := doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;) let $entries:=     for $p in root(.)//text//(placeName[@ref]|origPlace[@ref])          group by $k := $p/@ref   return     id($p[1]/@ref,$register)   return  for $p in $entries   order by $p/@n ascending   return    $p"/>
+            <param name="organizations" value=" let $register := doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)  let $entries:=      for $p in root(.)//text//orgName[@ref]             group by $k := $p/@ref    return          id($p[1]/@ref, $register)      return   for $p in $entries          order by $p/orgName ascending             return                 $p                    "/>
+            <param name="taxonomies" value="let $register := doc(&#34;/db/apps/rqzh-data/taxonomy/taxonomy.xml&#34;) let $entries:=     for $p in root(.)//keywords//term[starts-with(@ref, &#34;key&#34;)]         group by $k := $p/@ref             return                 id($p[1]/@ref, $register)  return  for $p in $entries      order by $p/desc ascending          return                 $p"/>
+            <pb:template xmlns="" xml:space="preserve"><div class="context register">
+  <h3 class="place"><pb-i18n key="register.place"/></h3>
   <ul class="places">
-  [[places]]
+    [[places]]
   </ul>
+  <h3 class="person"><pb-i18n key="register.person"/></h3>
   <ul class="persons">
-  [[persons]]
+    [[persons]]
   </ul>
+  <h3 class="organization"><pb-i18n key="register.organisation"/></h3>
   <ul class="organizations">
-  [[organizations]]
+    [[organizations]]
   </ul>
-  <ul class="taxonomies">
-  [[taxonomies]]
+  <h3 class="term"><pb-i18n key="register.keywords"/></h3>
+  <ul class="keywords">
+    [[taxonomies]]
   </ul>
-  
 </div></pb:template>
         </model>
                     <model predicate="$parameters?mode='footer-prev'" behaviour="block" cssClass="footer button-prev">
@@ -1293,6 +1252,50 @@
         </modelSequence>
                     <model output="fo" behaviour="omit"/>
                     <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
+                </elementSpec>
+            <elementSpec ident="person" mode="add">
+                    <model predicate="$parameters?header='context'" behaviour="pass-through">
+            <param name="content" value="."/>
+            <param name="ref" value="@xml:id"/>
+            <param name="value" value="( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={@xml:id}&#34; target=&#34;_blank&#34;&gt;{./persName/string()}&lt;/a&gt;, if (./note) then( &lt;span&gt; ({./note/string()})&lt;/span&gt;) else () )"/>
+            <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
+  <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
+	[[value]]
+</li></pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="place" mode="add">
+                    <model predicate="$parameters?header='context'" behaviour="pass-through">
+            <param name="content" value="."/>
+            <param name="ref" value="@xml:id"/>
+            <param name="value" value="(&lt;a href=&#34;https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id={@xml:id}&#34; target=&#34;_blank&#34;&gt;{placeName[@type=&#34;main&#34;]/string()}&lt;/a&gt;, &lt;span&gt;{&#34; &#34; || placeName[@type=&#34;add&#34;]/string()}&lt;/span&gt;)"/>
+            <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
+  <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
+	[[value]]
+</li></pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="org" mode="add">
+                    <model predicate="$parameters?header='context'" behaviour="pass-through">
+            <param name="content" value="."/>
+            <param name="ref" value="@xml:id"/>
+            <param name="value" value="(&lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={@xml:id}&#34; target=&#34;_blank&#34;&gt;{orgName/string()}&lt;/a&gt;, if (@type) then( &lt;span&gt; ({@type/string()})&lt;/span&gt;) else ())"/>
+            <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
+  <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
+	[[value]]
+</li></pb:template>
+        </model>
+                </elementSpec>
+                <elementSpec ident="category" mode="add">
+                    <model predicate="$parameters?header='context'" behaviour="pass-through">
+            <param name="content" value="."/>
+            <param name="ref" value="@xml:id"/>
+            <param name="value" value="(&lt;a href=&#34;https://www.ssrq-sds-fds.ch/lemma-db-edit/views/view-keyword.xq?id={@xml:id}&#34; target=&#34;_blank&#34;&gt;{desc/string()}&lt;/a&gt;, if(gloss) then(&lt;span&gt; ({gloss/string()})&lt;/span&gt;) else ())"/>
+            <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
+  <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
+	[[value]]
+</li></pb:template>
+        </model>
                 </elementSpec>
             </schemaSpec>
         </body>

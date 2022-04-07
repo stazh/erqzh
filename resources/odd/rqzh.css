@@ -216,3 +216,52 @@ pb-i18n[key="by"]::after {
     padding: 0;
     list-style: none;
 }
+
+.register {
+    --paper-checkbox-size: 14px;
+}
+
+.register ul {
+    list-style: none;
+    padding: 0;
+    font-family: var(--pb-content-font-family);
+}
+
+.register li {
+    display: flex;
+    align-items: baseline;
+}
+
+.register li input {
+    display: block;
+    margin-right: 10px;
+}
+
+
+.narrow-item {
+    padding: 0;
+    line-height: 1.5rem;
+    display: block;
+    --paper-item-min-height: 1.5rem;
+}
+
+paper-input {
+    /* hide underline in all states */
+    --paper-input-container-underline: {
+        display: none;
+    }
+    ;
+    --paper-input-container-underline-focus: {
+        display: none
+    }
+    ;
+    --paper-input-container-underline-disabled: {
+        display: none
+    }
+    ;
+}
+
+paper-input label {
+    height: 0;
+    display: none;
+}
