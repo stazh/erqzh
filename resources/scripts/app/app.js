@@ -8,6 +8,7 @@ window.addEventListener("DOMContentLoaded", () => {
       ev.detail.data.odd === "rqzh-norm.odd" ? "normalized" : "diplomatic"
       );
       blocks.push(ev.detail.root);
+      console.log('blocks: %d', blocks.length);
       if (blocks.length === 2) {
         register._refresh();
       }  
@@ -20,6 +21,7 @@ window.addEventListener("DOMContentLoaded", () => {
       creditsTarget.innerHTML = credits.innerHTML;
     }
     blocks.push(ev.detail.root);
+    console.log('blocks: %d', blocks.length);
     if (blocks.length === 2) {
       register._refresh();
     }
@@ -42,17 +44,14 @@ window.addEventListener("DOMContentLoaded", () => {
   // wait until register content has been loaded, then walk trough the transcription
   // and extend all persName, placeName etc. popovers with the additional information
   pbEvents.subscribe("pb-update", "register", (ev) => {
-    console.log('register updated');
     ev.detail.root.querySelectorAll("li[data-ref]").forEach((li) => {
       const id = li.getAttribute('data-ref');
       const checkbox = li.querySelector("paper-checkbox");
       checkbox.addEventListener("change", () => {
         findPopovers(id, (ref) => {
-          console.log(ref);
           if (checkbox.checked) {
             ref.classList.add("highlight");
             const collapse = ref.closest("pb-collapse");
-            console.log('ref: %o; collapse: %o', ref, collapse);
             if (collapse) {
               collapse.open();
             }
@@ -62,6 +61,7 @@ window.addEventListener("DOMContentLoaded", () => {
         });
       });
     });
+    blocks = [];
   });
 
   /**
