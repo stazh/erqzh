@@ -25,11 +25,11 @@ h1, h2, h3, h4, h5, h6 {
 a {
     background-color: transparent;
     text-decoration: none;
-    color: #00558a; /* hsl(203, 100%, 27%) a tad darker than the brand color */
+    color: #0076BD
 }
 
 a > * {
-    color: #00558a; /* hsl(203, 100%, 27%) a tad darker than the brand color */
+    color: #0076BD;
 }
 
 a:hover,
@@ -245,6 +245,7 @@ pb-i18n[key="by"]::after {
     list-style: none;
     padding: 0;
     font-family: var(--pb-content-font-family);
+    font-size:1rem;
 }
 
 .register li {
