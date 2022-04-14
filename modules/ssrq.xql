@@ -353,7 +353,7 @@ declare
 function app:short-header-link($node as node(), $model as map(*)) {
     let $work := root($model("work"))/*
     let $href := config:get-identifier($work)
-    let $thumbnail-src := $work//tei:body//tei:pb[@n='1']/@facs/string()
+    let $thumbnail-src := ($work//tei:body//tei:pb/@facs)[1]
 
     return (
         if (exists($thumbnail-src))
