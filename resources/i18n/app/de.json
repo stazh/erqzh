@@ -77,7 +77,7 @@
   "yes": "ja",
   "no": "nein",
   "require-login":"Bitte einloggen",
-  "login-info": "Für ein neues Login oder bei Problemen bitte E-Mail an christian.sieber@ji.zh.ch oder Feedback-Button drücken.",
+  "login-info": "Für ein neues Login oder bei Problemen bitte E-Mail an staatsarchiv@ji.zh.ch oder Feedback-Button drücken.",
   "upload": {
     "upload": "Dateien auswählen...",
     "drop": "TEI XML oder ODD files hinzufügen. Klicke auf den Button oben oder ziehe Dateien darauf."
