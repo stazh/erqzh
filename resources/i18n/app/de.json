@@ -12,7 +12,8 @@
   "browse": {
     "orig-date": "Datum",
     "title": "Titel",
-    "search": "Suche"
+    "search": "Suche",
+    "documents":"Editionseinheiten"
   },
   "abbreviations": "Abkürzungen",
   "archive": "Archiv",
