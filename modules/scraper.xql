@@ -34,7 +34,7 @@ declare function scraper:all() {
     scraper:taxonomy-all($batch:ITEMS-PER-BATCH-DEFAULT)
 };
 declare function scraper:analyze-json-batches() {
-    scraper:analyze-json($scraper:person), 
+(:    scraper:analyze-json($scraper:person), :)
     scraper:analyze-json($scraper:organization)
 };
 
@@ -133,7 +133,7 @@ declare function scraper:download-organizations() {
     return
         for $row at $index in doc($config:temp-root || '/' || $config:organization-id-file-name)//row
             return
-                scraper:process-batch-json($scraper:organization, $batch, $index)
+                scraper:process-batch-json($scraper:organization, $row, $index)
 };
 
 declare function scraper:generate-organizations() {

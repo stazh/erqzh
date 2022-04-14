@@ -114,7 +114,7 @@ declare function batch:generate-and-store-place-id-batches($items-per-batch) {
  :)
 declare function batch:get-place-ids($items-per-sequence) {
     let $sorted-location-ids :=
-        for $location-id in collection($config:data-root || "/data")//(tei:placeName[@ref]|tei:origPlace[@ref])
+        for $location-id in collection($config:data-root)//(tei:placeName[@ref]|tei:origPlace[@ref])
             return
                     $location-id/@ref/string()
     
