@@ -47,19 +47,21 @@ window.addEventListener("DOMContentLoaded", () => {
     ev.detail.root.querySelectorAll("li[data-ref]").forEach((li) => {
       const id = li.getAttribute('data-ref');
       const checkbox = li.querySelector("paper-checkbox");
-      checkbox.addEventListener("change", () => {
-        findPopovers(id, (ref) => {
-          if (checkbox.checked) {
-            ref.classList.add("highlight");
-            const collapse = ref.closest("pb-collapse");
-            if (collapse) {
-              collapse.open();
+      if (checkbox) {
+        checkbox.addEventListener("change", () => {
+          findPopovers(id, (ref) => {
+            if (checkbox.checked) {
+              ref.classList.add("highlight");
+              const collapse = ref.closest("pb-collapse");
+              if (collapse) {
+                collapse.open();
+              }
+            } else {
+              ref.classList.remove("highlight");
             }
-          } else {
-            ref.classList.remove("highlight");
-          }
+          });
         });
-      });
+      }
     });
     blocks = [];
   });
