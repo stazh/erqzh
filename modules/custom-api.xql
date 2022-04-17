@@ -144,22 +144,14 @@ declare function api:timeline($request as map(*)) {
                 false()
             }
         })
-    let $undatedEntries := $entries except $datedEntries
     return
-        map:merge((
+        map:merge(
             for $entry in $datedEntries
             group by $date := ft:field($entry, "date-min", "xs:date")
             return
                 map:entry(format-date($date, "[Y0001]-[M01]-[D01]"), map {
                     "count": count($entry),
                     "info": ''
-                }),
-            if ($undatedEntries) then
-                map:entry("?", map {
-                    "count": count($undatedEntries),
-                    "info": ''
                 })
-            else
-                ()
-        ))
+        )
 };
