@@ -5936,6 +5936,11 @@
                             <desc xml:lang="fr">Lacune dans le texte source</desc>
                             <desc xml:lang="en">Gap in the original</desc>
                         </valItem>
+                        <valItem ident="imprint">
+                            <desc xml:lang="de">Impressum</desc>
+                            <desc xml:lang="fr">imprint</desc>
+                            <desc xml:lang="en">Imprint</desc>
+                        </valItem>
                         <valItem ident="irrelevant">
                             <desc xml:lang="de">Editorisch irrelevant</desc>
                             <desc xml:lang="fr">Non-pertinence éditoriale</desc>

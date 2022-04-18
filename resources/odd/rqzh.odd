@@ -939,7 +939,7 @@
                 <elementSpec ident="msDesc" mode="add">
                     <desc>Stückbeschreibung ausgeben</desc>
                     <model behaviour="list">
-            <param name="content" value="(msIdentifier,history/origin/origDate,msContents/msItem/filiation[@type='current'], physDesc/objectDesc/supportDesc/condition, physDesc/objectDesc/supportDesc, physDesc, msContents/msItem/textLang, msContents/msItem/author[@role=&#34;scribe&#34;], additional)"/>
+            <param name="content" value="(msIdentifier,history/origin/origDate,msContents/msItem/filiation[@type='current'], physDesc/objectDesc/supportDesc/condition, physDesc/objectDesc/supportDesc, physDesc, msContents/msItem/textLang, msContents/msItem/docImprint, msContents/msItem/author[@role=&#34;scribe&#34;], additional)"/>
         </model>
                 </elementSpec>
                 <elementSpec ident="msIdentifier">
@@ -1298,6 +1298,11 @@
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
   <div>[[value]]</div>
 </li></pb:template>
+        </model>
+                </elementSpec>
+            <elementSpec ident="docImprint" mode="change">
+                    <model behaviour="listItem">
+            <param name="content" value="(ec:label('imprint'), ec:colon(), translate((translate((pubPlace/text() || &#34; &#34; || publisher/text() ),&#34;)&#34;,&#34;&#34;)),&#34;(&#34;,&#34;&#34;))"/>
         </model>
                 </elementSpec>
             </schemaSpec>
