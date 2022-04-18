@@ -22,10 +22,11 @@ import module namespace scraper="http://existsolutions.com/rqzsh/scraper" at "sc
 (:scraper:download-persons-batch-number(285):)
 
 (:scraper:analyze-json-batches():)
- let $errors := scraper:analyze-json-batches()
- return
-     string-join($errors[@category="organization"]//error/text(),",")
+(: let $errors := scraper:analyze-json-batches():)
+(: return:)
+(:     string-join($errors[@category="organization"]//error/text(),","):)
 
+scraper:analyze-register-data()
 
 (: TAXONOMIES  :)
  

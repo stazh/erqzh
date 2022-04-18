@@ -33,9 +33,24 @@ declare function scraper:all() {
     scraper:persons-all($batch:ITEMS-PER-BATCH-DEFAULT),
     scraper:taxonomy-all($batch:ITEMS-PER-BATCH-DEFAULT)
 };
+declare function scraper:analyze-register-data() {
+    scraper:analyze-person-xml() 
+};
+
 declare function scraper:analyze-json-batches() {
-(:    scraper:analyze-json($scraper:person), :)
+    scraper:analyze-json($scraper:person), 
     scraper:analyze-json($scraper:organization)
+};
+
+declare function scraper:analyze-person-xml()  {
+    let $persons := doc($config:data-root || "/" || $scraper:person || "/" || $scraper:person || ".xml")
+    return
+        <result>
+            <empty-persName>{$persons//tei:person[string-length(tei:persName) = 0]}</empty-persName>
+            <empty-note>{$persons//tei:person[string-length(tei:note) = 0]}</empty-note>
+        </result>
+        
+        
 };
 
 declare function scraper:rescraper-errors-alt() {
@@ -484,4 +499,3 @@ declare function scraper:tei-header($category) {
             </fileDesc>
         </teiHeader>
 };
-

@@ -1261,7 +1261,7 @@
                     <model predicate="$parameters?header='context'" behaviour="pass-through">
             <param name="content" value="."/>
             <param name="ref" value="@xml:id"/>
-            <param name="value" value="( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={@xml:id}&#34; target=&#34;_blank&#34;&gt;{./persName/string()}&lt;/a&gt;, if (./note) then( &lt;span&gt; ({./note/string()})&lt;/span&gt;) else () )"/>
+            <param name="value" value="( &lt;a href=&#34;https://www.ssrq-sds-fds.ch/persons-db-edit/?query={@xml:id}&#34; target=&#34;_blank&#34;&gt;{./persName/string()}&lt;/a&gt;, if (string-length(./note) &gt; 0) then( &lt;span&gt; ({./note/string()})&lt;/span&gt;) else () )"/>
             <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
   <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
   <div>[[value]]</div>
