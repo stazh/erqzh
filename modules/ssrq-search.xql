@@ -57,7 +57,7 @@ function query:query($node as node()*, $model as map(*), $type as xs:string, $su
             if ($query) then
                 switch ($type)
                     case "text" return
-                        query:query-texts($subtype, $query)
+                        query:query-texts(tokenize($subtype, '\s*,\s*'), $query)
                     default return
                         query:query-api($type, $subtype, $query)
             else map {
@@ -100,8 +100,10 @@ declare function query:form-current-doc($node as node(), $model as map(*), $doc 
  : Editionstext durchsuchen
  :)
 declare function query:query-texts($subtypes as xs:string*, $query as xs:string) {
-    util:log('INFO', ("options: ", queryDef:options(()))),
     let $hits :=
+        (: Nur Dokumente: entfernt andere Überlieferungen, Literaturverzeichnis etc. :)
+        let $query := "type:document AND " || $query
+        let $log := util:log('INFO', ("query: " || $query || "; subtypes: ", $subtypes))
         for $subtype in $subtypes
         return
             switch ($subtype)
@@ -217,8 +219,6 @@ declare function query:api-filter-subtype($id as xs:string*, $type as xs:string,
  : Apply filters to the query result.
  :)
 declare function query:filter($hits as element()*) {
-    (: Entferne Dokumente ohne body :)
-    let $hits := $hits intersect $query:DOCS//tei:body[ft:query(., 'type:document')]
     let $debug:= util:log("info", "query:filter hits: " || count($hits))
     (: let $debug:= util:log("warn", serialize($hits)) :)
     
@@ -241,7 +241,7 @@ declare function query:filter($hits as element()*) {
                             return
                                 $c
                         case "filter-language" return
-                            $context[ancestor-or-self::tei:TEI//tei:textLang = $value]
+                            $context[ancestor-or-self::tei:TEI//tei:textLang = tokenize($value, "\s*,\s*")]
                         case "filter-condition" return
                             if ($value = "yes") then
                                 $context[ancestor-or-self::tei:TEI//tei:supportDesc/tei:condition]
