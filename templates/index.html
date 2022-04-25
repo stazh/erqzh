@@ -33,201 +33,71 @@
     <script src="resources/scripts/app/index.js"></script>
     <custom-style>
         <style>
+            main {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: auto auto auto auto auto;
+            gap: 10px 10px;
+            justify-content: space-evenly;
+            max-width: 980px;
+            margin: 32px auto 0 auto;            
+        }
 
-            @media (max-width: 1023px) {
-                .doclist {
-                    margin-bottom: 20px;
-                }
-                .documents {
-                    padding-left: 10px;
-                }
-                .documents .label {
-                    display: none;
-                }
-                .toolbar pb-search {
-                    padding-left: 0;
-                }
-                #facets {
-                    display: none;
-                }
+        @media (max-width: 1023px) {
+            main {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: auto auto;
+                gap: 4px;
+                height: auto;
+                margin: 32px 10px 0 10px;
             }
+        }
+        footer {
+            grid-column: span 5;
+            display: block;
+        }
 
-            pb-results {
-                overflow: scroll;
-                margin: 0 20px;
-                height: calc(100vh - 128px);
-            }
+        footer img {
+            vertical-align: middle;
+        }
 
-            @media (min-width: 1024px) {
-                .toolbar {
-                    display: none;
-                }
-                .panels {
-                    display: flex;
-                    flex-direction: row;
-                }
-            }
+        .row {
+            grid-column: span 5;
+            grid-row: 1;
+        }      
 
-            .doclist {
-                --paper-tabs-selection-bar-color: #607D8B;
-                margin-right: 1rem;
-                --paper-tab-content: {
-                    font-family: "Oswald", Verdana, "Helvetica", sans-serif;
-                    font-weight: 400;
-                }
-                ;
-                --paper-card-header: {
-                    background-color: #d1dae0;
-                }
-                ;
-                --paper-card-header-text: {
-                    font-family: "Oswald", Verdana, "Helvetica", sans-serif;
-                    font-size: 16px;
-                    font-weight: 400;
-                }
-                ;
-            }
+        .bottom {
+            margin-top: 10px;
+        }
 
-            .panels .doclist .card-content {
-                padding: 0;
-            }
+        .box {
+            display: block;
+            position: relative;
+            padding: 10px;
+            margin: 0;
+        }
 
-            .panels .doclist .browse {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 0;
+        @media (min-width: 1024px) {
+            teaser {
+                font-size: var(--pb-heading-h4-font-size);
             }
+        }
 
-            #document-list::part(sort-dropdown), #document-list::part(filter-dropdown), #document-list::part(filter-input) {
-                display: none;
-            }
-
-            aside .upload {
-                --paper-card-header: {
-                    background-color: #607D8B;
-                }
-                ;
-                --paper-card-header-text: {
-                    font-family: "Oswald", Verdana, "Helvetica", sans-serif;
-                    font-size: 16px;
-                    font-weight: 400;
-                    color: white;
-                }
-                ;
-            }
-
-            .documents app-toolbar {
-                @apply --layout-start-justified;
-                font-size: 14px;
-                margin-top: 10px;
-                padding-left: 0;
-            }
-
-            .documents div {
-                margin: 0;
-            }
-
-            .documents .error {
-                color: #c02020;
-            }
-
-            .documents .document-select {
-                flex: 0 0;
-                margin-right: 20px;
-            }
-
-            #facets {
-                flex: 0;
-                min-width: 220px;
-                margin-right: 20px;
-                background-color: #F0F0F0;
-                padding: 0 10px;
-            }
-
-            #facets h3 {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-            }
-
-            #facets h3 paper-checkbox {
-                margin-left: 16px;
-                font-size: 11px;
-            }
-
-            #facets table {
-                font-size: 14px;
-            }
-
-            #facets table table {
-                padding-left: 16px;
-                width: 100%;
-            }
-
-            #facets table td {
-                padding: 4px 0;
-            }
-
-            #facets table td:nth-child(2) {
-                color: #808080;
-                text-align: right;
-                padding-left: 1em;
-                vertical-align: middle;
-            }
-            .tei-hi2 {
-                font-size: 80%;
-                vertical-align: top;
-            }
-
-            #kantone th {
-                text-align: left;
-            }
-
-            #kantone td {
-                padding: 10px 20px;
-            }
-
-            #kantone .badge {
-                display: inline-block;
-                margin-left: 20px;
-                background-color: #6b6b6b;
-                color: #f0f0f0;
-                border-radius: 10px;
-                font-size: .75em;
-                font-weight: bold;
-                padding: 4px;
-            }
-
-            .volume .part {
-                padding-right: 1.5em;
-            }
-
-            .volume .count {
-                margin-left: 20px;
-                padding: 4px;
-                border-radius: 10px;
-                color: #f0f0f0;
-                font-size: var(--pb-base-font-size);
-                background-color: var(--pb-timeline-background-color-title);
-            }
-            .reference{
-                cursor:pointer;
-                color:rgb(17, 247, 17);
-            }
-
-            .collection {
-                margin-bottom: 1rem;
-            }
-
-            pb-i18n[key="by"]::after {
-                content: ' ';
-            }
-
-            .timeline {
-                --pb-timeline-padding: 0 20px;
-                margin-bottom: 20px;
-            }
+        .homepage > a, .homepage > a:link {
+            display: block;
+            text-decoration: none;
+            color: white;
+        }
+        .title-text {
+            width:50em
+        }
+        .title-image img {            
+            width:40em;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
         </style>
     </custom-style>
 </head>
@@ -245,59 +115,23 @@
                     <app-toolbar data-template="templates:include" data-template-path="templates/menu.html"/>
                 </app-header>
 
-                <section>
-                    <div class="pb-container">
+                <main class="homepage" >
+                    <div class="title-text">
                         <h1 class="tp-title"><pb-i18n key="doctitle"></pb-i18n></h1>
+                        <p class="teaser">Erleben Sie ....</p>
+                        <ul>                            
+                            <li>Stadt und Territorialstaat Zürich II (1460 bis Reformation) by by Michael Schaffner</li>
+                            <li>Gedruckte Mandate für Stadt und/oder Landschaft Zürich by Sandra Reisinger</li>
+                            <li>Die Rechtsquellen der Stadt Winterthur by Bettina Fürderer</li>
+                            <li>Die Landvogtei Greifensee by Rainer Hugener</li>
+                            <li>Die Obervogteien um die Stadt Zürich by Ariane Huber Hernández and Michael Nadig</li>
+                        </ul>
                     </div>
-                </section>
-
-                <section>
-                    <div class="pb-container">
-                        <div class="main-grid" data-template="search:set-default-params">
-
-
-                            <main class="main-grid__item">
-                                <div class="header card-padding">
-                                    <h2>
-                                        <pb-i18n key="browse.documents">Documents</pb-i18n>
-                                    </h2>
-                                </div>
-
-                                <div class="card-content card-padding">
-                                    <div class="browse" slot="page">
-                                        <pb-browse-docs id="document-list" url="api/collection/" 
-                                            sort-options="[{&#34;label&#34;: &#34;browse.orig-date&#34;, &#34;value&#34;: &#34;idno&#34;},{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;}]" 
-                                            sort-by="idno" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" 
-                                            filter-by="title" auto="auto" history="history" login="login" subforms="#options" emit="docs" subscribe="docs">
-                                            <div slot="header" class="timeline">
-                                                <pb-timeline url="api/timeline" scopes='["D", "M", "Y", "5Y", "10Y"]'
-                                                    resettable="" max-interval="80"
-                                                    subscribe="docs" emit="timeline">
-                                                    <span slot="label">Angezeigter Zeitraum: </span>
-                                                </pb-timeline>
-                                            </div>
-                                            <pb-paginate slot="toolbar" id="paginate" per-page="20" range="5" emit="docs" subscribe="docs"/>
-                                        </pb-browse-docs>
-                                        <pb-custom-form id="options" emit="docs" style="display: none">
-                                            <input slot="searchButtonBottom" type="hidden" name="dates" value="" data-template="templates:form-control"/>
-                                        </pb-custom-form>
-                                    </div>
-                                </div>
-                            </main>
-
-                            <!-- search sidebar -->
-                            <div data-template="templates:include" data-template-path="templates/search-form.html"></div>
-
-
-                            <pb-restricted class="upload-panel main-grid__item" login="login">
-                                <aside class="upload" data-i18n="[heading]upload.upload" heading="Upload">
-                                    <pb-upload id="upload" emit="docs" accept=".xml, .tei, .odd, .docx" target="temp"/>
-                                </aside>
-                            </pb-restricted>
-
-                        </div>
-                    </div>
-                </section>
+                    
+                        <a href="start.html" data-template="pages:parse-params" class="title-image box">
+                            <img src="resources/images/8562860-large.jpeg" />
+                        </a>                                        
+                </main>
 
                 <footer class="version" style="display:none">
                     App: v<span data-template="pages:version"/> /
