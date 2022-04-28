@@ -99,20 +99,20 @@ window.addEventListener("DOMContentLoaded", () => {
         item.checked = ev.target.checked;
       });
     });
-  }
 
-  const subtypes = getUrlParameter('subtype');
-  if (subtypes) {
-    subtypes.split(',').forEach((subtype) => {
-      console.log('setting %s', subtype);
-      document.querySelector(`paper-checkbox[value=${subtype}]`).checked = true;
-    });
-  } else {
-    document.getElementById('bearbeitungstext').checked = true;
-    document.querySelectorAll("[name=subtype]").forEach((item) => {
-      // console.log("item: ", item);
-      item.setAttribute("checked", "checked");
-    });
+    const subtypes = getUrlParameter('subtype');
+    if (subtypes) {
+      subtypes.split(',').forEach((subtype) => {
+        console.log('setting %s', subtype);
+        document.querySelector(`paper-checkbox[value=${subtype}]`).checked = true;
+      });
+    } else {
+      document.getElementById('bearbeitungstext').checked = true;
+      document.querySelectorAll("[name=subtype]").forEach((item) => {
+        // console.log("item: ", item);
+        item.setAttribute("checked", "checked");
+      });
+    }
   }
 
   const sortSelect = document.getElementById("sort-select");
