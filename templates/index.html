@@ -34,68 +34,46 @@
     <custom-style>
         <style>
             main {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: auto auto auto auto auto;
-            gap: 10px 10px;
-            justify-content: space-evenly;
-            max-width: 980px;
-            margin: 32px auto 0 auto;            
-        }
-
-        @media (max-width: 1023px) {
-            main {
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: auto auto;
-                gap: 4px;
-                height: auto;
-                margin: 32px 10px 0 10px;
+                display: grid;
+                margin: 32px auto 32px auto;
+                grid-template-columns: 50% 50%;
+                gap: 10px 10px;
+                max-width: 980px;
             }
-        }
-        footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
 
-        .row {
-            grid-column: span 5;
-            grid-row: 1;
-        }      
-
-        .bottom {
-            margin-top: 10px;
-        }
-
-        .box {
-            display: block;
-            position: relative;
-            padding: 10px;
-            margin: 0;
-        }
-
-        @media (min-width: 1024px) {
-            teaser {
-                font-size: var(--pb-heading-h4-font-size);
+            h1 {
+                margin-top: 0;
             }
-        }
+            .title-image {
+                display: block;
+            }
 
-        .homepage > a, .homepage > a:link {
-            display: block;
-            text-decoration: none;
-            color: white;
-        }
-        .title-text {
-            width:50em
-        }
-        .title-image img {            
-            width:40em;
-            height: auto;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
+            .title-image img {
+                width: 100%;
+            }
+
+            @media (min-width: 1024px) {
+                footer {
+                    position: fixed;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    padding-bottom: 0 !important;
+                }
+            }
+            @media (max-width: 1023px) {
+                main {
+                    display: block;
+                    margin: 32px 10px 0 10px;
+                }
+
+                .title-image {
+                    text-align: center;
+                }
+                .title-image img {
+                    width: 320px;
+                }
+            }
         </style>
     </custom-style>
 </head>
@@ -120,9 +98,9 @@
                         <p class="teaser"><pb-i18n key="title-text-2"></pb-i18n></p>
                     </div>
                     
-                        <a href="start.html" data-template="pages:parse-params" class="title-image box">
-                            <img src="resources/images/8562860-large.jpeg" />
-                        </a>                                        
+                    <a href="start.html" class="title-image">
+                        <img src="resources/images/8562860-large.jpeg"/>
+                    </a>                                        
                 </main>
 
                 <footer class="version" style="display:none">
