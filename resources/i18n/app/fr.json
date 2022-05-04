@@ -79,7 +79,7 @@
   "yes": "oui",
   "no": "non",
   "require-login": "Veuillez vous identifier",
-  "login-info": "Pour obtenir un nouveau login, ainsi qu’en cas de problème, merci d’écrire à staatsarchiv@ji.zh.ch ou d’utiliser le bouton Feedback.",
+  "login-info": "Pour obtenir un nouveau login, ainsi qu’en cas de problème, merci d’écrire à staatsarchivzh@ji.zh.ch ou d’utiliser le bouton Feedback.",
   "upload": {
     "upload": "Sélectionner les fichiers...",
     "drop": "Envoyer les fichiers TEI XML ou ODD dans le jeu de documents de test. Cliquer sur le bouton ci-dessus ou glisser-déposer les fichiers dessus."

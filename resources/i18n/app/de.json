@@ -26,7 +26,7 @@
   "doctitle":"Rechtsquellen des Kantons Zürich",
   "title-text-1":"Von der Bürgerrechtsvergabe im vormodernen Zürich bis zur Holzwirtschaft vor den Stadttoren und von der Fischerei in Zürcher Gewässern bis zum Gesundheitswesen von Winterthur: Die digitalen Zürcher Rechtsquellen bieten Zugänge zu einer Vielzahl von Themen sowie reiches Anschauungsmaterial für quellenkundliche Untersuchungen.",
   "title-text-2":"Insgesamt sechs Bearbeiterinnen und Bearbeiter haben im Zuge eines mehrjährigen Projekts Quellen zu den Städten Zürich und Winterthur, zur Landvogtei Greifensee sowie zu den Obervogteien im Umkreis der Stadt Zürich gesichtet, rund 900 zentrale Stücke ausgewählt und wissenschaftlich kommentiert. Die selektierten Quellenstücke aus dem Zeitraum zwischen 1180 und 1798 wurden in digitaler Form nach den Grundsätzen der Text Encoding Initiative (TEI) aufbereitet und online publiziert. Dank der Auszeichnung von Personen, Orten und Organisationen in den transkribierten Quellentexten sowie der Verlinkung zu externen Datenbanken bettet sich die Online-Edition der Zürcher Rechtsquellen in eine digital vernetzte Forschungslandschaft ein.",  
-  "title-text-link": "Zu den Editionseiheiten",
+  "title-text-link": "Zu den Editionseinheiten",
   "editiontext": "Editionstext",
   "family-organisation": "Familie/Organisation",
   "filliation": "Überlieferung",
@@ -81,7 +81,7 @@
   "yes": "ja",
   "no": "nein",
   "require-login":"Bitte einloggen",
-  "login-info": "Für ein neues Login oder bei Problemen bitte E-Mail an staatsarchiv@ji.zh.ch oder Feedback-Button drücken.",
+  "login-info": "Für ein neues Login oder bei Problemen bitte E-Mail an staatsarchivzh@ji.zh.ch oder Feedback-Button drücken.",
   "upload": {
     "upload": "Dateien auswählen...",
     "drop": "TEI XML oder ODD files hinzufügen. Klicke auf den Button oben oder ziehe Dateien darauf."
