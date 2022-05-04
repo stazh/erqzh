@@ -164,10 +164,6 @@ pb-i18n[key="by"]::after {
     content: ' ';
 }
 
-.footer {
-    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-}
-
 .footer .part-nav a {
     height: 45px;
     color: #636363;

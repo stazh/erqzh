@@ -68,7 +68,7 @@ html {
 body {
     --pb-brand-color: #0076bd;
     --pb-menubar-background-color: var(--pb-brand-color);
-    --pb-base-font-family: 'Open Sans', 'Verdana', 'Helvetica', sans-serif;
+    --pb-base-font-family: "Lexia Fontes", Georgia, "Times New Roman", serif;
     --pb-content-font-family: "Lexia Fontes", Georgia, "Times New Roman", serif;
     --pb-content-font-size: .95rem;
     --pb-popover-font-size: 80%;
