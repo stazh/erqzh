@@ -75,6 +75,14 @@
     "lemma": "Lemma",
     "keywords": "Keyword"
   },
+  "menu": {
+  	"places": "Places",
+  	"editionseinheit1":"Stadt und Territorialstaat Zürich II",
+  	"editionseinheit2":"Gedruckte Mandate für Stadt und/oder Landschaft Zürich",
+  	"editionseinheit3":"Die Rechtsquellen der Stadt Winterthur",
+  	"editionseinheit4":"Die Landvogtei Greifensee",
+  	"editionseinheit5":"Die Obervogteien um die Stadt Zürich"
+  },
   "feedback": "Feedback",
   "yes": "Yes",
   "no": "No",

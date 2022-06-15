@@ -371,6 +371,84 @@ function app:short-header-link($node as node(), $model as map(*)) {
         else ()
     )
 };
+declare
+    %templates:wrap    
+    %templates:default("name","")
+function app:load-place($node as node(), $model as map(*), $name as xs:string) {
+    let $log := util:log("info", "ssrq.xql app:load-place $name: " || $name)
+    let $place := doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place[@n = xmldb:decode($name)]
+    let $title := $place/tei:placeName[@type="main"]/string()
+    let $log := util:log("info", "ssrq.xql app:load-place $title:" || $title)
+    let $log := util:log("info", "ssrq.xql app:load-place $geo:" || $place//tei:geo/text())
+    return 
+        if(string-length(normalize-space($place//tei:geo/text())))
+        then(
+            let $geo-token := tokenize($place//tei:geo/text(), " ")
+            return 
+                map {
+                    "title": $title,
+                    "key":$place/@xml:id,
+                    "latitude": $geo-token[1],
+                    "longitude": $geo-token[2],
+                    "editionseinheit": "test"
+                }
+            
+        )
+        else (
+            map {
+                "title": $title,
+                "key":$place/@xml:id
+            }    
+        )
+};
+
+declare %templates:default("type", "place") 
+function app:mentions($node as node(), $model as map(*), $type as xs:string) {
+    let $key := $model?key
+    let $name := xmldb:decode($model?name)
+    let $log := util:log("info", "app:mentions: $key: " || $key || " - $name: "||$name)
+    let $places := doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
+    let $log := util:log("info", "app:mentions count $places: " || count($places))
+    return
+        <div>
+            <h3>Erwähnungen von {$name}</h3>
+            <div>{
+                if($type = "place") 
+                then ( 
+                    for $col in $config:data-collections
+                        let $matches := collection($config:data-root || "/" || $col)//tei:text[(.//tei:placeName/@ref|.//tei:origPlace/@ref) = $key]
+                        let $log := util:log("info", "app:mentions: col: " || $col || " - $matches: " || count($matches))
+                        return
+                            if(count($matches) > 0)
+                            then (
+                                <h4>{$col}</h4>,
+                                <ul>{app:ref-list("place", $matches, $col, $key)}</ul>
+                            ) else()
+                 )
+                else ()
+            }</div>
+        </div>
+};
+declare function app:ref-list($type, $list, $col, $key) {
+    for $doc in subsequence($list, 1, 15)
+        let $doc-name := util:document-name($doc)
+        let $log := util:log("info", "app:ref-list: name: " || $doc-name)
+        let $idno := $doc/ancestor::tei:TEI//tei:seriesStmt//tei:idno/text()
+        let $log := util:log("info", "app:ref-list: $idno: " || $idno)
+        let $title := $doc/ancestor::tei:TEI//tei:msDesc/tei:head/text()
+        let $log := util:log("info", "app:ref-list: $title: " || $title)
+        return
+            <li>
+                <a href="../../{$col}/{$idno}">
+                    {$title}
+                </a>
+            </li>,
+    if (count($list) > 15) then
+        <li><a href="../../briefe/?facet-{$type}={$key}">... &gt; <pb-i18n key="label.all"/></a></li>
+    else
+        ()
+};
+
 
 declare
     %templates:wrap

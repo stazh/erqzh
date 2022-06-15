@@ -293,6 +293,8 @@ declare variable $config:organization-id-file-name := 'organization-Id-data.xml'
 declare variable $config:metadata-file-name := 'register-data.xml';
 declare variable $config:metadata-file := doc($config:data-root || '/' || $config:metadata-file-name);
 
+declare variable $config:data-collections := ("ZH_NF_I_1_3", "ZH_NF_I_1_11", "ZH_NF_I_2_1", "ZH_NF_II_3", "ZH_NF_II_11");
+
 (:~
  : The root of the collection hierarchy whose files should be displayed
  : on the entry page. Can be different from $config:data-root.

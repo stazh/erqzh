@@ -38,6 +38,11 @@
     margin: 0 3px;
 }
 
+.menubar paper-item a > *,
+.menubar paper-item a:hover > *{
+    color:black;
+}
+
 #browseToParentCollection,
 #browseToParentCollection > * {
     font-weight: 500;

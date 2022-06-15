@@ -171,6 +171,7 @@ declare function scraper:generate-organizations() {
     let $organization-tei := 
         <TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="organizations" type="Organization">
             { scraper:tei-header($scraper:organization) }
+            
             <standOff>
                 <listOrg> 
                     { $organizations }
@@ -356,17 +357,22 @@ declare function scraper:generate-places() {
                 else ( 
                     util:log("ERROR", "Plaece/@id " || $info/@id || " has an empty stdName element.")    
                 )
-    let $output :=
-        <TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="places" type="Ort">
-            {  scraper:tei-header($scraper:place) },
-            <standOff>
-                <listPlace>
-                    { $tei-places }
-                </listPlace>
-            </standOff>
-        </TEI>
+    let $output := scraper:generate-places-tei($scraper:place, $tei-places)
     return
         xmldb:store($config:data-root || "/" || $scraper:place, $scraper:place || ".xml", $output)
+};
+
+declare function scraper:generate-places-tei($scraper:place, $tei-places){
+    element { QName("http://www.tei-c.org/ns/1.0", "TEI") } {     
+        attribute xml:id {"places"},
+        attribute type {"Ort" },
+        scraper:tei-header($scraper:place),
+        element standOff {
+            element listPlace {
+                $tei-places 
+            }
+        }
+    }
 };
 
 declare function scraper:conv-place($info){
@@ -460,6 +466,41 @@ let $response := http:send-request($request)
         )
 };
 
+(:  Add geo location to all places data :)
+declare function scraper:places-add-geo-data( ) {
+    let $places-xml-files := ("place.xml")
+    return 
+        for $place-xml-file in $places-xml-files
+            return
+                scraper:places-add-geo-data($place-xml-file) 
+                
+};
+
+(:  Add geo location to places data :)
+declare function scraper:places-add-geo-data($place-xml) {
+    let $places:= doc($config:data-root || "/place/" || $place-xml)
+    let $dump := doc($config:data-root || "/place/2022-05-04-SSRQ-PlacesDB-dump.xml")
+    let $json := parse-json(util:binary-to-string(util:binary-doc($config:data-root || "/place/ortsnamen_ch_id_point_2021-11-01.json" )))
+    return
+        for $place in $places//tei:place
+            return
+                let $place-id := $place/@xml:id
+                let $dump-place := $dump//place[@id = $place-id]
+                let $geo-coord := 
+                    if($dump-place//bibl/idno[@type="ortsnamen.ch"])
+                    then
+                        let $ortsname-id := $dump-place//bibl/idno[@type="ortsnamen.ch"]/text()
+                        let $ort-entry-map := $json?*[?data-origin-id = $ortsname-id]
+                        let $ort-geo := substring-before(substring-after($ort-entry-map?localisation, "POINT ("), ")")
+                        let $geo-seq := tokenize($ort-geo, " ")
+                        return
+                            update value $place/tei:location/tei:geo with $geo-seq[2] || " " || $geo-seq[1]
+                    else "error"
+                return 
+                    $place
+};
+
+
 (: REQUEST RETURN XML :)
 declare function scraper:request-xml($ids, $url-part) {
 (:    let $log := util:log("info", "scraper:request-xml: ids: " || $ids)    :)
@@ -487,15 +528,51 @@ declare function scraper:tei-header($category) {
                     case $scraper:place return "Ortsdaten"
                     default return ""
     return
-        <teiHeader xmlns="http://www.tei-c.org/ns/1.0">
-            <fileDesc>
-                <titleStmt>
-                    <title>Rechtsquellen des Kantons Zürich: {$title}</title>
-                </titleStmt>
-                <publicationStmt>
-                    <p>Publication Information</p>
-                </publicationStmt>
-                <sourceDesc><p>Information about the source</p></sourceDesc>
-            </fileDesc>
-        </teiHeader>
+        element { QName("http://www.tei-c.org/ns/1.0", "teiHeader") } {
+            element fileDesc {
+                element titleStmt {
+                    element title { "Rechtsquellen des Kantons Zürich: " || $title } 
+                }, 
+                element publicationStmt {
+                    element p { "Publication Information" }
+                }, 
+                element sourceDesc {
+                    element p { "Information about the source" }
+                }
+            }
+        }
+};
+
+declare function scraper:generate-places-xml-for-col() {
+    for $places-col in $config:data-collections
+        return
+            let $all-places := 
+                doc($config:data-root || "/" || 
+                        $scraper:place ||  "/" ||
+                        $scraper:place || ".xml")//tei:place
+            let $all-places-count := count($all-places)
+            let $found-places := scraper:get-places-from-data($places-col)
+            let $found-places-count := count($found-places)
+            let $found-tei-places := 
+                for $place-id in $found-places
+                    return
+                        $all-places[@xml:id = $place-id]
+            let $found-tei-places-count := count($found-tei-places)
+            let $missing-places-count := $found-places-count - $found-tei-places-count
+            let $util:log := util:log("info", "scraper:generate-places-xml-for-col: 
+                collection:'" || $places-col || "' has '" || $found-places-count || "' unique places.
+                Found places in places.xml: '" || $found-tei-places-count || "'
+                Missing places in places.xml: '" ||  $missing-places-count || "'")
+            
+            let $generated-places-tei := scraper:generate-places-tei($scraper:place, $found-tei-places)
+            return
+                xmldb:store($config:data-root || "/" || $scraper:place, $scraper:place || "-" || $places-col || ".xml", $generated-places-tei)
+};
+
+declare function scraper:get-places-from-data($places-col) {
+    for $location in collection($config:data-root || "/"|| $places-col)//(tei:placeName[@ref]|tei:origPlace[@ref])
+        group by $loc := $location/@ref
+        order by $loc ascending
+            return
+                $loc[1]/string()
 };
