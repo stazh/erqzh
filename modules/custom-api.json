@@ -30,7 +30,7 @@
 				"summary": "Landing page for places",
 				"description": "Retrieve an HTML page expanded through eXist templating. This is used to load the top-level HTML pages, e.g. `index.html`.",
 				"tags": ["view"],
-				"operationId": "custom:html-places",
+				"operationId": "vapi:html",
 				"x-error-handler": "vapi:handle-error",
 				"parameters": [
 					{
@@ -79,6 +79,16 @@
 					},
 					"404": {
 						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
 						"content": {
 							"text/html": {
 								"schema": {

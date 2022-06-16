@@ -13,12 +13,12 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 (: Add your own module imports here :)
 import module namespace rutil="http://exist-db.org/xquery/router/util";
 import module namespace errors = "http://exist-db.org/xquery/router/errors";
-import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
+import module namespace app="http://existsolutions.com/ssrq/app" at "app.xql";
 import module namespace search="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
-import module namespace templates="http://exist-db.org/xquery/templates" at "templates.xql";
+import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xql";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xql";
+import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 import module namespace dapi="http://teipublisher.com/api/documents" at "lib/api/document.xql";
 import module namespace vapi="http://teipublisher.com/api/view" at "lib/api/view.xql";
@@ -212,7 +212,7 @@ declare function api:places($request as map(*)) {
     let $letter := 
         if (count($places) < $limit) then 
             "Alle"
-        else if ($letterParam = '') then
+        else if (not($letterParam) or $letterParam = '') then
             substring($sorted[1], 1, 1) => upper-case()
         else
             $letterParam
@@ -252,7 +252,7 @@ declare function api:places($request as map(*)) {
 declare function api:output-place($list, $category as xs:string, $search as xs:string?) {
     array {
         for $place in $list
-        let $categoryParam := if ($category = "all") then substring($place/@n, 1, 1) else $category
+        let $categoryParam := if ($category = "Alle") then substring($place/@n, 1, 1) else $category
         let $params := "category=" || $categoryParam || "&amp;search=" || $search
         let $label := $place/@n/string()
         let $coords := tokenize($place/tei:location/tei:geo)
@@ -304,5 +304,3 @@ declare function api:html-place($request as map(*)) {
     return
         templates:apply($template, vapi:lookup#2 , map { "editionseinheit":$request?parameters?editionseinheit,"name":$request?parameters?name } , $vapi:template-config)
 };
-
-
