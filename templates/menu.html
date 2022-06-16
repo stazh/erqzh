@@ -1,19 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <app-toolbar class="menubar">
-    <a href="${app}/index.html" class="logo" data-template="pages:parse-params"></a>
+    <a href="${app}/index.html" class="logo" data-template="pages:parse-params"/>
     <pb-media-query query="(min-width: 1024px)">
         <a href="${app}/start.html" data-template="pages:parse-params">Start</a>
+        <paper-menu-button>
+            <a href="#" slot="dropdown-trigger" data-i18n="[title]menu.places" title="foo">
+                <pb-i18n key="menu.places">Places</pb-i18n>
+            </a>
+            <paper-listbox slot="dropdown-content">
+                <paper-item>
+                    <a href="${app}/places/ZH_NF_II_11/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.editionseinheit1">ZH_NF_II_11</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/places/ZH_NF_II_3/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.editionseinheit2">ZH_NF_II_3</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/places/ZH_NF_I_1_11/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.editionseinheit3">ZH_NF_I_1_11</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/places/ZH_NF_I_1_3/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.editionseinheit4">ZH_NF_I_1_3</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/places/ZH_NF_I_2_1/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.editionseinheit5">ZH_NF_I_2_1</pb-i18n>
+                    </a>
+                </paper-item>
+            </paper-listbox>
+        </paper-menu-button>
         <a href="${app}/abbr.html" data-template="pages:parse-params" class="tp-menu-item" title="Abbreviations">
             <div>
                 <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
             </div>
-            <div class="ripple-container"></div>
+            <div class="ripple-container"/>
         </a>
         <a href="mailto:staatsarchivzh@ji.zh.ch" class="tp-menu-item">
             <div>
                 <pb-i18n key="feedback">Feedback</pb-i18n>
             </div>
-            <div class="ripple-container"></div>
+            <div class="ripple-container"/>
         </a>
         <pb-restricted login="login" group="tei">
             <paper-menu-button>
@@ -21,7 +52,7 @@
                     <pb-i18n key="menu.admin.title">Admin</pb-i18n>
                 </a>
                 <paper-listbox slot="dropdown-content">
-                    <paper-item data-template="pages:edit-odd-list" data-template-emit="docs"></paper-item>
+                    <paper-item data-template="pages:edit-odd-list" data-template-emit="docs"/>
                     <paper-item>
                         <a href="${app}/api.html" data-template="pages:parse-params" target="_blank">API
                             Documentation</a>
@@ -29,7 +60,7 @@
                 </paper-listbox>
             </paper-menu-button>
         </pb-restricted>
-        <div main-title="main-title"></div>
+        <div main-title="main-title"/>
 
         <!-- language selector -->
         <pb-lang name="lang" data-template="pages:languages"/>
@@ -37,19 +68,19 @@
         <pb-login id="login" group="tei">
             <iron-icon slot="icon" icon="account-circle"/>
             <p slot="information">
-                <pb-i18n key="login-info"></pb-i18n>
+                <pb-i18n key="login-info"/>
             </p>
         </pb-login>
 
     </pb-media-query>
 
     <pb-media-query query="(max-width: 1023px)">
-        <div main-title="main-title"></div>
+        <div main-title="main-title"/>
 
         <pb-login id="login" group="tei">
             <iron-icon slot="icon" icon="account-circle"/>
             <p slot="information">
-                <pb-i18n key="login-info"></pb-i18n>
+                <pb-i18n key="login-info"/>
             </p>
         </pb-login>
         <paper-icon-button icon="icons:menu" drawer-toggle="drawer-toggle"/>
