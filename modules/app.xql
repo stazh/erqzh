@@ -419,6 +419,17 @@ function app:get-edition-unit($node as node(), $model as map(*), $editionseinhei
             <pb-i18n key="menu.all"/>
 };
 
+declare %templates:default("name", "")  function app:place-link($node as node(), $model as map(*), $name as xs:string) {
+    let $key := $model?key
+    let $name := if($model?name) then ($model?name) else $name
+    return
+        element a {
+            attribute href { "https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id=" || $key },
+            attribute target { "_blank"},
+            $name || " at ssrq-sds-fds.ch"
+        }    
+};
+
 declare %templates:default("type", "place") 
         %templates:default("name", "") 
 function app:mentions($node as node(), $model as map(*), $type as xs:string, $name as xs:string) {
@@ -428,7 +439,7 @@ function app:mentions($node as node(), $model as map(*), $type as xs:string, $na
     let $places := doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
     return
         <div>
-            <h3>Erwähnungen von {$places[@xml:id = $key]/@n/string()}</h3>
+            <h3><pb-i18n key="mentions-of"/>{" " ||  $places[@xml:id = $key]/@n/string()}</h3>
             <div>{
                 if($type = "place") 
                 then ( 
@@ -438,7 +449,7 @@ function app:mentions($node as node(), $model as map(*), $type as xs:string, $na
                         return
                             if(count($matches) > 0)
                             then (
-                                <h4>{$col}</h4>,
+                                <h4><pb-i18n key="menu.{$col}"/></h4>,
                                 <ul>{app:ref-list("place", $matches, $col, $key)}</ul>
                             ) else()
                  )
