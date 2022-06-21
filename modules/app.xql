@@ -382,7 +382,7 @@ function app:load-place($node as node(), $model as map(*), $name as xs:string, $
 (:    let $log := util:log("info", "app:load-place $title:" || $title):)
 (:    let $log := util:log("info", "app:load-place $geo:" || $place//tei:geo/text()):)
     return 
-        if(string-length(normalize-space($place//tei:geo/text())))
+        if(string-length(normalize-space($place//tei:geo/text())) > 1)
         then(
             let $geo-token := tokenize($place//tei:geo/text(), " ")
             return 
@@ -419,6 +419,22 @@ function app:get-edition-unit($node as node(), $model as map(*), $editionseinhei
             <pb-i18n key="menu.all"/>
 };
 
+declare 
+    %templates:wrap  
+    %templates:default("name", "")  
+function app:show-map($node as node(), $model as map(*), $name as xs:string) {
+    let $key := $model?key
+    let $place :=  doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place[@xml:id = $key]
+    return
+        if(string-length(normalize-space($place//tei:geo/text() ) ) > 1)
+        then (
+            let $log := util:log("info", "show map" )
+            return
+                templates:process($node/*, $model)
+        ) else (util:log("info", "don't show map" )) 
+};
+
+
 declare %templates:default("name", "")  function app:place-link($node as node(), $model as map(*), $name as xs:string) {
     let $key := $model?key
     let $name := if($model?name) then ($model?name) else $name
@@ -426,7 +442,7 @@ declare %templates:default("name", "")  function app:place-link($node as node(),
         element a {
             attribute href { "https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id=" || $key },
             attribute target { "_blank"},
-            $name || " at ssrq-sds-fds.ch"
+            xmldb:decode($name) || " at ssrq-sds-fds.ch"
         }    
 };
 

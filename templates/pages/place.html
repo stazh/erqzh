@@ -140,10 +140,12 @@
                             <pb-i18n key="place">$place</pb-i18n>: 
                             <pb-geolocation latitude="${latitude}" longitude="${longitude}" label="${title}" auto="" data-template="pages:parse-params"> ${title}</pb-geolocation>
                         </h2>                            
-                        <pb-leaflet-map id="map" zoom="13">
-	                        <pb-map-layer show="" base="" label="HikeBike Map" url="https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}" max-zoom="19" access-token="pk.eyJ1Ijoid29sZmdhbmdtbSIsImEiOiJjam1kMjVpMnUwNm9wM3JwMzdsNGhhcnZ0In0.v65crewF-dkNsPF3o1Q4uw" attribution="© Mapbox © OpenStreetMap">
-                            </pb-map-layer>
-                        </pb-leaflet-map> 
+                        <span data-template="app:show-map">
+                            <pb-leaflet-map id="map" zoom="13">
+    	                        <pb-map-layer show="" base="" label="HikeBike Map" url="https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}" max-zoom="19" access-token="pk.eyJ1Ijoid29sZmdhbmdtbSIsImEiOiJjam1kMjVpMnUwNm9wM3JwMzdsNGhhcnZ0In0.v65crewF-dkNsPF3o1Q4uw" attribution="© Mapbox © OpenStreetMap">
+                                </pb-map-layer>
+                            </pb-leaflet-map> 
+                        </span>
                         
                         <h3>
                             <div data-template="app:place-link"/>
