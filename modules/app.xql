@@ -374,12 +374,13 @@ function app:short-header-link($node as node(), $model as map(*)) {
 declare
     %templates:wrap    
     %templates:default("name","")
-function app:load-place($node as node(), $model as map(*), $name as xs:string) {
-    let $log := util:log("info", "ssrq.xql app:load-place $name: " || $name)
-    let $place := doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place[@n = xmldb:decode($name)]
+    %templates:default("key","")
+function app:load-place($node as node(), $model as map(*), $name as xs:string, $key as xs:string) {
+    let $log := util:log("info", "app:load-place $name: " || $name || " - $key:" || $key)
+    let $place := doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place[@xml:id = xmldb:decode($key)]
     let $title := $place/tei:placeName[@type="main"]/string()
-    let $log := util:log("info", "ssrq.xql app:load-place $title:" || $title)
-    let $log := util:log("info", "ssrq.xql app:load-place $geo:" || $place//tei:geo/text())
+(:    let $log := util:log("info", "app:load-place $title:" || $title):)
+(:    let $log := util:log("info", "app:load-place $geo:" || $place//tei:geo/text()):)
     return 
         if(string-length(normalize-space($place//tei:geo/text())))
         then(
@@ -387,37 +388,52 @@ function app:load-place($node as node(), $model as map(*), $name as xs:string) {
             return 
                 map {
                     "title": $title,
-                    "key":$place/@xml:id,
+                    "key":$key,
                     "latitude": $geo-token[1],
-                    "longitude": $geo-token[2],
-                    "editionseinheit": "test"
+                    "longitude": $geo-token[2]
                 }
-            
         )
         else (
             map {
                 "title": $title,
-                "key":$place/@xml:id
+                "key":$key
             }    
         )
 };
+declare
+    %templates:wrap    
+    %templates:default("editionseinheit","")
+function app:get-edition-unit($node as node(), $model as map(*), $editionseinheit as xs:string) {
+    switch($editionseinheit) 
+        case "ZH_NF_II_11" return   
+            <pb-i18n key="menu.ZH_NF_II_11"/>
+        case "ZH_NF_II_3" return 
+            <pb-i18n key="menu.ZH_NF_II_3"/>
+        case "ZH_NF_I_1_11" return 
+            <pb-i18n key="menu.ZH_NF_I_1_11"/>
+        case "ZH_NF_I_1_3" return 
+            <pb-i18n key="menu.ZH_NF_I_1_3"/>
+        case "ZH_NF_I_2_1" return 
+            <pb-i18n key="menu.ZH_NF_I_2_1"/>
+        default return 
+            <pb-i18n key="menu.all"/>
+};
 
 declare %templates:default("type", "place") 
-        %templates:default("name", "Adliswil") 
+        %templates:default("name", "") 
 function app:mentions($node as node(), $model as map(*), $type as xs:string, $name as xs:string) {
     let $key := $model?key
-    let $name := if($model?name) then (xmldb:decode($model?name)) else $name
+    let $name := if($model?name) then ($model?name) else $name
     let $log := util:log("info", "app:mentions: $key: " || $key || " - $name: "||$name)
     let $places := doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
-    let $log := util:log("info", "app:mentions count $places: " || count($places))
     return
         <div>
-            <h3>Erwähnungen von {$name}</h3>
+            <h3>Erwähnungen von {$places[@xml:id = $key]/@n/string()}</h3>
             <div>{
                 if($type = "place") 
                 then ( 
                     for $col in $config:data-collections
-                        let $matches := collection($config:data-root || "/" || $col)//tei:text[(.//tei:placeName/@ref|.//tei:origPlace/@ref) = $key]
+                        let $matches := collection($config:data-root || "/" || $col)//tei:TEI[(.//tei:placeName/@ref|.//tei:origPlace/@ref) = $key]
                         let $log := util:log("info", "app:mentions: col: " || $col || " - $matches: " || count($matches))
                         return
                             if(count($matches) > 0)
@@ -431,23 +447,19 @@ function app:mentions($node as node(), $model as map(*), $type as xs:string, $na
         </div>
 };
 declare function app:ref-list($type, $list, $col, $key) {
-    for $doc in subsequence($list, 1, 15)
+    for $doc in $list
         let $doc-name := util:document-name($doc)
         let $log := util:log("info", "app:ref-list: name: " || $doc-name)
-        let $idno := $doc/ancestor::tei:TEI//tei:seriesStmt//tei:idno/text()
+        let $idno := $doc//tei:seriesStmt//tei:idno/text()
         let $log := util:log("info", "app:ref-list: $idno: " || $idno)
-        let $title := $doc/ancestor::tei:TEI//tei:msDesc/tei:head/text()
+        let $title := $doc//tei:msDesc/tei:head/text()
         let $log := util:log("info", "app:ref-list: $title: " || $title)
         return
             <li>
                 <a href="../../{$col}/{$idno}">
                     {$title}
                 </a>
-            </li>,
-    if (count($list) > 15) then
-        <li><a href="../../briefe/?facet-{$type}={$key}">... &gt; <pb-i18n key="label.all"/></a></li>
-    else
-        ()
+            </li>
 };
 
 
@@ -459,3 +471,4 @@ function app:collection-title($node as node(), $model as map(*)) {
        common:format-id($collection-title)
     )
 };
+

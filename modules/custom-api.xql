@@ -253,7 +253,7 @@ declare function api:output-place($list, $category as xs:string, $search as xs:s
     array {
         for $place in $list
         let $categoryParam := if ($category = "Alle") then substring($place/@n, 1, 1) else $category
-        let $params := "category=" || $categoryParam || "&amp;search=" || $search
+        let $params := "category=" || $categoryParam || "&amp;search=" || $search || "&amp;key=" || $place/@xml:id
         let $label := $place/@n/string()
         let $coords := tokenize($place/tei:location/tei:geo)
         return
@@ -304,3 +304,5 @@ declare function api:html-place($request as map(*)) {
     return
         templates:apply($template, vapi:lookup#2 , map { "editionseinheit":$request?parameters?editionseinheit,"name":$request?parameters?name } , $vapi:template-config)
 };
+
+

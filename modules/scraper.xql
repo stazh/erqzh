@@ -576,3 +576,28 @@ declare function scraper:get-places-from-data($places-col) {
             return
                 $loc[1]/string()
 };
+
+declare function scraper:get-duplicate-places() {
+ let $places:= doc($config:data-root || "/place/place.xml")//tei:place
+ let $duplicates := 
+    for $place in $places
+        group by $name := $place/@n 
+        order by $name
+        return
+            if(count($place)>1)
+            then (
+                element duplicate {
+                    attribute name { $name },
+                    for $p in $place 
+                        return
+                            element place { 
+                                attribute id { $p/@xml:id }
+                            }
+                }
+            ) else ()
+    return
+        element duplicates {
+            attribute duplicate-places {count($duplicates)},
+            $duplicates   
+        }
+};

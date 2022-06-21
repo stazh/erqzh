@@ -15,7 +15,8 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 (:scraper:generate-places():)
 (:scraper:places-all(10):)
 (:scraper:places-add-geo-data():)
-scraper:generate-places-xml-for-col()
+(:scraper:generate-places-xml-for-col():)
+scraper:get-duplicate-places()
 
 (:  PERSONS :)
 (: scraper:persons-all(10):)

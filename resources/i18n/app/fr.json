@@ -75,6 +75,15 @@
     "lemma": "Lemma",
     "keywords": "Terme"
   },
+  "menu": {
+  	"places": "Places",
+  	"all" : "All",
+  	"ZH_NF_II_11":"Stadt und Territorialstaat Zürich II (ZH_NF_II_11)",
+  	"ZH_NF_II_3":"Gedruckte Mandate für Stadt und/oder Landschaft Zürich (ZH_NF_II_3)",
+  	"ZH_NF_I_1_11":"Die Rechtsquellen der Stadt Winterthur (ZH_NF_I_1_11)",
+  	"ZH_NF_I_1_3":"Die Landvogtei Greifensee (ZH_NF_I_1_3)",
+  	"ZH_NF_I_2_1":"Die Obervogteien um die Stadt Zürich (ZH_NF_I_2_1)"
+  },  
   "feedback": "Feedback",
   "yes": "oui",
   "no": "non",

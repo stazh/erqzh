@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<html data-template="app:load-place" data-template-name="${name}" lang="de"> 
+<html data-template="app:load-place" lang="de"> 
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes"/>
@@ -131,11 +131,15 @@
                 </app-header>
                 <section>
                     <div class="pb-container main">
-                        <h1 data-editionseinheit="${editionseinheit}" data-title="${title}" data-template="pages:parse-params">${editionseinheit}</h1>
+                        <h1>
+                                <a href="${app}/places/${editionseinheit}/" data-editionseinheit="${editionseinheit}" data-title="${title}" data-template="pages:parse-params">
+                                    <span data-template="app:get-edition-unit"/>
+                                </a>
+                            </h1>
                         <h2 id="locations">
-                            <pb-geolocation latitude="${latitude}" longitude="${longitude}" label="${title}" auto="" data-template="pages:parse-params">${title}</pb-geolocation>
+                            <pb-i18n key="place">$place</pb-i18n>: 
+                            <pb-geolocation latitude="${latitude}" longitude="${longitude}" label="${title}" auto="" data-template="pages:parse-params"> ${title}</pb-geolocation>
                         </h2>                            
-                        <h3 data-template="pages:parse-params" name="${name}">${name}</h3>
                         <pb-leaflet-map id="map" zoom="13">
 	                        <pb-map-layer show="" base="" label="HikeBike Map" url="https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}" max-zoom="19" access-token="pk.eyJ1Ijoid29sZmdhbmdtbSIsImEiOiJjam1kMjVpMnUwNm9wM3JwMzdsNGhhcnZ0In0.v65crewF-dkNsPF3o1Q4uw" attribution="© Mapbox © OpenStreetMap">
                             </pb-map-layer>
