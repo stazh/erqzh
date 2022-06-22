@@ -6,12 +6,52 @@
                 <li>
                     <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
                 </li>
+                <pb-collapse>
+                    <div slot="collapse-trigger">
+                        <a href="#" data-i18n="[title]menu.contexts" title="foo">
+                            <pb-i18n key="menu.places">Places</pb-i18n>
+                        </a>
+                    </div>
+                    <paper-listbox slot="collapse-content">
+                        <paper-item>
+                            <a href="${app}/places/all/" data-template="pages:parse-params">
+                                <pb-i18n key="menu.all">all</pb-i18n>
+                            </a>
+                        </paper-item>
+                        <paper-item>
+                            <a href="${app}/places/ZH_NF_I_1_3/" data-template="pages:parse-params">
+                                <pb-i18n key="menu.ZH_NF_I_1_3">ZH_NF_I_1_3</pb-i18n>
+                            </a>
+                        </paper-item>
+                        <paper-item>
+                            <a href="${app}/places/ZH_NF_I_1_11/" data-template="pages:parse-params">
+                                <pb-i18n key="menu.ZH_NF_I_1_11">ZH_NF_I_1_11</pb-i18n>
+                            </a>
+                        </paper-item>
+                        <paper-item>
+                            <a href="${app}/places/ZH_NF_I_2_1/" data-template="pages:parse-params">
+                                <pb-i18n key="menu.ZH_NF_I_2_1">ZH_NF_I_2_1</pb-i18n>
+                            </a>
+                        </paper-item>
+                        <paper-item>
+                            <a href="${app}/places/ZH_NF_II_3/" data-template="pages:parse-params">
+                                <pb-i18n key="menu.ZH_NF_II_3">ZH_NF_II_3</pb-i18n>
+                            </a>
+                        </paper-item>
+                        <paper-item>
+                            <a href="${app}/places/ZH_NF_II_11/" data-template="pages:parse-params">
+                                <pb-i18n key="menu.ZH_NF_II_11">ZH_NF_II_11</pb-i18n>
+                            </a>
+                        </paper-item>
+                    </paper-listbox>
+                </pb-collapse>
+                
                 <li>
                     <a href="${app}/abbr.html" class="tp-menu-item" title="Abbreviations" data-template="pages:parse-params">
                         <div>
                             <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
                         </div>
-                        <div class="ripple-container"></div>
+                        <div class="ripple-container"/>
                     </a>
                 </li>
                 <li>
@@ -19,7 +59,7 @@
                         <div>
                             <pb-i18n key="feedback">Feedback</pb-i18n>
                         </div>
-                        <div class="ripple-container"></div>
+                        <div class="ripple-container"/>
                     </a>
                 </li>
                 <li>
