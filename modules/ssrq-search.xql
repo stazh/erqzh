@@ -4,14 +4,14 @@ module namespace query="http://existsolutions.com/ssrq/search";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
-import module namespace templates="http://exist-db.org/xquery/templates" at "templates.xql";
+import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace http="http://expath.org/ns/http-client";
 import module namespace browse="http://www.tei-c.org/tei-simple/templates" at "lib/browse.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace kwic="http://exist-db.org/xquery/kwic";
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xql";
-import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
+import module namespace app="http://existsolutions.com/ssrq/app" at "app.xql";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 import module namespace common="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" at "ext-common.xql";
 import module namespace queryDef="http://www.tei-c.org/tei-simple/query" at "query.xql";

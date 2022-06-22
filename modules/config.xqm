@@ -10,7 +10,7 @@ import module namespace http="http://expath.org/ns/http-client" at "java:org.exi
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation" at "navigation.xql";
 import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 
-declare namespace templates="http://exist-db.org/xquery/templates";
+import module namespace templates="http://exist-db.org/xquery/html-templating";
 
 declare namespace repo="http://exist-db.org/xquery/repo";
 declare namespace expath="http://expath.org/ns/pkg";
@@ -292,6 +292,8 @@ declare variable $config:organization-id-file-name := 'organization-Id-data.xml'
 
 declare variable $config:metadata-file-name := 'register-data.xml';
 declare variable $config:metadata-file := doc($config:data-root || '/' || $config:metadata-file-name);
+
+declare variable $config:data-collections := ("ZH_NF_I_1_3", "ZH_NF_I_1_11", "ZH_NF_I_2_1", "ZH_NF_II_3", "ZH_NF_II_11");
 
 (:~
  : The root of the collection hierarchy whose files should be displayed

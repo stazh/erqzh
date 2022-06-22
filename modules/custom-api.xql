@@ -13,14 +13,16 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 (: Add your own module imports here :)
 import module namespace rutil="http://exist-db.org/xquery/router/util";
 import module namespace errors = "http://exist-db.org/xquery/router/errors";
-import module namespace app="http://existsolutions.com/ssrq/app" at "ssrq.xql";
+import module namespace app="http://existsolutions.com/ssrq/app" at "app.xql";
 import module namespace search="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
-import module namespace templates="http://exist-db.org/xquery/templates" at "templates.xql";
+import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xql";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
-import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "util.xql";
+import module namespace tpu="http://www.tei-c.org/tei-publisher/util" at "lib/util.xql";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
 import module namespace dapi="http://teipublisher.com/api/documents" at "lib/api/document.xql";
+import module namespace vapi="http://teipublisher.com/api/view" at "lib/api/view.xql";
+
 
 (:~
  : Keep this. This function does the actual lookup in the imported modules.
@@ -155,3 +157,152 @@ declare function api:timeline($request as map(*)) {
                 })
         )
 };
+
+declare function api:places-all($request as map(*)) {
+    let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
+    let $places := 
+        if( $editionseinheit = $config:data-collections )
+        then (
+            doc($config:data-root || "/place/place-" || $editionseinheit || ".xml")//tei:listPlace/tei:place    
+        )
+        else (
+            doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
+        )
+    let $log := util:log("info", "api:places-all found '" || count($places) || "' places in editionseinheit " || $editionseinheit)
+    return 
+        array { 
+            for $place in $places
+            return
+                if(string-length(normalize-space($place/tei:location/tei:geo)) > 0)
+                then (
+                    let $tokenized := tokenize($place/tei:location/tei:geo)
+                    return 
+                        map {
+                            "latitude":$tokenized[1],
+                            "longitude":$tokenized[2],
+                            "label":$place/@n/string()
+                        }
+                ) else()
+            }        
+};
+
+
+declare function api:places($request as map(*)) {
+    let $search := normalize-space($request?parameters?search)
+    let $letterParam := $request?parameters?category
+    let $limit := $request?parameters?limit
+    let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
+    let $log := util:log("info","api:places $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit:" || $editionseinheit)
+    let $places-input := if( $editionseinheit = $config:data-collections )
+                            then (
+                                doc($config:data-root || "/place/place-" || $editionseinheit || ".xml")//tei:listPlace/tei:place    
+                            )
+                            else (
+                                doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
+                            )
+    let $places :=
+        if ($search and $search != '') then
+            $places-input[ft:query(., 'lname:(' || $search || '*)')]
+        else
+            $places-input
+            
+    let $log := util:log("info","api:places  found places:"||count($places) )
+    let $sorted := sort($places, "?lang=de-DE", function($place) { lower-case($place/@n) })
+    
+    let $letter := 
+        if (count($places) < $limit) then 
+            "Alle"
+        else if (not($letterParam) or $letterParam = '') then
+            substring($sorted[1], 1, 1) => upper-case()
+        else
+            $letterParam
+    let $log := util:log("info","api:places  $letter:"||$letter )            
+    
+    let $byLetter :=
+        if ($letter = 'Alle') then
+            $sorted
+        else
+            filter($sorted, function($entry) {
+                starts-with(lower-case($entry/@n), lower-case($letter))
+            })
+    return
+        map {
+            "items": api:output-place($byLetter, $letter, $search),
+            "categories":
+                if (count($places) < $limit) then
+                    []
+                else array {
+                    for $index in 1 to string-length('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+                    let $alpha := substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $index, 1)
+                    let $hits := count(filter($sorted, function($entry) { starts-with(lower-case($entry/@n), lower-case($alpha))}))
+                    where $hits > 0
+                    return
+                        map {
+                            "category": $alpha,
+                            "count": $hits
+                        },
+                    map {
+                        "category": "Alle",
+                        "count": count($sorted)
+                    }
+                }
+        }
+};
+
+declare function api:output-place($list, $category as xs:string, $search as xs:string?) {
+    array {
+        for $place in $list
+        let $categoryParam := if ($category = "Alle") then substring($place/@n, 1, 1) else $category
+        let $params := "category=" || $categoryParam || "&amp;search=" || $search || "&amp;key=" || $place/@xml:id
+        let $label := $place/@n/string()
+        let $coords := tokenize($place/tei:location/tei:geo)
+        return
+            element span {
+                attribute class { "place" },
+                element a {
+                    attribute href { $label || "?" || $params },
+                    $label
+                },
+                if(string-length(normalize-space($place/tei:location/tei:geo)) > 0) 
+                then (
+                    element pb-geolocation {
+                        attribute latitude { $coords[1] },
+                        attribute longitude { $coords[2] },
+                        attribute label { $label},
+                        attribute emit {"map"},
+                        attribute event { "click" },
+                        if ($place/@type != 'approximate') then attribute zoom { 9 } else (),
+                        
+                        element iron-icon {
+                            attribute icon {"maps:map" }
+                        }
+                    }
+                ) 
+                else () 
+            }
+    }
+};
+
+declare function api:html-places($request as map(*)) {
+    let $path := $config:app-root || "/templates/" || xmldb:decode($request?parameters?file) || ".html"
+    let $template :=
+        if (doc-available($path)) then
+            doc($path)
+        else
+            error($errors:NOT_FOUND, "HTML file " || $path || " not found")
+    return
+        templates:apply($template, vapi:lookup#2 , map { "editionseinheit":$request?parameters?editionseinheit } , $vapi:template-config)
+};
+
+declare function api:html-place($request as map(*)) {
+    let $path := $config:app-root || "/templates/" || xmldb:decode($request?parameters?file) || ".html"
+    let $template :=
+        if (doc-available($path)) then
+            doc($path)
+        else
+            error($errors:NOT_FOUND, "HTML file " || $path || " not found")
+    return
+        templates:apply($template, vapi:lookup#2 , map { "editionseinheit":$request?parameters?editionseinheit,"name":$request?parameters?name } , $vapi:template-config)
+};
+
+

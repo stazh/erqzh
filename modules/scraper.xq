@@ -2,6 +2,10 @@ xquery version "3.1";
 
 import module namespace batch="http://existsolutions.com/rqzsh/batch" at "batch.xql";
 import module namespace scraper="http://existsolutions.com/rqzsh/scraper" at "scraper.xql";
+import module namespace http="http://expath.org/ns/http-client" at "java:org.expath.exist.HttpClientModule";
+import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
+
+declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 (: generate id lists to scrape only batches :)
 (:batch:main():)
@@ -10,6 +14,9 @@ import module namespace scraper="http://existsolutions.com/rqzsh/scraper" at "sc
 (:scraper:download-places():)
 (:scraper:generate-places():)
 (:scraper:places-all(10):)
+(:scraper:places-add-geo-data():)
+(:scraper:generate-places-xml-for-col():)
+scraper:get-duplicate-places()
 
 (:  PERSONS :)
 (: scraper:persons-all(10):)
@@ -26,7 +33,7 @@ import module namespace scraper="http://existsolutions.com/rqzsh/scraper" at "sc
 (: return:)
 (:     string-join($errors[@category="organization"]//error/text(),","):)
 
-scraper:analyze-register-data()
+(:scraper:analyze-register-data():)
 
 (: TAXONOMIES  :)
  
