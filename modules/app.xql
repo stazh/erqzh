@@ -431,7 +431,11 @@ function app:show-map($node as node(), $model as map(*), $name as xs:string) {
             let $log := util:log("info", "show map" )
             return
                 templates:process($node/*, $model)
-        ) else (util:log("info", "don't show map" )) 
+        ) else (
+            <ul>
+                <li><pb-i18n key="missing-geo-data"/></li>
+            </ul>
+        ) 
 };
 
 
@@ -446,7 +450,8 @@ declare %templates:default("name", "")  function app:place-link($node as node(),
         }    
 };
 
-declare %templates:default("type", "place") 
+declare %templates:wrap 
+        %templates:default("type", "place") 
         %templates:default("name", "") 
 function app:mentions($node as node(), $model as map(*), $type as xs:string, $name as xs:string) {
     let $key := $model?key
@@ -456,7 +461,7 @@ function app:mentions($node as node(), $model as map(*), $type as xs:string, $na
     return
         <div>
             <h3><pb-i18n key="mentions-of"/>{" " ||  $places[@xml:id = $key]/@n/string()}</h3>
-            <div>{
+            <div class="mentions">{
                 if($type = "place") 
                 then ( 
                     for $col in $config:data-collections
@@ -482,11 +487,14 @@ declare function app:ref-list($type, $list, $col, $key) {
         let $title := $doc//tei:msDesc/tei:head/text()
         let $log := util:log("info", "app:ref-list: $title: " || $title)
         return
-            <li>
-                <a href="../../{$col}/{$idno}">
-                    {$title}
-                </a>
-            </li>
+            if($title)
+            then (
+                <li>
+                    <a href="../../{$col}/{$idno}">
+                        {$title}
+                    </a>
+                </li>
+            ) else ()
 };
 
 
@@ -498,4 +506,3 @@ function app:collection-title($node as node(), $model as map(*)) {
        common:format-id($collection-title)
     )
 };
-

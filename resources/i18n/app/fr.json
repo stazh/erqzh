@@ -38,6 +38,7 @@
   "language": "Langue",
   "literature": "Littérature",
   "material": "Matériel de support",
+  "missing-geo-data":"No geo data available",
   "notes": "Annotations",
   "organisation": "Organisation",
   "origPlace": "Lieu d’origine",

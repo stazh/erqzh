@@ -39,6 +39,7 @@
   "language": "Sprache",
   "literature": "Literatur",
   "material": "Trägermaterial",
+  "missing-geo-data":"Keine Geodaten verfügbar",
   "notes": "Anmerkungen",
   "organisation": "Familie/Organisation",
   "origPlace": "Ausstellungsort",
