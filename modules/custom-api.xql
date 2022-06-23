@@ -72,6 +72,11 @@ declare function api:abbreviations($request as map(*)) {
             </div>
 };
 
+declare function api:bibliography($request as map(*)) {
+    app:bibliography(<div/>, $request?parameters)
+};
+
+
 declare function api:partners($request as map(*)) {
     let $lang := $request?parameters?language
     for $partner in $config:partners//tei:dataSpec/tei:valList/tei:valItem return

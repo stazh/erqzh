@@ -22,6 +22,7 @@ declare variable $app:PLACES := $app:HOST || "/places-db-edit/views/get-infos.xq
 declare variable $app:PERSONS := $app:HOST || "/persons-db-api/";
 declare variable $app:LEMMA := $app:HOST || "/lemma-db-edit/views/get-lem-infos.xq";
 declare variable $app:KEYWORDS := $app:HOST || "/lemma-db-edit/views/get-key-infos.xq";
+declare variable $app:LITERATUR := doc('../data/SSRQ_ZH_NF_Bibliographie_integral.xml');
 
 declare %templates:replace
     function app:show-if-logged-in($node as node(), $model as map(*)) {
@@ -506,3 +507,170 @@ function app:collection-title($node as node(), $model as map(*)) {
        common:format-id($collection-title)
     )
 };
+
+(:~ Helper function for Literaturverzeichnis 
+ : The Introduction blurb of the bibliography  
+ : TODO(DP): need confirmation that this is the blurb wanted by client
+:)
+declare %private function app:bibl-blurb() as element(p) {     
+    let $blurb := $app:LITERATUR//tei:body/tei:div/tei:div/tei:div/tei:p/text()
+    return
+        <p>{$blurb}</p>
+};
+
+(:~ Helper function for Literaturverzeichnis  
+ : Table headers for bibliography tables  
+ : TODO(DP): add i18n entries <pb-i18n key="bibliography" /> :)
+declare %private function app:bibl-thead() as element(thead) {
+    let $column-headings := ('Kurztitel', 'Bibliografische Angaben', 'Nachweis BSG', 'Zitiert in')
+    return
+        <thead>
+            <tr>
+                { for $heading in $column-headings
+                    return
+                        <th>{$heading}</th>
+                }
+            </tr>
+        </thead>
+
+};
+
+(:~ Helper function for Literaturverzeichnis 
+ : Kurztitle
+ :)
+declare %private function app:bibl-short($node as node()) as element(td) {
+    <td>{$node/tei:*/tei:title[@type="short"]/text()}</td>        
+};
+
+(:~ Helper function for Literaturverzeichnis 
+ : Vollständige Bibliografische Angaben
+ :
+ : Monographie:
+ : Nachname, Vorname: Titel, Erscheinungsort Jahr.
+ :
+ : Beitrag in Sammelband:
+ : Nachname, Vorname: Titel, in: Vorname Nachname (Hg.), Titel Sammelband, Erscheinungsort Jahr, Seitenzahlen.
+ :
+ : Beitrag in Zeitschrift:
+ : Nachname, Vorname: Titel, in: Titel Zeitschrift Nummer, Jahr, Seitenzahlen.
+ :
+ : TODO(DP): 
+ : - Data Source is still missing datapoints, and invalid. e.g.:
+ :  - not all EV have named editors in their monogr 
+ :  - series infomation  lost in web display both on old and new website
+ :  - biblSope should be sibling of imprint (which is missing alltogether in about 90 places)
+ :  - the contents of the missing imprints is required for the desired webdisplay
+ :  - there are duplicate and conflicting dates
+ :  - invalid and inconsistent use of @type='edition'
+ : - make display prettier for missing data no "Titel ,, 313-4.
+ : - configure index for faster loaading
+ :)
+declare %private function app:bibl-full($node as node(), $type as xs:string) as xs:string {
+    (: get primary bibliographical element for author and title (all) :)
+    let $main := $node/tei:*/tei:title[@type="short"]/..
+    let $authors := string-join($main/tei:author, '; ')
+    let $title := $main/tei:title[@type="full"]/string()
+
+    (: assemble shared components :)
+    let $start-all := $authors || ": " || $title || ", "
+
+    (: get secondary for JA and EV :)
+    (: not all EV have names editors in the monogr :)
+    let $secondary := $node/tei:monogr
+    let $editors := if (exists($secondary/tei:author)) then (string-join($secondary/tei:author, '; ')) else ()
+    let $imprint_ja := $secondary/tei:title[1]/string() || $secondary//tei:biblScope[@unit ='issue'] || ", " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope[@unit ='pages']
+    let $imprint_ev := $secondary/tei:title[1]/string() || ", " || $secondary//tei:pubPlace[1] || " " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope[@unit ='pages']
+    
+    return
+        switch($type)
+            case ('W') return $start-all || $node//tei:pubPlace[1] || " " || $node//tei:date || "."
+            case ('EV') return $start-all || "in: " || $editors || " (Hg.) " || $imprint_ev || "."
+            case ('JA') return $start-all || "in: " || $imprint_ja || "."         
+        default return ()   
+};
+
+(:~ Helper function for Literaturverzeichnis 
+ :)
+declare %private function app:bibl-caption() as element(caption) {
+    let $caps := $app:LITERATUR//tei:body/tei:div/tei:div/tei:head[@type="title"] 
+    for $c in $caps
+    return
+        <caption>{$c}</caption>
+};
+
+(:~ Helper function for Literaturverzeichnis 
+ : Kurztitle
+ :)
+declare %private function app:bibl-quoted($node as node()) as element(td) {
+    <td>TODO</td>        
+};
+
+(:~ Generate tables for Literaturverzeichnis
+ : Die Seite enthält: 
+ : Kurztitel (ausschlaggebend für alphabetische Auflistung); 
+ : vollständige bibliographische Angaben; 
+ : Link zur BSG; 
+ : Editionsstück(e) in dem der Literaturtitel zitiert wird. 
+ : @see http://www.rechtsquellen-online.ch/startseite/literaturverzeichnis 
+ : @see data/SSRQ_ZH_NF_Bibliographie_integral.xml
+ : @return div element
+ :)
+declare
+    %templates:wrap
+function app:bibliography($node as node(), $model as map(*)) as element(div){
+    let $print := $app:LITERATUR//tei:body/tei:div/tei:div[1]/tei:div/tei:listBibl
+    let $lit := $app:LITERATUR//tei:body/tei:div/tei:div[2]/tei:div/tei:listBibl
+
+    return
+    <div>
+        {app:bibl-blurb()}
+    <div>
+    <table class="print">
+        {app:bibl-thead()}
+        <caption>Gedruckte Quellen</caption>
+        <tbody>
+            {  
+                for $entry in $print/tei:biblStruct
+                let $id := data($entry/@xml:id)
+                let $type := data($entry/@type)
+                let $short := $entry/tei:*/tei:title[@type="short"]/text()
+                let $bsg := 'http://permalink.snl.ch/bib/' || $id
+                order by $short
+                return
+                    <tr id="{$id}">
+                        <td>{$short}</td>
+                        <td>{app:bibl-full($entry, $type)}</td>
+                        <td><a href="{$bsg}" target="_blank">BSG</a></td>
+                        <td>TODO</td>                        
+                    </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    <div>
+    <table class="lit">
+        {app:bibl-thead()}
+        <caption>Literatur</caption>
+        <tbody>
+            {  
+                for $entry in $lit/tei:biblStruct
+                let $id := data($entry/@xml:id)
+                let $type := data($entry/@type)
+                let $short := $entry/tei:*/tei:title[@type="short"]/text()
+                let $bsg := 'http://permalink.snl.ch/bib/' || $id
+                order by $short
+                return
+                    <tr id="{$id}">
+                        <td>{$short}</td>
+                        <td>{app:bibl-full($entry, $type)}</td>
+                        <td><a href="{$bsg}" target="_blank">BSG</a></td>
+                        <td>TODO</td>                        
+                    </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+    </div>
+
+};
+

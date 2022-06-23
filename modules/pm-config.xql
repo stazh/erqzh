@@ -1,4 +1,3 @@
-
 xquery version "3.1";
 
 module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config";

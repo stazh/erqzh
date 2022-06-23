@@ -18,7 +18,7 @@ build the xar file by running `ant` and install the data xar file.
 1. in rqzh2 modules/config.xqm set $config:webcomponents-cdn to ‘local’ 
 1. call `ant xar-local`
 1. remove tei-publisher-components from resources/scripts ( `rm -rf resources/scripts/*.js` )
-1. in tei-publisher-components repo execute `npm run build` 
+1. in tei-publisher-components repo execute `npm i && npm run build` 
 1. copy generated .js and .map files from the tei-publisher-components ( e.g. `cp dist/*.js dist/*.map $RQZH/rqzh2/resources/scripts/` )
 1. call `ant xar-local` again
 

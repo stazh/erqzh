@@ -99,7 +99,36 @@
 					}
 				}
 			}
-        },    	
+        },
+        "/api/bibliography":{
+            "get": {
+                "summary": "Literaturverzeichnis",
+                "operationId": "vapi:bibliography",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "schema":{
+                            "type": "string",
+                            "default": "de"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200":{
+                        "description": "Literaturverzeichnis",
+                        "content": {
+                            "text/html":{
+                                "schema":{
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+    	
 		"/places/{editionseinheit}/{name}": {
             "get": {
 				"summary": "Retrieve the HTML template used for displaying places metadata",
