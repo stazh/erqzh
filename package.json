@@ -1,6 +1,6 @@
 {
   "dependencies" : {
-    "@teipublisher/pb-components": "git+https://github.com/eeditiones/tei-publisher-components.git#develop"
+    "@teipublisher/pb-components": "git+https://github.com/eeditiones/tei-publisher-components.git#master"
   },
   "name" : "rqzh2",
   "version" : "1.0.0",

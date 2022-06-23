@@ -2286,6 +2286,161 @@
       ]
     },
     {
+      "name": "pb-combo-box",
+      "path": "./src/pb-combo-box.js",
+      "description": "Provides a combo box, i.e. a combination of an input with a dropdown.\nItems to select from may be obtained from a remote data source.\n\nThe form control to be used (either a select or input) should be passed \nin the content of the element. If no control is provided, a simple `<input>`\nwill be created.",
+      "attributes": [
+        {
+          "name": "source",
+          "description": "A remote data source to use. The component will pass the text entered by the user\nin parameter `query`. It expects a JSON array of objects with each object describing\none item:\n\n```json\n{\n  \"text\": \"Text to show as label\",\n  \"value\": \"value-to-use\"\n}\n```",
+          "type": "string"
+        },
+        {
+          "name": "close-after-select",
+          "description": "Automatically close the dropdown once the user made a selection",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "preload",
+          "description": "Preload all items from the remote data source at startup",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "on-blur",
+          "description": "Name of the event to be emitted when the user leaves the form control",
+          "type": "string",
+          "default": "\"pb-combo-box-blur\""
+        },
+        {
+          "name": "on-change",
+          "description": "Name of the event to be emitted when the value of the form control has changed",
+          "type": "string",
+          "default": "\"pb-combo-box-change\""
+        },
+        {
+          "name": "subscribe",
+          "description": "The name of the channel to subscribe to. Only events on a channel corresponding\nto this property are listened to.",
+          "type": "string"
+        },
+        {
+          "name": "subscribe-config",
+          "description": "Configuration object to define a channel/event mapping. Every property\nin the object is interpreted as the name of a channel and its value should\nbe an array of event names to listen to.",
+          "type": "object"
+        },
+        {
+          "name": "emit",
+          "description": "The name of the channel to send events to.",
+          "type": "string"
+        },
+        {
+          "name": "emit-config",
+          "description": "Configuration object to define a channel/event mapping. Every property\nin the object is interpreted as the name of a channel and its value should\nbe an array of event names to be dispatched.",
+          "type": "object"
+        },
+        {
+          "name": "wait-for",
+          "description": "A selector pointing to other components this component depends on.\nWhen method `wait` is called, it will wait until all referenced\ncomponents signal with a `pb-ready` event that they are ready and listening\nto events.",
+          "type": "string"
+        },
+        {
+          "name": "disabled",
+          "description": "Common property to disable the functionality associated with a component.\n`pb-highlight` and `pb-popover` react to this.",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "renderItem",
+          "description": "Set a javascript function to be called whenever an item\nneeds to be rendered. The function will be passed the data\nobject of the current item as argument.",
+          "type": "Function"
+        },
+        {
+          "name": "theme",
+          "type": "string",
+          "default": "\"default\""
+        },
+        {
+          "name": "source",
+          "attribute": "source",
+          "description": "A remote data source to use. The component will pass the text entered by the user\nin parameter `query`. It expects a JSON array of objects with each object describing\none item:\n\n```json\n{\n  \"text\": \"Text to show as label\",\n  \"value\": \"value-to-use\"\n}\n```",
+          "type": "string"
+        },
+        {
+          "name": "closeAfterSelect",
+          "attribute": "close-after-select",
+          "description": "Automatically close the dropdown once the user made a selection",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "preload",
+          "attribute": "preload",
+          "description": "Preload all items from the remote data source at startup",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "renderFunction",
+          "type": "object",
+          "default": "\"renderDefault\""
+        },
+        {
+          "name": "onBlur",
+          "attribute": "on-blur",
+          "description": "Name of the event to be emitted when the user leaves the form control",
+          "type": "string",
+          "default": "\"pb-combo-box-blur\""
+        },
+        {
+          "name": "onChange",
+          "attribute": "on-change",
+          "description": "Name of the event to be emitted when the value of the form control has changed",
+          "type": "string",
+          "default": "\"pb-combo-box-change\""
+        },
+        {
+          "name": "subscribe",
+          "attribute": "subscribe",
+          "description": "The name of the channel to subscribe to. Only events on a channel corresponding\nto this property are listened to.",
+          "type": "string"
+        },
+        {
+          "name": "subscribeConfig",
+          "attribute": "subscribe-config",
+          "description": "Configuration object to define a channel/event mapping. Every property\nin the object is interpreted as the name of a channel and its value should\nbe an array of event names to listen to.",
+          "type": "object"
+        },
+        {
+          "name": "emit",
+          "attribute": "emit",
+          "description": "The name of the channel to send events to.",
+          "type": "string"
+        },
+        {
+          "name": "emitConfig",
+          "attribute": "emit-config",
+          "description": "Configuration object to define a channel/event mapping. Every property\nin the object is interpreted as the name of a channel and its value should\nbe an array of event names to be dispatched.",
+          "type": "object"
+        },
+        {
+          "name": "waitFor",
+          "attribute": "wait-for",
+          "description": "A selector pointing to other components this component depends on.\nWhen method `wait` is called, it will wait until all referenced\ncomponents signal with a `pb-ready` event that they are ready and listening\nto events.",
+          "type": "string"
+        },
+        {
+          "name": "disabled",
+          "attribute": "disabled",
+          "description": "Common property to disable the functionality associated with a component.\n`pb-highlight` and `pb-popover` react to this.",
+          "type": "boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
       "name": "pb-custom-form",
       "path": "./src/pb-custom-form.js",
       "description": "A custom form element which loads the actual form from a server-side script using AJAX.\nEmits `pb-search-resubmit` and `pb-submit` events, signalling the receiver that it should\nrefresh.\n\nThe component is currently used to implement the additional search facets on the start and\nsearch result page. It can also be combined with `pb-split-list` to contain an additional form\nwith options.",
@@ -3803,7 +3958,7 @@
     {
       "name": "pb-geolocation",
       "path": "./src/pb-geolocation.js",
-      "description": "Represents a geo location. Extends `pb-highlight`, but sends an additional `pb-geolocation` event\non mouseover.\n\nFor `pb-leaflet-map` to show markers for `pb-geolocation` elements, make sure that map subscribes to the channel\ninto which `pb-geolocation`s emit and that map is loaded before the emitting component, e.g. `pb-view`, by specifying \n`wait-for` property",
+      "description": "Represents a geo location. Extends `pb-highlight`, but sends an additional `pb-geolocation` event\non mouseover.\n\nFor `pb-leaflet-map` to show markers for `pb-geolocation` elements, make sure that map subscribes to the channel\ninto which `pb-geolocation`s emit and that map is loaded before the emitting component, e.g. `pb-view`, by specifying \n`wait-for` property.",
       "attributes": [
         {
           "name": "longitude",
@@ -4609,7 +4764,7 @@
     {
       "name": "pb-leaflet-map",
       "path": "./src/pb-leaflet-map.js",
-      "description": "A wrapper component for [leaflet](https://leafletjs.com/) displaying a map.",
+      "description": "A wrapper component for [leaflet](https://leafletjs.com/) displaying a map.\n\nThe map layers displayed can be configured via nested `pb-map-layer` (see docs) elements,\nicons via `pb-map-icon`.",
       "attributes": [
         {
           "name": "latitude",
@@ -5579,6 +5734,114 @@
         {
           "name": "pb-refresh-odds",
           "description": "When received, refresh the list of ODDs"
+        }
+      ]
+    },
+    {
+      "name": "pb-map-icon",
+      "path": "./src/pb-map-icon.js",
+      "description": "Configure a map icon type to be used for markers. \nShould be nested inside `pb-leaflet-map`.",
+      "attributes": [
+        {
+          "name": "icon-size",
+          "description": "Size of the icon as comma-separated string, i.e. 'height, width'.",
+          "type": "array"
+        },
+        {
+          "name": "icon-anchor",
+          "description": "Anchor position of the icon as comma-separated string, i.e. 'height, width'.",
+          "type": "array"
+        },
+        {
+          "name": "shadow-url",
+          "description": "The URL to load the shadow icon from. Should be relative to the path set via the `imagesPath` property on `pb-leaflet-map`.",
+          "type": "string"
+        },
+        {
+          "name": "shadow-size",
+          "description": "Size of the shadow icon as comma-separated string, i.e. 'height, width'.",
+          "type": "array"
+        },
+        {
+          "name": "shadow-anchor",
+          "description": "Anchor position of the shadow icon as comma-separated string, i.e. 'height, width'.",
+          "type": "array"
+        },
+        {
+          "name": "popup-anchor",
+          "description": "Anchor position of the popup as comma-separated string, i.e. 'height, width'.",
+          "type": "array"
+        },
+        {
+          "name": "name",
+          "description": "Name of the icon. Set to 'active' to configure the icon used for\nplaces which were target of a previous `pb-geolocation` event (i.e. are currently 'active').",
+          "type": "string",
+          "default": "\"default\""
+        },
+        {
+          "name": "icon-url",
+          "description": "The URL to load the icon from. Should be relative to the path set via the `imagesPath` property on `pb-leaflet-map`.",
+          "type": "string"
+        }
+      ],
+      "properties": [
+        {
+          "name": "iconSize",
+          "attribute": "icon-size",
+          "description": "Size of the icon as comma-separated string, i.e. 'height, width'.",
+          "type": "array"
+        },
+        {
+          "name": "iconAnchor",
+          "attribute": "icon-anchor",
+          "description": "Anchor position of the icon as comma-separated string, i.e. 'height, width'.",
+          "type": "array"
+        },
+        {
+          "name": "shadowUrl",
+          "attribute": "shadow-url",
+          "description": "The URL to load the shadow icon from. Should be relative to the path set via the `imagesPath` property on `pb-leaflet-map`.",
+          "type": "string"
+        },
+        {
+          "name": "shadowSize",
+          "attribute": "shadow-size",
+          "description": "Size of the shadow icon as comma-separated string, i.e. 'height, width'.",
+          "type": "array"
+        },
+        {
+          "name": "shadowAnchor",
+          "attribute": "shadow-anchor",
+          "description": "Anchor position of the shadow icon as comma-separated string, i.e. 'height, width'.",
+          "type": "array"
+        },
+        {
+          "name": "popupAncor",
+          "attribute": "popup-anchor",
+          "description": "Anchor position of the popup as comma-separated string, i.e. 'height, width'.",
+          "type": "array"
+        },
+        {
+          "name": "options",
+          "type": "object"
+        },
+        {
+          "name": "name",
+          "attribute": "name",
+          "description": "Name of the icon. Set to 'active' to configure the icon used for\nplaces which were target of a previous `pb-geolocation` event (i.e. are currently 'active').",
+          "type": "string",
+          "default": "\"default\""
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "default": "\"image\""
+        },
+        {
+          "name": "iconUrl",
+          "attribute": "icon-url",
+          "description": "The URL to load the icon from. Should be relative to the path set via the `imagesPath` property on `pb-leaflet-map`.",
+          "type": "string"
         }
       ]
     },
@@ -7390,6 +7653,9 @@
         {
           "name": "pb-toggle",
           "description": "when received, dispatch state changes to the elements on the page (see `pb-toggle-feature`, `pb-select-feature`)"
+        },
+        {
+          "name": "pb-page-loaded"
         }
       ],
       "slots": [
@@ -7773,7 +8039,8 @@
         },
         {
           "name": "popup-class",
-          "type": "string"
+          "description": "Additional class names which will be added to the popup element.\nUse this to apply a specific style to certain popovers, but not others.",
+          "type": "String"
         },
         {
           "name": "subscribe",
@@ -7808,11 +8075,6 @@
         }
       ],
       "properties": [
-        {
-          "name": "poupClass",
-          "description": "Additional class names which will be added to the popup element.\nUse this to apply a specific style to certain popovers, but not others.",
-          "type": "String"
-        },
         {
           "name": "remote",
           "attribute": "remote",
@@ -7863,7 +8125,8 @@
         {
           "name": "popupClass",
           "attribute": "popup-class",
-          "type": "string"
+          "description": "Additional class names which will be added to the popup element.\nUse this to apply a specific style to certain popovers, but not others.",
+          "type": "String"
         },
         {
           "name": "subscribe",
