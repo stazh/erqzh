@@ -224,10 +224,11 @@
         </div>
     </footer>
     <script>
-            window.addEventListener('WebComponentsReady', function() {
-                pbEvents.subscribe('pb-page-ready', null, function() {
+            window.addEventListener('load', function() {
+                const map = document.querySelector('pb-leaflet-map');
+                map.addEventListener('pb-ready', function() {
                     const endpoint = document.querySelector("pb-page").getEndpoint();
-                    const einheit = document.querySelector("pb-leaflet-map").getAttribute("data-editionseinheit")
+                    const einheit = map.getAttribute("data-editionseinheit")
                     console.log(`editionseinheit ${einheit}`)
                     
                     const url = `${endpoint}/api/places-all/${einheit}`;
