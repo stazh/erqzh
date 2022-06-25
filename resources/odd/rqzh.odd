@@ -1241,7 +1241,7 @@
                                 </pb-collapse>
                             </pb:template>
             </model>
-            <model predicate="(ec:existsAdditionalSource(.//fileDesc/seriesStmt/idno/text())) and (not(ends-with(util:document-name(.//sourceDesc), 'Einleitung.xml')))" behaviour="block">
+            <model predicate="root($parameters?root)/TEI[not(@type) or @type != 'introduction'] and ec:existsAdditionalSource(.//fileDesc/seriesStmt/idno/text()))" behaviour="block">
                 <param name="content" value="ec:additionalSource(.//fileDesc/seriesStmt/idno/text())"/>
                 <pb:template xmlns="" xml:space="preserve">
                                 <pb-collapse class="metadata" expand-icon="icons:chevron-right" collapse-icon="icons:expand-more">

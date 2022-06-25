@@ -26,16 +26,16 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : If a version is given, the components will be loaded from a public CDN.
  : This is recommended unless you develop your own components.
  :)
-declare variable $config:webcomponents :="local";
+declare variable $config:webcomponents :="1.38.1";
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your
  : own library extending pb-components and published it to a CDN.
  :)
-(: declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@teipublisher/pb-components"; :)
+declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@teipublisher/pb-components";
 (: declare variable $config:webcomponents-cdn := "https://unpkg.com/@teipublisher/pb-components"; :)
 (: declare variable $config:webcomponents-cdn := "http://localhost:8000"; :)
-declare variable $config:webcomponents-cdn := "local";
+(: declare variable $config:webcomponents-cdn := "local"; :)
 
 
 (:~~
@@ -46,6 +46,18 @@ declare variable $config:webcomponents-cdn := "local";
 declare variable $config:origin-whitelist := (
     "(?:https?://localhost:.*|https?://127.0.0.1:.*)"
 );
+
+(:~
+ : Set to true to allow caching: if the browser sends an If-Modified-Since header,
+ : TEI Publisher will respond with a 304 if the resource has not changed since last
+ : access. However, this does *not* take into account changes to ODD or other auxiliary 
+ : files, so don't use it during development.
+ :)
+declare variable $config:enable-proxy-caching :=
+    let $prop := util:system-property("teipublisher.proxy-caching")
+    return
+        exists($prop) and lower-case($prop) = 'true'
+;
 
 (:~
  : Should documents be located by xml:id or filename?
@@ -422,9 +434,10 @@ declare variable $config:dts-import-collection := $config:data-default || "/play
  :)
 declare function config:collection-config($collection as xs:string?, $docUri as xs:string?) {
     (: Return empty sequence to use default config :)
-    let $doc := config:get-document($docUri)
+    let $doc := doc($config:data-root || "/" || $docUri)
+    let $log := util:log('INFO', ('type: ', root($doc)/tei:TEI/@type))
     return
-        if ($doc/tei:TEI/@type = 'introduction') then
+        if (root($doc)/tei:TEI/@type = 'introduction') then
             map {
                 "template": "introduction.html"
             }

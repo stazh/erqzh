@@ -35,7 +35,7 @@ declare function nav:filter-collections($docs) {
 declare function nav:get-root($root as xs:string?, $options as map(*)?) {
     ($config:data-default ! (
         (: for $doc in collection(. || "/" || $root)/tei:TEI[ft:query(., "kanton:*", $options)][not(@type="introduction")][.//tei:text/tei:body/*] :)
-        for $doc in collection(. || "/" || $root)/tei:TEI[ft:query(., "type:document", $options)]
+        for $doc in collection(. || "/" || $root)/tei:TEI[ft:query(., "type:document OR type:introduction", $options)]
         return
             $doc
     )) => nav:filter-collections()
