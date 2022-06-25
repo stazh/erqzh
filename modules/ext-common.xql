@@ -211,7 +211,8 @@ declare function pmf:get-canton($id as xs:string?) {
 };
 
 declare function pmf:format-id($id as xs:string?) {
-    let $temp  := replace($id, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
+    let $temp := replace($id, "^SSRQ_", "")
+    let $temp  := replace($temp, "^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$", "$1 $2")
     let $parts := tokenize($temp)
     let $ssrq  := substring-before($parts[1], '_')
     let $vol   := replace(substring-after($parts[1], '_'), '_', '/')
@@ -226,7 +227,7 @@ declare function pmf:format-id($id as xs:string?) {
         else
             number($parts[2])
     return
-        $ssrq || ' ' || $vol || ' ' || $id
+        "SSRQ " || $ssrq || ' ' || $vol || ' ' || $id
 };
 
 declare function pmf:get-article-nr($id as xs:string?) {

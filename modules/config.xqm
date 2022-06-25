@@ -435,7 +435,6 @@ declare variable $config:dts-import-collection := $config:data-default || "/play
 declare function config:collection-config($collection as xs:string?, $docUri as xs:string?) {
     (: Return empty sequence to use default config :)
     let $doc := doc($config:data-root || "/" || $docUri)
-    let $log := util:log('INFO', ('type: ', root($doc)/tei:TEI/@type))
     return
         if (root($doc)/tei:TEI/@type = 'introduction') then
             map {
