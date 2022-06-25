@@ -36,7 +36,7 @@
     <custom-style>
         <style>
             .main {
-                height: calc(100vh - 200px);
+                height: calc(100vh - 285px);
             }
             
             @media (max-width: 1023px) {
@@ -159,33 +159,9 @@
                 </section>
                 
 
-                <footer class="footer__imprint">
-                    <div class="footer-col">
-                        <h5>Kontakt</h5>
-                        <a href="http://www.staatsarchiv.zh.ch">Staatsarchiv des Kantons Zürich</a>
-                    </div>
-                    <div class="footer-col">
-                        <h5>Realisierung</h5>
-                        <a href="https://jinntec.de">JinnTec GmbH</a>
-                    </div>
-                    <div class="footer-col">
-                        <h5>
-                            Lizenz
-                        </h5>
-                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>
-                    </div>
-                    <div class="footer-col">
-                        <h5>
-                            <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">
-                                Transkriptionsrichtlinien
-                            </a>
-                        </h5>
-                        <h5>
-                            <a href="https://www.ssrq-sds-fds.ch/wiki/Datierungsrichtlinien">
-                                Datierungsrichtlinien
-                            </a>
-                        </h5>
-                    </div>
+                <footer class="version" style="display:none">
+                    App: v<span data-template="pages:version"/> /
+                    web components: v<pb-version/>
                 </footer>
             </app-header-layout>
         </app-drawer-layout>
@@ -218,6 +194,35 @@
     </pb-page>
 
     <div class="splash"/>
+
+    <footer class="footer__imprint">
+        <div class="footer-col">
+            <h5>Kontakt</h5>
+            <a href="http://www.staatsarchiv.zh.ch">Staatsarchiv des Kantons Zürich</a>
+        </div>
+        <div class="footer-col">
+            <h5>Realisierung</h5>
+            <a href="https://jinntec.de">JinnTec GmbH</a>
+        </div>
+        <div class="footer-col">
+            <h5>
+                Lizenz
+            </h5>
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>
+        </div>
+        <div class="footer-col">
+            <h5>
+                <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">
+                    Transkriptionsrichtlinien
+                </a>
+            </h5>
+            <h5>
+                <a href="https://www.ssrq-sds-fds.ch/wiki/Datierungsrichtlinien">
+                    Datierungsrichtlinien
+                </a>
+            </h5>
+        </div>
+    </footer>
     <script>
             window.addEventListener('WebComponentsReady', function() {
                 pbEvents.subscribe('pb-page-ready', null, function() {

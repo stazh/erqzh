@@ -1076,11 +1076,11 @@ footer p, address {
 }
 
 .footer__imprint {
-    padding: 20px;
+    padding: 20px 20px 0 20px;
 }
 
 .footer__imprint .footer-col {
-    margin-bottom: 1.5rem;
+    /* margin-bottom: 1.5rem; */
 }
 
 @media screen and (min-width: 520px) {
