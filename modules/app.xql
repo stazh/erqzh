@@ -567,7 +567,7 @@ declare %private function app:bibl-short($node as node()) as element(td) {
  :)
 declare %private function app:bibl-full($node as node(), $type as xs:string) as xs:string {
     (: get primary bibliographical element for author and title (all) :)
-    let $main := $node/tei:*/tei:title[@type="short"]/..
+    let $main := $node/*/tei:title[@type="short"]/..
     let $authors := string-join($main/tei:author, '; ')
     let $title := $main/tei:title[@type="full"]/string()
 
@@ -633,7 +633,7 @@ function app:bibliography($node as node(), $model as map(*)) as element(div){
                 for $entry in $print/tei:biblStruct
                 let $id := data($entry/@xml:id)
                 let $type := data($entry/@type)
-                let $short := $entry/tei:*/tei:title[@type="short"]/text()
+                let $short := $entry/*/tei:title[@type="short"]/text()
                 let $bsg := 'http://permalink.snl.ch/bib/' || $id
                 order by $short
                 return
@@ -656,7 +656,7 @@ function app:bibliography($node as node(), $model as map(*)) as element(div){
                 for $entry in $lit/tei:biblStruct
                 let $id := data($entry/@xml:id)
                 let $type := data($entry/@type)
-                let $short := $entry/tei:*/tei:title[@type="short"]/text()
+                let $short := $entry/*/tei:title[@type="short"]/text()
                 let $bsg := 'http://permalink.snl.ch/bib/' || $id
                 order by $short
                 return
