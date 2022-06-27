@@ -36,5 +36,13 @@
             </text>
             <text qname="dbk:title"/>
         </lucene>
+        <range>
+            <create qname="@type" type="xs:string"/>
+            <create qname="@xml:id" type="xs:string"/>
+            <create qname="tei:date" type="xs:string"/>
+            <create qname="tei:title" type="xs:string"/>
+            <create qname="tei:author" type="xs:string"/>
+            <create qname="tei:biblScope" type="xs:string"/>
+        </range>
     </index>
 </collection>

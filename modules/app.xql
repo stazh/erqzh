@@ -518,9 +518,23 @@ declare %private function app:bibl-blurb() as element(p) {
         <p>{$blurb}</p>
 };
 
+(:~ Helper function for Literaturverzeichnis 
+ : Not all links go to BSG, but to … ?  
+ : TODO(DP): find out new link target for non-BSG linksm should also be perma links no?
+ :)
+declare %private function app:bibl-link($idno as xs:string) as xs:string {     
+    let $chbsg := 'http://permalink.snl.ch/bib/'
+    let $non-bsg := '/suche/detail/'
+    
+    return
+        if ($idno ! starts-with(., 'chbsg')) then ($chbsg || $idno)
+        else ($non-bsg || $idno) 
+};
+
 (:~ Helper function for Literaturverzeichnis  
  : Table headers for bibliography tables  
- : TODO(DP): add i18n entries <pb-i18n key="bibliography" /> :)
+ : TODO(DP): add i18n entries <pb-i18n key="bibliography" /> 
+ :)
 declare %private function app:bibl-thead() as element(thead) {
     let $column-headings := ('Kurztitel', 'Bibliografische Angaben', 'Nachweis BSG', 'Zitiert in')
     return
@@ -559,11 +573,11 @@ declare %private function app:bibl-short($node as node()) as element(td) {
  :  - not all EV have named editors in their monogr 
  :  - series infomation  lost in web display both on old and new website
  :  - biblSope should be sibling of imprint (which is missing alltogether in about 90 places)
- :  - the contents of the missing imprints is required for the desired webdisplay
+ :  - the contents of the missing imprints is required for the desired citation style
  :  - there are duplicate and conflicting dates
  :  - invalid and inconsistent use of @type='edition'
- : - make display prettier for missing data no "Titel ,, 313-4.
- : - configure index for faster loaading
+ : - make display prettier for missing data no "Titel , , 313-4.
+ : - configure index for faster loading
  :)
 declare %private function app:bibl-full($node as node(), $type as xs:string) as xs:string {
     (: get primary bibliographical element for author and title (all) :)
@@ -578,8 +592,8 @@ declare %private function app:bibl-full($node as node(), $type as xs:string) as 
     (: not all EV have names editors in the monogr :)
     let $secondary := $node/tei:monogr
     let $editors := if (exists($secondary/tei:author)) then (string-join($secondary/tei:author, '; ')) else ()
-    let $imprint_ja := $secondary/tei:title[1]/string() || $secondary//tei:biblScope[@unit ='issue'] || ", " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope[@unit ='pages']
-    let $imprint_ev := $secondary/tei:title[1]/string() || ", " || $secondary//tei:pubPlace[1] || " " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope[@unit ='pages']
+    let $imprint_ja := $secondary/tei:title[1]/string() || $secondary//tei:biblScope[@unit ='issue'] || ", " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope
+    let $imprint_ev := $secondary/tei:title[1]/string() || ", " || $secondary//tei:pubPlace[1] || " " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope
     
     return
         switch($type)
@@ -590,19 +604,31 @@ declare %private function app:bibl-full($node as node(), $type as xs:string) as 
 };
 
 (:~ Helper function for Literaturverzeichnis 
+ : @param $list one of the two listBibls in the Bibliographie file
+ : @return caption containing the header belonging to that listBibl
  :)
-declare %private function app:bibl-caption() as element(caption) {
-    let $caps := $app:LITERATUR//tei:body/tei:div/tei:div/tei:head[@type="title"] 
-    for $c in $caps
-    return
-        <caption>{$c}</caption>
+declare %private function app:bibl-caption($list as node()) as xs:string {
+        $list/../../tei:head/string()
 };
 
 (:~ Helper function for Literaturverzeichnis 
- : Kurztitle
+ : Checks for appearance of permalink in the bibliography within the data repo and returns the containing documents as links.
+ : note $config:data-collections as better target for this function.
+ : TODO(DP): what is the new link target for the quotations
+ : @see app:bibl-link
+ : @param permalink based on the xml:id of the quoted work to be found in the bibliography. 
+ : @return a list of editions containing the quotations.
  :)
-declare %private function app:bibl-quoted($node as node()) as element(td) {
-    <td>TODO</td>        
+declare %private function app:bibl-quoted($permalink as xs:string) as element(ul) {
+   <ul> {
+    let $quotes := $config:data-root//tei:bibl/tei:ref[@target = $permalink] ! base-uri(.) 
+        ! substring-after(., 'rqzh-data/') 
+        ! substring-before(., '/') 
+        => distinct-values()
+    for $q in $quotes
+    return
+        <li><a href="." target="_blank">{$q}</a></li>    
+   } </ul>
 };
 
 (:~ Generate tables for Literaturverzeichnis
@@ -618,59 +644,33 @@ declare %private function app:bibl-quoted($node as node()) as element(td) {
 declare
     %templates:wrap
 function app:bibliography($node as node(), $model as map(*)) as element(div){
-    let $print := $app:LITERATUR//tei:body/tei:div/tei:div[1]/tei:div/tei:listBibl
-    let $lit := $app:LITERATUR//tei:body/tei:div/tei:div[2]/tei:div/tei:listBibl
-
-    return
     <div>
-        {app:bibl-blurb()}
-    <div>
-    <table class="print">
-        {app:bibl-thead()}
-        <caption>Gedruckte Quellen</caption>
-        <tbody>
-            {  
-                for $entry in $print/tei:biblStruct
-                let $id := data($entry/@xml:id)
-                let $type := data($entry/@type)
-                let $short := $entry/*/tei:title[@type="short"]/text()
-                let $bsg := 'http://permalink.snl.ch/bib/' || $id
-                order by $short
-                return
-                    <tr id="{$id}">
-                        <td>{$short}</td>
-                        <td>{app:bibl-full($entry, $type)}</td>
-                        <td><a href="{$bsg}" target="_blank">BSG</a></td>
-                        <td>TODO</td>                        
-                    </tr>
-            }
-        </tbody>
-    </table>
+        { app:bibl-blurb() },
+        {
+            for $list in $app:LITERATUR//tei:body/*/*/*/tei:listBibl
+            return
+            <table>
+                { app:bibl-thead() }
+                <caption>{ app:bibl-caption($list) }</caption>
+                <tbody>
+                {
+                    for $entry in $list/tei:biblStruct
+                    let $id := data($entry/@xml:id)
+                    let $type := data($entry/@type)
+                    let $short := $entry/*/tei:title[@type = "short"]/text()
+                    let $bsg := app:bibl-link($id)
+                    order by $short
+                    return
+                            <tr id="{ $id }">
+                                <td>{ $short }</td>
+                                <td>{ app:bibl-full($entry, $type) }</td>
+                                <td><a href="{ $bsg }" target="_blank">BSG</a></td>
+                                <td>{ app:bibl-quoted($bsg) }</td>
+                            </tr>
+                }
+                </tbody>
+            </table>
+        }
     </div>
-    <div>
-    <table class="lit">
-        {app:bibl-thead()}
-        <caption>Literatur</caption>
-        <tbody>
-            {  
-                for $entry in $lit/tei:biblStruct
-                let $id := data($entry/@xml:id)
-                let $type := data($entry/@type)
-                let $short := $entry/*/tei:title[@type="short"]/text()
-                let $bsg := 'http://permalink.snl.ch/bib/' || $id
-                order by $short
-                return
-                    <tr id="{$id}">
-                        <td>{$short}</td>
-                        <td>{app:bibl-full($entry, $type)}</td>
-                        <td><a href="{$bsg}" target="_blank">BSG</a></td>
-                        <td>TODO</td>                        
-                    </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    </div>
-
 };
 
