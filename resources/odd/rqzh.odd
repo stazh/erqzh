@@ -733,7 +733,7 @@
                 <param name="content" value="ec:format-id(seriesStmt/idno)"/>
             </model>
             <model behaviour="link" cssClass="header-short title">
-                <param name="content" value="                             let $subtype := ancestor::TEI/@subtype                              return switch ($subtype)                                 case 'a' return 'Reihenvorwort'                                 case 'b' return 'Vorwort'                                 case 'c' return 'Einleitung'                                 case 'd' return 'Quellenverzeihnis'                                 default return 'Introduction'                                 "/>
+                <param name="content" value="                             let $subtype := ancestor::TEI/@subtype                              return switch ($subtype)                                 case 'a' return 'Reihenvorwort'                                 case 'b' return 'Vorwort'                                 case 'c' return 'Einleitung'                                 case 'd' return 'Quellenverzeichnis'                                 default return 'Introduction'                                 "/>
                 <param name="link" value="$parameters?doc"/>
             </model>
         </modelSequence>
