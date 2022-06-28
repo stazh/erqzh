@@ -100,6 +100,76 @@
 				}
 			}
         },
+        "/people/{editionseinheit}/{name}": {
+            "get": {
+				"summary": "Retrieve the HTML template used for displaying person metadata",
+				"description": "Get the HTML template associated with the given document. This is called whenever the users tries to view a document. The actual content of the document will then be loaded by the template.",
+				"tags": ["view"],
+				"operationId": "vapi:html",	
+				"parameters": [
+					{
+						"name": "editionseinheit",
+						"in": "path",
+						"schema":{
+							"type": "string",
+							"default": "all"
+						}
+					},
+					{
+						"name": "name",
+						"in": "path",
+						"description": "Name of the person",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"example": ""
+						},
+						"allowReserved": true
+					},
+					{ 
+						"name":"file",
+						"in":"query",
+						"schema":{
+							"type": "string",
+							"default":"pages/people"
+						}
+					}
+
+				],
+				"responses": {
+					"200": {
+						"description": "HTML view for the document",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        },        
         "/api/people/{editionseinheit}": {
             "get": {
                 "summary": "List people",
@@ -280,7 +350,6 @@
                 }
             }
         },
-    	
 		"/places/{editionseinheit}/{name}": {
             "get": {
 				"summary": "Retrieve the HTML template used for displaying places metadata",

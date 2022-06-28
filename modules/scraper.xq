@@ -16,7 +16,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 (:scraper:places-all(10):)
 (:scraper:places-add-geo-data():)
 (:scraper:generate-places-xml-for-col():)
-scraper:get-duplicate-places()
+(:scraper:get-duplicate-places():)
 
 (:  PERSONS :)
 (: scraper:persons-all(10):)
@@ -27,6 +27,7 @@ scraper:get-duplicate-places()
 (:        scraper:download-persons-batch-number($number):)
 (:(:scraper:download-persons-batch-from(282):):)
 (:scraper:download-persons-batch-number(285):)
+ scraper:generate-person-xml-for-col()
 
 (:scraper:analyze-json-batches():)
 (: let $errors := scraper:analyze-json-batches():)

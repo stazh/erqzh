@@ -201,10 +201,10 @@ declare function api:people($request as map(*)) {
     let $log := util:log("info","api:people $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit:" || $editionseinheit)
     let $people-input := if( $editionseinheit = $config:data-collections )
                             then (
-                                doc($config:data-root || "/person/person-" || $editionseinheit || ".xml")//tei:listPlace/tei:place    
+                                doc($config:data-root || "/person/person-" || $editionseinheit || ".xml")//tei:person
                             )
                             else (
-                                doc($config:data-root || "/person/person.xml")//tei:listPerson/tei:person
+                                doc($config:data-root || "/person/person.xml")//tei:person
                             )
     let $peoples :=
         if ($search and $search != '') then
@@ -224,22 +224,15 @@ declare function api:people($request as map(*)) {
         return
             [lower-case($sortKey), $label, $person]
     })
-    let $log := util:log("info","api:people  $byKey")
     let $sorted := api:sort($byKey, $sortDir)
-    let $log := util:log("info","api:people  after sorted")
     let $letter := 
         if (count($peoples) < $limit) then 
             "Alle"
         else if (not($letterParam) or $letterParam = '') then (
-            let $log := util:log("info","api:people  before substring" )            
-            return
-                substring($sorted[1]?1, 1, 1) => upper-case()
+            substring($sorted[1]?1, 1, 1) => upper-case()
         )
         else
             $letterParam
-            
-    let $log := util:log("info","api:people  $letter:"||$letter )            
-    
     let $byLetter :=
         if ($letter = 'Alle') then
             $sorted
@@ -276,13 +269,12 @@ declare function api:people($request as map(*)) {
 declare function api:output-person($list, $letter as xs:string, $view as xs:string, $search as xs:string?) {
     array {
         for $person in $list
-            let $log := util:log("info", $person?3)
             let $dates := $person?3/tei:note[@type="date"]/text()
             let $letterParam := if ($letter = "Alle") then substring($person?3/tei:persName/text(), 1, 1) else $letter
             let $params := "category=" || $letterParam || "&amp;view=" || $view || "&amp;search=" || $search
             return
                 <span>
-                    <a href="{$person?3/tei:persName/text()}?{$params}&amp;id={$person?3/@xml:id}">{$person?2}</a>
+                    <a href="{$person?3/tei:persName/text()}?{$params}&amp;key={$person?3/@xml:id}">{$person?2}</a>
                     { if ($dates) then <span class="dates"> ({$dates})</span> else () }
                 </span>
     }

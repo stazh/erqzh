@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html data-template="app:load-person" lang="de"> 
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald"/>
+        <title data-template="config:app-title"/>
+    
+        <meta name="description" content="Rechtsquellen des Kantons Zürich"/>
+        <meta itemprop="name" content="Rechtsquellen des Kantons Zürich"/>
+        <meta itemprop="description" content="Rechtsquellen des Kantons Zürich"/>
+        
+        <meta property="og:locale" content="de"/>
+        <meta property="og:url" content=""/>
+        <meta property="og:site_name" content="Rechtsquellen des Kantons Zürich"/>
+        <meta property="og:title" content="Rechtsquellen des Kantons Zürich - Startseite"/>
+        <meta property="og:description" content="Rechtsquellen des Kantons Zürich"/>
+    
+        <meta content="summary_large_image" name="twitter:card"/>
+        <meta name="twitter:title" content="Rechtsquellen des Kantons Zürich - Startseite"/>
+        <meta name="twitter:description" content="Rechtsquellen des Kantons Zürich"/>
+        <meta name="pb-template" content="people.html"/>
+    
+        <link rel="shortcut icon" type="image/x-icon" href="resources/images/favicon.ico"/>
+        <link rel="shortcut icon" type="image/png" href="resources/images/favicon-16.png" sizes="16x16"/>
+        <link rel="shortcut icon" type="image/png" href="resources/images/favicon-24.png" sizes="24x24"/>
+        <link rel="shortcut icon" type="image/png" href="resources/images/favicon-32.png" sizes="32x32"/>
+        <link rel="shortcut icon" type="image/png" href="resources/images/favicon-64.png" sizes="64x64"/>
+        <link rel="stylesheet" href="resources/css/theme.css"/>
+        <link rel="stylesheet" href="resources/css/theme-rqzh.css"/>
+    
+        <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
+        <script type="module" src="pb-leaflet-map.js" data-template="pages:load-components"/>
+
+        <custom-style>
+            <style>
+                @media (max-width: 1023px) {
+                    .doclist {
+                        margin-bottom: 20px;
+                    }
+                    .documents {
+                        padding-left: 10px;
+                    }
+                    .documents .label {
+                        display: none;
+                    }
+                    .toolbar pb-search {
+                        padding-left: 0;
+                    }
+                    #facets {
+                        display: none;
+                    }
+                }
+    
+                @media (min-width: 1024px) {
+                    .toolbar {
+                        display: none;
+                    }
+                    .panels {
+                        display: flex;
+                        flex-direction: row;
+                    }
+                }
+
+                .content-body .transcript {
+                    max-width: none;
+                }
+        
+                .list {
+                    height: 60%;
+                    max-width: 41.24rem;
+                    margin: 0 auto;
+                    overflow: auto;
+                }
+        
+                [slot=controls] {
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    align-items: center;
+                }
+                @media (max-width: 767px) {
+                    .list {
+                        --pb-categorized-list-columns: 1;
+                        max-width: auto;
+                        margin-left: 10px;
+                        margin-right: 10px;
+                    }
+        
+                    form {
+                        display: block;
+                    }
+                    form label {
+                        margin: 0;
+                        display: block;
+                    }
+                }
+            </style>
+        </custom-style>
+    </head>
+    
+    <body>
+    <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language" api-version="1.0.0">
+        <app-drawer-layout force-narrow="force-narrow">
+
+            <app-drawer data-template="templates:include" data-template-path="templates/drawer.html"/>
+
+            <app-header-layout>
+
+                <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
+                    <app-toolbar data-template="templates:include" data-template-path="templates/menu.html"/>
+                </app-header>
+                <section>
+                    <div class="pb-container main">
+                        <h1>
+                            <a href="${app}/people/${editionseinheit}/" data-editionseinheit="${editionseinheit}" data-title="${title}" data-template="pages:parse-params">
+                                <span data-template="app:get-edition-unit"/>
+                            </a>
+                        </h1>
+                        <h2 id="locations">
+                            <pb-i18n key="person">$person</pb-i18n>: 
+                            <span data-template="app:person-name"> ${title}</span>
+                        </h2>                   
+                        <div class="person-info">
+                            <h3>
+                                <div data-template="app:person-link"/>
+                            </h3>
+                            <div data-template="app:mentions" data-template-type="person"/>
+                        </div>
+                    </div>
+                </section>
+                
+                <footer class="footer__imprint">
+                    <div class="footer-col">
+                        <h5>Kontakt</h5>
+                        <a href="http://www.staatsarchiv.zh.ch">Staatsarchiv des Kantons Zürich</a>
+                    </div>
+                    <div class="footer-col">
+                        <h5>Realisierung</h5>
+                        <a href="https://jinntec.de">JinnTec GmbH</a>
+                    </div>
+                    <div class="footer-col">
+                        <h5>
+                            Lizenz
+                        </h5>
+                        <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>
+                    </div>
+                    <div class="footer-col">
+                        <h5>
+                            <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">
+                                Transkriptionsrichtlinien
+                            </a>
+                        </h5>
+                        <h5>
+                            <a href="https://www.ssrq-sds-fds.ch/wiki/Datierungsrichtlinien">
+                                Datierungsrichtlinien
+                            </a>
+                        </h5>
+                    </div>
+                </footer>
+            </app-header-layout>
+        </app-drawer-layout>
+
+        <paper-dialog id="downloadDialog">
+            <h2>
+                <pb-i18n key="dialogs.generatingFile">Generating File...</pb-i18n>
+            </h2>
+            <paper-dialog-scrollable>
+                <pb-i18n key="dialogs.downloadMessage"/>
+            </paper-dialog-scrollable>
+            <div class="buttons">
+                <paper-button dialog-confirm="dialog-confirm" autofocus="autofocus">
+                    <pb-i18n key="dialogs.close">Close</pb-i18n>
+                </paper-button>
+            </div>
+        </paper-dialog>
+
+        <paper-dialog id="errorDialog">
+            <h2>
+                <pb-i18n key="dialogs.error">Error</pb-i18n>
+            </h2>
+            <paper-dialog-scrollable/>
+            <div class="buttons">
+                <paper-button dialog-confirm="dialog-confirm" autofocus="autofocus">
+                    <pb-i18n key="dialogs.close">Close</pb-i18n>
+                </paper-button>
+            </div>
+        </paper-dialog>
+    </pb-page>
+
+    <div class="splash"/>
+</body>
+</html>

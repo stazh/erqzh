@@ -375,6 +375,18 @@ declare function scraper:generate-places-tei($scraper:place, $tei-places){
     }
 };
 
+declare function scraper:generate-persons-tei($scraper:person, $tei-persons){
+    element { QName("http://www.tei-c.org/ns/1.0", "TEI") } {     
+        attribute xml:id {"persons"},
+        attribute type {"Person" },
+        scraper:tei-header($scraper:person),
+        element standOff {
+            element listPerson {
+                $tei-persons
+            }
+        }
+    }
+};
 declare function scraper:conv-place($info){
     let $id := $info/@id
     let $short-name := $info/stdName/text()
@@ -568,6 +580,40 @@ declare function scraper:generate-places-xml-for-col() {
             return
                 xmldb:store($config:data-root || "/" || $scraper:place, $scraper:place || "-" || $places-col || ".xml", $generated-places-tei)
 };
+
+declare function scraper:generate-person-xml-for-col() {
+    for $person-col in $config:data-collections
+        return
+            let $all-persons := 
+                doc($config:data-root || "/" || 
+                        $scraper:person ||  "/" ||
+                        $scraper:person || ".xml")//tei:person
+            let $all-persons-count := count($all-persons)
+            let $found-persons := scraper:get-persons-from-data($person-col)
+            let $found-persons-count := count($found-persons)
+            let $found-tei-persons := 
+                for $person-id in $found-persons
+                    return
+                        $all-persons[@xml:id = $person-id]
+            let $found-tei-persons-count := count($found-tei-persons)
+            let $missing-persons-count := $found-persons-count - $found-tei-persons-count
+            let $util:log := util:log("info", "scraper:generate-persons-xml-for-col: 
+                collection:'" || $person-col || "' has '" || $found-persons-count || "' unique persons.
+                Found persons in person.xml: '" || $found-tei-persons-count || "'
+                Missing persons in person.xml: '" ||  $missing-persons-count || "'")
+            
+            let $generated-persons-tei := scraper:generate-persons-tei($scraper:person, $found-tei-persons)
+            return
+                xmldb:store($config:data-root || "/" || $scraper:person, $scraper:person || "-" || $person-col || ".xml", $generated-persons-tei)
+};
+declare function scraper:get-persons-from-data($person-col) {
+    for $person in collection($config:data-root || "/"|| $person-col)//tei:persName[@ref]
+        group by $pers := $person/@ref
+        order by $pers ascending
+            return
+                $pers[1]/string()
+};
+
 
 declare function scraper:get-places-from-data($places-col) {
     for $location in collection($config:data-root || "/"|| $places-col)//(tei:placeName[@ref]|tei:origPlace[@ref])
