@@ -447,7 +447,7 @@ declare %templates:default("name", "")  function app:place-link($node as node(),
         element a {
             attribute href { "https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id=" || $key },
             attribute target { "_blank"},
-            xmldb:decode($name) || " at ssrq-sds-fds.ch"
+            <span>{xmldb:decode($name)} <pb-i18n key="at-ssrq-sds-fds"/></span>
         }    
 };
 
