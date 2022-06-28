@@ -208,7 +208,7 @@ declare function api:people($request as map(*)) {
                             )
     let $peoples :=
         if ($search and $search != '') then
-            $people-input//tei:listPerson/tei:person[ft:query(., 'name:(' || $search || '*)')]
+            $people-input[ft:query(., 'name:(' || $search || '*)')]
         else
             $people-input
             
