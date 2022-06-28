@@ -81,6 +81,7 @@
     "keywords": "Schlagwort"
   },
   "menu": {
+	"people":"Personen",
   	"places": "Orte",
   	"all" : "Alle",
   	"ZH_NF_I_1_3":"Stadt und Territorialstaat Zürich II (ZH NF I/1/3)",
