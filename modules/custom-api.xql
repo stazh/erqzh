@@ -199,23 +199,27 @@ declare function api:people($request as map(*)) {
     let $limit := $request?parameters?limit
     let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
     let $log := util:log("info","api:people $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit:" || $editionseinheit)
-    let $people-input := if( $editionseinheit = $config:data-collections )
+    let $peoples := if( $editionseinheit = $config:data-collections )
                             then (
-                                doc($config:data-root || "/person/person-" || $editionseinheit || ".xml")//tei:person
+                                if ($search and $search != '') 
+                                then (
+                                    doc($config:data-root || "/person/person-" || $editionseinheit || ".xml")//tei:person[ft:query(., 'name:(' || $search || '*)')]
+                                ) else (
+                                    doc($config:data-root || "/person/person-" || $editionseinheit || ".xml")//tei:person
+                                )
                             )
                             else (
-                                doc($config:data-root || "/person/person.xml")//tei:person
+                                if ($search and $search != '') 
+                                then (
+                                    doc($config:data-root || "/person/person.xml")//tei:person[ft:query(., 'name:(' || $search || '*)')]    
+                                ) 
+                                else (
+                                    doc($config:data-root || "/person/person.xml")//tei:person
+                                )
                             )
-    let $peoples :=
-        if ($search and $search != '') then
-            $people-input[ft:query(., 'name:(' || $search || '*)')]
-        else
-            $people-input
-            
     let $log := util:log("info","api:people  found people:"||count($peoples) )
     let $byKey := for-each($peoples, function($person as element()) {
-        let $name := $person/tei:persName
-        let $label := $name/text()
+        let $label := $person/tei:persName/text()
         let $sortKey :=
             if (starts-with($label, "von ")) then
                 substring($label, 5)
@@ -298,19 +302,23 @@ declare function api:places($request as map(*)) {
     let $limit := $request?parameters?limit
     let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
     let $log := util:log("info","api:places $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit:" || $editionseinheit)
-    let $places-input := if( $editionseinheit = $config:data-collections )
+    let $places := if( $editionseinheit = $config:data-collections )
                             then (
-                                doc($config:data-root || "/place/place-" || $editionseinheit || ".xml")//tei:listPlace/tei:place    
+                                if ($search and $search != '') 
+                                then (
+                                    doc($config:data-root || "/place/place-" || $editionseinheit || ".xml")//tei:listPlace/tei:place[ft:query(., 'lname:(' || $search || '*)')]
+                                ) else (
+                                    doc($config:data-root || "/place/place-" || $editionseinheit || ".xml")//tei:listPlace/tei:place    
+                                )
                             )
                             else (
-                                doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
+                                if ($search and $search != '') 
+                                then (
+                                    doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place[ft:query(., 'lname:(' || $search || '*)')]
+                                ) else (
+                                    doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
+                                )
                             )
-    let $places :=
-        if ($search and $search != '') then
-            $places-input[ft:query(., 'lname:(' || $search || '*)')]
-        else
-            $places-input
-            
     let $log := util:log("info","api:places  found places:"||count($places) )
     let $sorted := sort($places, "?lang=de-DE", function($place) { lower-case($place/@n) })
     
