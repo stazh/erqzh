@@ -6,8 +6,8 @@
     "addFill": "Présentation de la situation de tradition"
   },
   "navigation": {
-    "next": "[FR] zum nächsten Stück",
-    "prev": "[FR] zum vorherigen Stück"
+    "next": "texte suivant",
+    "prev": "texte précédent"
   },
   "browse": {
     "orig-date": "Datation",

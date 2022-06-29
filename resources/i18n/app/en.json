@@ -6,8 +6,8 @@
     "addFill": "Additional Filiations"
   },
   "navigation": {
-    "next": "[EN] zum nächsten Stück",
-    "prev": "[EN] zum vorherigen Stück"
+    "next": "next text",
+    "prev": "previous text"
   },
   "browse": {
     "orig-date": "Date",
