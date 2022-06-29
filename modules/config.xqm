@@ -506,8 +506,10 @@ declare function config:get-document($idOrName as xs:string) {
         root(collection($config:data-root)/id($idOrName))
     else if (starts-with($idOrName, '/')) then
         doc(xmldb:encode-uri($idOrName))
-    else
+    else if (doc-available($config:data-root || "/" || $idOrName || ".xml")) then
         doc(xmldb:encode-uri($config:data-root || "/" || $idOrName || ".xml"))
+    else
+        doc(xmldb:encode-uri($config:data-root || "/" || $idOrName || "_1.xml"))
 };
 
 (:~
@@ -522,9 +524,10 @@ declare function config:get-id($node as node()) {
  : Returns a path relative to $config:data-root used to locate a document in the database.
  :)
  declare function config:get-relpath($node as node()) {
-     let $root := if (ends-with($config:data-root, "/")) then $config:data-root else $config:data-root || "/"
-     return
-         substring-before(substring-after(document-uri(root($node)), $root), '.xml')
+    let $root := if (ends-with($config:data-root, "/")) then $config:data-root else $config:data-root || "/"
+    let $rel := substring-before(substring-after(document-uri(root($node)), $root), '.xml')
+    return
+        replace($rel, "^(.*)_1$", "$1")
  };
 
 declare function config:get-identifier($node as node()) {

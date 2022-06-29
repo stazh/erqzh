@@ -546,7 +546,7 @@ declare function app:ref-list($type, $list, $col, $key) {
             if($title)
             then (
                 <li>
-                    <a href="../../{$col}/{$idno}">
+                    <a href="../../{$col}/{replace($idno, '^(.*)_1$', '$1')}">
                         {$title}
                     </a>
                 </li>
