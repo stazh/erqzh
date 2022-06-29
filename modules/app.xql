@@ -591,10 +591,12 @@ declare %private function app:bibl-link($idno as xs:string) as xs:string {
 
 (:~ Helper function for Literaturverzeichnis  
  : Table headers for bibliography tables  
+ : without 'Zitiert in'
  : TODO(DP): add i18n entries <pb-i18n key="bibliography" /> 
+ : @see app:bibl-quoted
  :)
 declare %private function app:bibl-thead() as element(thead) {
-    let $column-headings := ('Kurztitel', 'Bibliografische Angaben', 'Nachweis BSG', 'Zitiert in')
+    let $column-headings := ('Kurztitel', 'Bibliografische Angaben', 'Nachweis BSG')
     return
         <thead>
             <tr>
@@ -614,6 +616,34 @@ declare %private function app:bibl-short($node as node()) as element(td) {
     <td>{$node/tei:*/tei:title[@type="short"]/text()}</td>        
 };
 
+(:~ Helper function to get the named editors of edited volumes 
+ : note  not all EV have named editors in their monogr
+ : @param $secondary the container Work (Volume for article in Edited Volume) 
+ : @see app:bibl-full
+ :)
+declare %private function app:bibl-editors($secondary as node()) as xs:string* {
+        if (exists($secondary/tei:author)) 
+        then (string-join($secondary/tei:author, '; ')) 
+        else ()
+};
+
+(:~ Helper function to get the named imprint  of edited volumes 
+ : note: some imprints are missing in source data
+ : @see app:bibl-full
+ :)
+declare %private function app:bibl-ev-imprint($secondary as node()) as xs:string* {
+    $secondary/tei:title[1]/string() || ", " || $secondary//tei:pubPlace[1] || " " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope
+};
+
+(:~ Helper function to get the named imprint  of journals 
+ : note some imprints are missing in source data
+ : @param $secondary the container Work (journal for journal article)
+ : @see app:bibl-full
+ :)
+declare %private function app:bibl-ja-imprint($secondary as node()) as xs:string* {
+    $secondary/tei:title[1]/string() || $secondary//tei:biblScope[@unit ='issue'] || ", " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope
+};
+
 (:~ Helper function for Literaturverzeichnis 
  : Vollständige Bibliografische Angaben
  :
@@ -628,10 +658,8 @@ declare %private function app:bibl-short($node as node()) as element(td) {
  :
  : TODO(DP): 
  : - Data Source is still missing datapoints, and invalid. e.g.:
- :  - not all EV have named editors in their monogr 
  :  - series infomation  lost in web display both on old and new website
  :  - biblSope should be sibling of imprint (which is missing alltogether in about 90 places)
- :  - the contents of the missing imprints is required for the desired citation style
  :  - there are duplicate and conflicting dates
  :  - invalid and inconsistent use of @type='edition'
  : - make display prettier for missing data no "Titel , , 313-4.
@@ -647,17 +675,13 @@ declare %private function app:bibl-full($node as node(), $type as xs:string) as 
     let $start-all := $authors || ": " || $title || ", "
 
     (: get secondary for JA and EV :)
-    (: not all EV have names editors in the monogr :)
-    let $secondary := $node/tei:monogr
-    let $editors := if (exists($secondary/tei:author)) then (string-join($secondary/tei:author, '; ')) else ()
-    let $imprint_ja := $secondary/tei:title[1]/string() || $secondary//tei:biblScope[@unit ='issue'] || ", " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope
-    let $imprint_ev := $secondary/tei:title[1]/string() || ", " || $secondary//tei:pubPlace[1] || " " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope
+    let $secondary := if ($type eq 'W') then () else ($node/tei:monogr)
     
     return
         switch($type)
             case ('W') return $start-all || $node//tei:pubPlace[1] || " " || $node//tei:date || "."
-            case ('EV') return $start-all || "in: " || $editors || " (Hg.) " || $imprint_ev || "."
-            case ('JA') return $start-all || "in: " || $imprint_ja || "."         
+            case ('EV') return $start-all || "in: " || app:bibl-editors($secondary) || " (Hg.) " || app:bibl-ev-imprint($secondary) || "."
+            case ('JA') return $start-all || "in: " || app:bibl-ja-imprint($secondary) || "."         
         default return ()   
 };
 
@@ -700,8 +724,8 @@ declare %private function app:bibl-quoted($permalink as xs:string) as element(ul
  : @return div element
  :)
 declare
-    %templates:wrap
-function app:bibliography($node as node(), $model as map(*)) as element(div){
+%templates:wrap
+function app:bibliography() as element(div){
     <div>
         { app:bibl-blurb() },
         {
@@ -716,14 +740,13 @@ function app:bibliography($node as node(), $model as map(*)) as element(div){
                     let $id := data($entry/@xml:id)
                     let $type := data($entry/@type)
                     let $short := $entry/*/tei:title[@type = "short"]/text()
-                    let $bsg := app:bibl-link($id)
                     order by $short
                     return
                             <tr id="{ $id }">
                                 <td>{ $short }</td>
                                 <td>{ app:bibl-full($entry, $type) }</td>
-                                <td><a href="{ $bsg }" target="_blank">BSG</a></td>
-                                <td>{ app:bibl-quoted($bsg) }</td>
+                                <td><a href="{ app:bibl-link($id) }" target="_blank">BSG</a></td>
+                                <!-- <td>{ app:bibl-quoted($bsg) }</td> -->
                             </tr>
                 }
                 </tbody>
