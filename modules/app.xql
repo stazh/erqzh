@@ -396,7 +396,10 @@ declare
 function app:load-place($node as node(), $model as map(*), $name as xs:string, $key as xs:string) {
     let $log := util:log("info", "app:load-place $name: " || $name || " - $key:" || $key)
     let $place := doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place[@xml:id = xmldb:decode($key)]
-    let $title := $place/tei:placeName[@type="main"]/string()
+    let $name := $place/tei:placeName[@type="main"]/string()
+    let $type := substring-before($place/tei:trait[@type="type"][1]/tei:label/text(), "/")
+    let $title := if(string-length($type) >0 ) then ( $name || " (" || $type || ")" ) else ($name)
+    
 (:    let $log := util:log("info", "app:load-place $title:" || $title):)
 (:    let $log := util:log("info", "app:load-place $geo:" || $place//tei:geo/text()):)
     return 
@@ -546,7 +549,7 @@ declare function app:ref-list($type, $list, $col, $key) {
             if($title)
             then (
                 <li>
-                    <a href="../../{$col}/{replace($idno, '^(.*)_1$', '$1')}">
+                    <a href="../../{$col}/{$idno}">
                         {$title}
                     </a>
                 </li>

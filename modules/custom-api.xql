@@ -368,13 +368,17 @@ declare function api:output-place($list, $category as xs:string, $search as xs:s
         let $categoryParam := if ($category = "Alle") then substring($place/@n, 1, 1) else $category
         let $params := "category=" || $categoryParam || "&amp;search=" || $search || "&amp;key=" || $place/@xml:id
         let $label := $place/@n/string()
+        let $type := substring-before($place/tei:trait[@type="type"][1]/tei:label/text(), "/")
         let $coords := tokenize($place/tei:location/tei:geo)
         return
             element span {
                 attribute class { "place" },
-                element a {
-                    attribute href { $label || "?" || $params },
-                    $label
+                element span {
+                    element a {
+                        attribute href { $label || "?" || $params },
+                        $label
+                    },
+                    if (string-length($type) > 0) then <span class="type"> ({$type})</span> else () 
                 },
                 if(string-length(normalize-space($place/tei:location/tei:geo)) > 0) 
                 then (
