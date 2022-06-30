@@ -1,0 +1,23 @@
+stages:
+  - build
+  - test
+
+variables:
+  exist_version: "6.0.1"  
+
+# image: existdb/existdb:$exist_version
+
+build:
+  stage: build
+  # build expath package via ant
+  script:
+    - ant xar-local
+    - docker pull existdb/existdb:$exist_version 
+    - docker create  --name exist-ci -p 8080:8080 existdb/existdb:$exist_version 
+    - docker cp ./build/*.xar exist-ci:exist/autodeploy
+    - docker start exist-ci
+
+test:
+  stage: test
+  script:
+    - cypress
