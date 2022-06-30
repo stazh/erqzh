@@ -439,12 +439,10 @@ function query:show-hits($node as node()*, $model as map(*), $start as xs:intege
     return (
       <paper-card class="reference">
         <header>
-            <div class="reference" xmlns:i18n="http://exist-db.org/xquery/i18n">
-                <h5><span class="number">{$start + $p - 1}</span>
-                    <span class="badge"><pb-i18n key="{$category}"/></span>
-                    <pb-i18n key="canton">Kanton</pb-i18n>: <span>{query:view-kanton($work)}</span>,
-                    <pb-i18n key="work-id">Stück</pb-i18n>: <span>{query:view-idno($work)}</span>,
-                    <pb-i18n key="browse.orig-date">Datum</pb-i18n>: <span>{query:view-origDate($work)}</span>
+            <div class="item" xmlns:i18n="http://exist-db.org/xquery/i18n">
+                <h5><span class="badge"><pb-i18n key="{$category}"/></span> –
+                    <span>{query:view-idno($work)}</span> –
+                    <span>{query:view-origDate($work)}</span>
                 </h5>
                 <h4>{query:view-header($work, $parent-id)}</h4>
             </div>  
