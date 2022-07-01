@@ -19,8 +19,9 @@
             ".idea",
             ".vscode",
             ".duncdrum/**",
-            ".DS_Store"
-
+            ".DS_Store", 
+            "cypress/videos/**",
+            "cypress/screenshots/**"
         ]
     }
 }
