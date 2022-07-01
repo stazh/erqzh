@@ -18,3 +18,5 @@ resources/i18n/common
 local.*
 .duncdrum/
 *.code-workspace
+cypress/videos/
+cypress/screenshots/

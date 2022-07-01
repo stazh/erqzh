@@ -17,7 +17,14 @@ build:
     - docker cp ./build/*.xar exist-ci:exist/autodeploy
     - docker start exist-ci
 
+#  see https://docs.cypress.io/guides/continuous-integration/gitlab-ci#Worker-Jobs
 test:
+  image: node:latest
   stage: test
   script:
-    - cypress
+    # install dependencies
+    - npm ci
+    # TODO pass build image between stages / use service
+    # - docker start exist-ci
+    # run Cypress tests
+    - npm run e2e
