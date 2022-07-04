@@ -15,6 +15,7 @@
             ".git/**",
             "node_modules/**",
             "build/**",
+            "builds/**",
             "bower_components/**",
             ".idea",
             ".vscode",

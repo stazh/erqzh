@@ -74,7 +74,7 @@ declare function api:abbreviations($request as map(*)) {
 
 (: NOTE(DP): not in use due to performance :)
 declare function api:bibliography($request as map(*)) {
-    app:bibliography()
+    app:bibliography(<div/>, $request?parameters)
 };
 
 
