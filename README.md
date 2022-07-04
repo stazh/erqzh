@@ -37,3 +37,12 @@ your existing clone
 1. run `npm i` to load dependencies
 1. run 'npm run start' to start the devserver which by default listens on port 8000
 1. wait until server is running and start eXist-db with rqzh2 
+
+
+## Testing
+
+Inside `/cypress/…` you can find end-to-end tests for the deployed application, which is expected to run on `localhost:8080`. To execute the tests:
+
+```shell
+npm run e2e
+```

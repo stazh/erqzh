@@ -1,8 +1,14 @@
 {
-  "dependencies" : {
+  "dependencies": {
     "@teipublisher/pb-components": "git+https://github.com/eeditiones/tei-publisher-components.git#master"
   },
-  "name" : "rqzh2",
-  "version" : "1.0.0",
-  "description" : "Rechtsquellen des Kantons Zürich"
+  "name": "rqzh2",
+  "version": "1.1.22",
+  "description": "Rechtsquellen des Kantons Zürich",
+  "devDependencies": {
+    "cypress": "^10.3.0"
+  },  
+  "scripts": {
+    "e2e": "cypress run"
+  }
 }
