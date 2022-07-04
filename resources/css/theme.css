@@ -15,7 +15,7 @@ body {
     --pb-base-line-height: 1.42857143;
     --pb-base-font-weight: 300;
     --pb-base-font: var(--pb-base-font-weight) var(--pb-base-font-size)/var(--pb-base-line-height) var(--pb-base-font-family);
-    --pb-serif-font-family: "Junicode", Georgia, "Times New Roman", serif;
+    --pb-serif-font-family: "Lexia Fontes", "Junicode", Georgia, "Times New Roman", serif;
     --pb-content-font-family: var(--pb-serif-font-family);
     --pb-content-font-size: 20px;
     --pb-heading-font-family: "Oswald", Verdana, "Helvetica", sans-serif;
