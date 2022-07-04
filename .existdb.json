@@ -22,7 +22,8 @@
             ".duncdrum/**",
             ".DS_Store", 
             "cypress/videos/**",
-            "cypress/screenshots/**"
+            "cypress/screenshots/**",
+            ".devcontainer/**"
         ]
     }
 }
