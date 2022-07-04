@@ -725,7 +725,7 @@ declare %private function app:bibl-quoted($permalink as xs:string) as element(ul
  :)
 declare
 %templates:wrap
-function app:bibliography() as element(div){
+function app:bibliography($node as node(), $model as map(*)) as element(div){
     <div>
         { app:bibl-blurb() },
         {

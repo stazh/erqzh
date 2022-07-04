@@ -15,13 +15,15 @@
             ".git/**",
             "node_modules/**",
             "build/**",
+            "builds/**",
             "bower_components/**",
             ".idea",
             ".vscode",
             ".duncdrum/**",
             ".DS_Store", 
             "cypress/videos/**",
-            "cypress/screenshots/**"
+            "cypress/screenshots/**",
+            ".devcontainer/**"
         ]
     }
 }
