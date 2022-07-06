@@ -270,7 +270,6 @@ declare function api:people($request as map(*)) {
         }
 };
 
-
 declare function api:output-person($list, $letter as xs:string, $view as xs:string, $search as xs:string?) {
     array {
         for $person in $list
@@ -281,6 +280,93 @@ declare function api:output-person($list, $letter as xs:string, $view as xs:stri
                 <span>
                     <a href="{$person?3/tei:persName/text()}?{$params}&amp;key={$person?3/@xml:id}">{$person?2}</a>
                     { if ($dates) then <span class="dates"> ({$dates})</span> else () }
+                </span>
+    }
+};
+
+declare function api:organizations($request as map(*)) {
+    let $search := normalize-space($request?parameters?search)
+    let $letterParam := $request?parameters?category
+    let $view := $request?parameters?view
+    let $sortDir := $request?parameters?dir
+    let $limit := $request?parameters?limit
+    let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
+    let $log := util:log("info","api:organizations $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit:" || $editionseinheit)
+    let $orgs := if( $editionseinheit = $config:data-collections )
+                    then (
+                        if ($search and $search != '') 
+                        then (
+                            doc($config:data-root || "/organization/organization-" || $editionseinheit || ".xml")//tei:org[ft:query(., 'name:(' || $search || '*)')]
+                        ) else (
+                            doc($config:data-root || "/organization/organization-" || $editionseinheit || ".xml")//tei:org
+                        )
+                    )
+                    else (
+                        if ($search and $search != '') 
+                        then (
+                            doc($config:data-root || "/organization/organization.xml")//tei:org[ft:query(., 'name:(' || $search || '*)')]    
+                        ) 
+                        else (
+                            doc($config:data-root || "/organization/organization.xml")//tei:org
+                        )
+                    )
+    let $log := util:log("info","api:organizations  found orgs:"||count($orgs) )
+    let $byKey := for-each($orgs, function($org as element()) {
+        let $label := $org/tei:orgName/text()
+        return
+            [lower-case($label), $label, $org]
+    })
+    let $sorted := api:sort($byKey, $sortDir)
+    let $letter := 
+        if (count($orgs) < $limit) then 
+            "Alle"
+        else if (not($letterParam) or $letterParam = '') then (
+            substring($sorted[1]?1, 1, 1) => upper-case()
+        )
+        else
+            $letterParam
+    let $byLetter :=
+        if ($letter = 'Alle') then
+            $sorted
+        else
+            filter($sorted, function($entry) {
+                starts-with($entry?1, lower-case($letter))
+            })
+
+    return
+        map {
+            "items": api:output-organization($byLetter, $letter, $view, $search),
+            "categories":
+                if (count($orgs) < $limit) then
+                    []
+                else array {
+                    for $index in 1 to string-length('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+                    let $alpha := substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $index, 1)
+                    let $hits := count(filter($sorted, function($entry) { starts-with($entry?1, lower-case($alpha))}))
+                    where $hits > 0
+                    return
+                        map {
+                            "category": $alpha,
+                            "count": $hits
+                        },
+                    map {
+                        "category": "Alle",
+                        "count": count($sorted)
+                    }
+                }
+        }
+};
+
+declare function api:output-organization($list, $letter as xs:string, $view as xs:string, $search as xs:string?) {
+    array {
+        for $org in $list
+            let $type := $org?3/@type/string()
+            let $letterParam := if ($letter = "Alle") then substring($org?3/tei:orgName/text(), 1, 1) else $letter
+            let $params := "category=" || $letterParam || "&amp;view=" || $view || "&amp;search=" || $search
+            return
+                <span>
+                    <a href="{$org?3/tei:orgName/text()}?{$params}&amp;key={$org?3/@xml:id}">{$org?2}</a>
+                    { if ($type) then <span class="type"> ({$type})</span> else () }
                 </span>
     }
 };
