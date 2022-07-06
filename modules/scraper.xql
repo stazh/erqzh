@@ -188,6 +188,54 @@ declare function scraper:conv-organization($info) {
     </org>
 };
 
+declare function scraper:generate-organizations-xml-for-col() {
+    for $orgs-col in $config:data-collections
+        return
+            let $all-orgs := 
+                doc($config:data-root || "/" || 
+                        $scraper:organization ||  "/" ||
+                        $scraper:organization || ".xml")//tei:org
+            let $all-orgs-count := count($all-orgs)
+            let $found-orgs := scraper:get-organizations-from-data($orgs-col)
+            let $found-orgs-count := count($found-orgs)
+            let $found-tei-orgs := 
+                for $org-id in $found-orgs
+                    return
+                        $all-orgs[@xml:id = $org-id]
+            let $found-tei-orgs-count := count($found-tei-orgs)
+            let $missing-orgs-count := $found-orgs-count - $found-tei-orgs-count
+            let $util:log := util:log("info", "scraper:generate-organizations-xml-for-col: 
+                collection:'" || $orgs-col || "' has '" || $found-orgs-count || "' unique family/organizations.
+                Found orgs in organization.xml: '" || $found-tei-orgs-count || "'
+                Missing organizations in organization.xml: '" ||  $missing-orgs-count || "'")
+            
+            let $generated-orgs-tei := scraper:generate-organization-tei($scraper:organization, $found-tei-orgs)
+            return
+                xmldb:store($config:data-root || "/" || $scraper:organization, $scraper:organization || "-" || $orgs-col || ".xml", $generated-orgs-tei)
+};
+
+declare function scraper:get-organizations-from-data($org-col) {
+    for $location in collection($config:data-root || "/"|| $org-col)//tei:orgName[@ref]
+        group by $loc := $location/@ref
+        order by $loc ascending
+            return
+                $loc[1]/string()
+};
+
+declare function scraper:generate-organization-tei($type, $tei-orgs){
+    element { QName("http://www.tei-c.org/ns/1.0", "TEI") } {     
+        attribute xml:id {$type},
+        attribute type {"Organization" },
+        scraper:tei-header($type),
+        element standOff {
+            element listOrg {
+                $tei-orgs
+            }
+        }
+    }
+};
+
+
 (:  TAXONOMY :)
 declare function scraper:taxonomy-all($ids-per-batch) {
     util:log("info", "scraper:taxonomy-all: started" ),    
