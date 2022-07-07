@@ -296,7 +296,7 @@ declare function api:organizations($request as map(*)) {
                     then (
                         if ($search and $search != '') 
                         then (
-                            doc($config:data-root || "/organization/organization-" || $editionseinheit || ".xml")//tei:org[ft:query(., 'name:(' || $search || '*)')]
+                            doc($config:data-root || "/organization/organization-" || $editionseinheit || ".xml")//tei:org[ft:query(., 'org-name:(' || $search || '*)')]
                         ) else (
                             doc($config:data-root || "/organization/organization-" || $editionseinheit || ".xml")//tei:org
                         )
@@ -304,7 +304,7 @@ declare function api:organizations($request as map(*)) {
                     else (
                         if ($search and $search != '') 
                         then (
-                            doc($config:data-root || "/organization/organization.xml")//tei:org[ft:query(., 'name:(' || $search || '*)')]    
+                            doc($config:data-root || "/organization/organization.xml")//tei:org[ft:query(., 'org-name:(' || $search || '*)')]    
                         ) 
                         else (
                             doc($config:data-root || "/organization/organization.xml")//tei:org
