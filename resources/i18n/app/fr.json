@@ -81,7 +81,10 @@
   "menu": {
 	"people":"People",
   	"places": "Places",
-  	"all" : "All",
+  	"organizations":"Organizations",
+	"all-places" : "All Places",
+  	"all-people" : "All People",
+  	"all-organizations" : "All Organizations",
   	"ZH_NF_I_1_3":"Stadt und Territorialstaat Zürich II (ZH NF I/1/3)",
   	"ZH_NF_I_1_11":"Gedruckte Mandate für Stadt und/oder Landschaft Zürich (ZH NF I/1/11)",
   	"ZH_NF_I_2_1":"Die Rechtsquellen der Stadt Winterthur (ZH NF I/2/1)",
