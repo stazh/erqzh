@@ -489,7 +489,7 @@ declare %templates:default("name", "")  function app:organization-name($node as 
     let $name := if($model?name) then ($model?name) else xmldb:decode($name)
     let $date := 
             if ( string-length( $model?type ) > 0 ) 
-            then ( "(" || $model?type || ")" ) 
+            then ( "(" || substring-before($model?type,"/") || ")" ) 
             else ()
     return
         $name || " " || $date
@@ -802,4 +802,3 @@ function app:bibliography($node as node(), $model as map(*)) as element(div){
         }
     </div>
 };
-

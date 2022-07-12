@@ -360,7 +360,7 @@ declare function api:organizations($request as map(*)) {
 declare function api:output-organization($list, $letter as xs:string, $view as xs:string, $search as xs:string?) {
     array {
         for $org in $list
-            let $type := $org?3/@type/string()
+            let $type := substring-before($org?3/@type/string(),"/")
             let $letterParam := if ($letter = "Alle") then substring($org?3/tei:orgName/text(), 1, 1) else $letter
             let $params := "category=" || $letterParam || "&amp;view=" || $view || "&amp;search=" || $search
             return
@@ -508,5 +508,3 @@ declare function api:html-place($request as map(*)) {
     return
         templates:apply($template, vapi:lookup#2 , map { "editionseinheit":$request?parameters?editionseinheit,"name":$request?parameters?name } , $vapi:template-config)
 };
-
-
