@@ -22,86 +22,16 @@
         </head>
 
         <body>
-            <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app"
+            <pb-page data-template="pages:pb-page" unresolved="unresolved" locales="resources/i18n/{{ns}}/{{lng}}.json" locale-fallback-ns="app" 
                 require-language="require-language" api-version="1.0.0">
                 <pb-document id="document1" data-template="pages:pb-document"/>
                 <app-drawer-layout force-narrow="force-narrow">
-                    <app-drawer slot="drawer" align="right">
-                        <div class="drawer-content">
-                            <pb-media-query query="(max-width: 1023px)">
-                                <!-- language selector -->
-                                <ul class="drawer-menu">
-                                    <li>
-                                        <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
-                                    </li>
-                                    <li>
-                                        <a href="${app}/abbr.html" class="tp-menu-item" title="Abbreviations" data-template="pages:parse-params">
-                                            <div>
-                                                <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
-                                            </div>
-                                            <div class="ripple-container"></div></a>
-                                    </li>
-                                    <li>
-                                        <a href="mailto:staatsarchivzh@ji.zh.ch" class="tp-menu-item">
-                                            <div>
-                                                <pb-i18n key="feedback">Feedback</pb-i18n>
-                                            </div>
-                                            <div class="ripple-container"></div></a>
-                                    </li>
-                                    <li>
-                                        <pb-lang name="lang" data-template="pages:languages"/>
-                                    </li>
-                                </ul>
-                            </pb-media-query>
-                        </div>
-                    </app-drawer>
+                    <app-drawer data-template="templates:include" data-template-path="templates/drawer.html"/>
 
-
-
-                    <app-header-layout>
-                        <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
-                            <app-toolbar class="menubar">
-                                <a href="${app}/index.html" class="logo" data-template="pages:parse-params"></a>
-                                <pb-media-query query="(min-width: 1024px)">
-                                    <a href="${app}/index.html" data-template="pages:parse-params">Start</a>
-                                    <a href="${app}/abbr.html" class="tp-menu-item" title="Abbreviations" data-template="pages:parse-params">
-                                        <div>
-                                            <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
-                                        </div>
-                                        <div class="ripple-container"></div></a>
-                                    <a href="mailto:staatsarchivzh@ji.zh.ch" class="tp-menu-item">
-                                        <div>
-                                            <pb-i18n key="feedback">Feedback</pb-i18n>
-                                        </div>
-                                        <div class="ripple-container"></div></a>
-                                    <div main-title="main-title"></div>
-
-                                    <!-- language selector -->
-                                    <pb-lang name="lang" data-template="pages:languages"/>
-
-                                    <pb-login id="login" group="tei">
-                                        <iron-icon slot="icon" icon="account-circle"/>
-                                    </pb-login>
-
-                                </pb-media-query>
-
-                                <pb-media-query query="(max-width: 1023px)">
-                                    <div main-title="main-title"></div>
-
-                                    <pb-login id="login" group="tei">
-                                        <iron-icon slot="icon" icon="account-circle"/>
-                                    </pb-login>
-                                    <paper-icon-button icon="icons:menu" drawer-toggle="drawer-toggle"/>
-                                </pb-media-query>
-
-                                <pb-progress indeterminate="indeterminate" bottom-item="bottom-item" subscribe="docs"/>
-
-                            </app-toolbar>
-
-
-
-                            <app-toolbar data-template="templates:include" data-template-path="templates/toolbar.html"/>
-                        </app-header>
+            <app-header-layout>
+                <app-header slot="header" reveals="reveals" fixed="fixed" effects="waterfall">
+                    <app-toolbar data-template="templates:include" data-template-path="templates/menu.html"/>
+                </app-header>
 
                         <pb-drawer toggle="tocToggle" class="toc" emit="toc" subscribe="transcription">
                             <div class="drawer-content">
@@ -127,7 +57,7 @@
                                             <!--pb-navigation direction="backward" unit="page" emit="transcription" subscribe="transcription">
                                                 <paper-fab icon="icons:chevron-left"/>
                                             </pb-navigation-->
-                                            <pb-view id="view1" src="document1" xpath="//body" view="single" append-footnotes="append-footnotes" use-language="use-language"
+                                            <pb-view id="view1" src="document1" xpath="//body" view="single" append-footnotes="append-footnotes" use-language="use-language" 
                                                 subscribe="transcription" emit="transcription" wait-for="metadata"></pb-view>
                                             <!--pb-navigation direction="forward" unit="page" emit="transcription" subscribe="transcription">
                                                 <paper-fab icon="icons:chevron-right"/>
