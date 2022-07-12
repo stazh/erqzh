@@ -98,9 +98,9 @@ declare function pmf:ref-link($target as xs:string?, $collection as xs:string?) 
             return
                 $new-href
         )
-        else if (starts-with($target, 'http'))
+        else if (starts-with($target, 'http://permalink.snl.ch/bib/'))
         then
-            $target
+            '../literaturverzeichnis.html#' || substring-after($target,"http://permalink.snl.ch/bib/")
         else
             $target
 
