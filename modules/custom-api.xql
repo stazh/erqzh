@@ -186,7 +186,8 @@ declare function api:places-all($request as map(*)) {
                         map {
                             "latitude":$tokenized[1],
                             "longitude":$tokenized[2],
-                            "label":$place/@n/string()
+                            "label":$place/@n/string(),
+                            "id":$place/@xml:id/string()
                         }
                 ) else()
             }        
