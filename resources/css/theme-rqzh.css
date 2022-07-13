@@ -7,6 +7,7 @@
     --scrollbarBG: #ffffff;
     --thumbBG: #d1d3d6;
     --paper-checkbox-checked-color: #0076bd;
+    --pb-popover-trigger: "mouseenter";
 }
 
 /* Custom scrollbar: Firefox */

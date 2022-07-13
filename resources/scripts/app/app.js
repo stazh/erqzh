@@ -2,6 +2,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const register = document.getElementById("register");
   let blocks = [];
 
+  pbEvents.subscribe('pb-start-update', 'transcription', (ev) => {
+    blocks = [];
+  });
+
   pbEvents.subscribe("pb-update", "transcription", (ev) => {
     document.body.setAttribute(
       "data-view",
@@ -67,7 +71,6 @@ window.addEventListener("DOMContentLoaded", () => {
         });
       }
     });
-    blocks = [];
   });
 
   /**
