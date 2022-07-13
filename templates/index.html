@@ -29,8 +29,8 @@
     <link rel="stylesheet" href="resources/css/theme.css"/>
     <link rel="stylesheet" href="resources/css/theme-rqzh.css"/>
     <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
-    <script src="resources/scripts/app/app.js"></script>
-    <script src="resources/scripts/app/index.js"></script>
+    <script src="resources/scripts/app/app.js"/>
+    <script src="resources/scripts/app/index.js"/>
     <custom-style>
         <style>
             main {
@@ -80,8 +80,7 @@
 </head>
 
 <body>
-    <pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language"
-        unresolved="unresolved" api-version="1.0.0">
+    <pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language" unresolved="unresolved" api-version="1.0.0">
         <app-drawer-layout force-narrow="force-narrow">
 
             <app-drawer data-template="templates:include" data-template-path="templates/drawer.html"/>
@@ -92,12 +91,22 @@
                     <app-toolbar data-template="templates:include" data-template-path="templates/menu.html"/>
                 </app-header>
 
-                <main class="homepage" >
+                <main class="homepage">
                     <div class="title-text">
-                        <h1 class="tp-title"><pb-i18n key="doctitle"></pb-i18n></h1>
-                        <p class="teaser"><pb-i18n key="title-text-1"></pb-i18n></p>
-                        <p class="teaser"><pb-i18n key="title-text-2"></pb-i18n></p>
-                        <p class="teaser"><a href="start.html"><pb-i18n key="title-text-link"></pb-i18n></a></p>
+                        <h1 class="tp-title">
+                                <pb-i18n key="doctitle"/>
+                            </h1>
+                        <p class="teaser">
+                                <pb-i18n key="title-text-1"/>
+                            </p>
+                        <p class="teaser">
+                                <pb-i18n key="title-text-2"/>
+                            </p>
+                        <p class="teaser">
+                                <a href="start.html">
+                                    <pb-i18n key="title-text-link"/>
+                                </a>
+                            </p>
                     </div>
                     
                     <a href="start.html" class="title-image">
@@ -141,34 +150,7 @@
 
     <div class="splash"/>
 
-    <footer class="footer__imprint">
-        <div class="footer-col">
-            <h5>Kontakt</h5>
-            <a href="http://www.staatsarchiv.zh.ch">Staatsarchiv des Kantons Zürich</a>
-        </div>
-        <div class="footer-col">
-            <h5>Realisierung</h5>
-            <a href="https://jinntec.de">JinnTec GmbH</a>
-        </div>
-        <div class="footer-col">
-            <h5>
-                Lizenz
-            </h5>
-            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>
-        </div>
-        <div class="footer-col">
-            <h5>
-                <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">
-                    Transkriptionsrichtlinien
-                </a>
-            </h5>
-            <h5>
-                <a href="https://www.ssrq-sds-fds.ch/wiki/Datierungsrichtlinien">
-                    Datierungsrichtlinien
-                </a>
-            </h5>
-        </div>
-    </footer>
+    <footer data-template="templates:include" data-template-path="templates/footer.html"/>    
 </body>
 
 </html>

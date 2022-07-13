@@ -29,8 +29,8 @@
     <link rel="stylesheet" href="resources/css/theme.css"/>
     <link rel="stylesheet" href="resources/css/theme-rqzh.css"/>
     <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
-    <script src="resources/scripts/app/app.js"></script>
-    <script src="resources/scripts/app/index.js"></script>
+    <script src="resources/scripts/app/app.js"/>
+    <script src="resources/scripts/app/index.js"/>
     <custom-style>
         <style>
 
@@ -233,8 +233,7 @@
 </head>
 
 <body>
-    <pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language"
-        unresolved="unresolved" api-version="1.0.0">
+    <pb-page data-template="pages:pb-page" locales="resources/i18n/{{ns}}/{{lng}}.json" require-language="require-language" unresolved="unresolved" api-version="1.0.0">
         <app-drawer-layout force-narrow="force-narrow">
 
             <app-drawer data-template="templates:include" data-template-path="templates/drawer.html"/>
@@ -247,7 +246,9 @@
 
                 <section>
                     <div class="pb-container">
-                        <h1 class="tp-title"><pb-i18n key="doctitle"></pb-i18n></h1>
+                        <h1 class="tp-title">
+                                <pb-i18n key="doctitle"/>
+                            </h1>
                     </div>
                 </section>
 
@@ -265,14 +266,9 @@
 
                                 <div class="card-content card-padding">
                                     <div class="browse" slot="page">
-                                        <pb-browse-docs id="document-list" url="api/collection/" 
-                                            sort-options="[{&#34;label&#34;: &#34;browse.orig-date&#34;, &#34;value&#34;: &#34;idno&#34;},{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;}]" 
-                                            sort-by="idno" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" 
-                                            filter-by="title" auto="auto" history="history" login="login" subforms="#options" emit="docs" subscribe="docs">
+                                        <pb-browse-docs id="document-list" url="api/collection/" sort-options="[{&#34;label&#34;: &#34;browse.orig-date&#34;, &#34;value&#34;: &#34;idno&#34;},{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;}]" sort-by="idno" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" filter-by="title" auto="auto" history="history" login="login" subforms="#options" emit="docs" subscribe="docs">
                                             <div slot="header" class="timeline">
-                                                <pb-timeline url="api/timeline" scopes='["D", "M", "Y", "5Y", "10Y"]'
-                                                    resettable="" max-interval="80"
-                                                    subscribe="docs" emit="timeline">
+                                                <pb-timeline url="api/timeline" scopes="[&#34;D&#34;, &#34;M&#34;, &#34;Y&#34;, &#34;5Y&#34;, &#34;10Y&#34;]" resettable="" max-interval="80" subscribe="docs" emit="timeline">
                                                     <span slot="label">Angezeigter Zeitraum: </span>
                                                 </pb-timeline>
                                             </div>
@@ -286,7 +282,7 @@
                             </main>
 
                             <!-- search sidebar -->
-                            <div data-template="templates:include" data-template-path="templates/search-form.html"></div>
+                            <div data-template="templates:include" data-template-path="templates/search-form.html"/>
 
 
                             <pb-restricted class="upload-panel main-grid__item" login="login">
@@ -335,34 +331,7 @@
 
     <div class="splash"/>
 
-    <footer class="footer__imprint">
-        <div class="footer-col">
-            <h5>Kontakt</h5>
-            <a href="http://www.staatsarchiv.zh.ch">Staatsarchiv des Kantons Zürich</a>
-        </div>
-        <div class="footer-col">
-            <h5>Realisierung</h5>
-            <a href="https://jinntec.de">JinnTec GmbH</a>
-        </div>
-        <div class="footer-col">
-            <h5>
-                Lizenz
-            </h5>
-            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA</a>
-        </div>
-        <div class="footer-col">
-            <h5>
-                <a href="https://www.ssrq-sds-fds.ch/wiki/Transkriptionsrichtlinien">
-                    Transkriptionsrichtlinien
-                </a>
-            </h5>
-            <h5>
-                <a href="https://www.ssrq-sds-fds.ch/wiki/Datierungsrichtlinien">
-                    Datierungsrichtlinien
-                </a>
-            </h5>
-        </div>
-    </footer>
+    <footer data-template="templates:include" data-template-path="templates/footer.html"/>
 </body>
 
 </html>
