@@ -263,7 +263,7 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
 
 declare function app:list-persons($node as node(), $model as map(*)) {
     let $persons :=
-        root($model?data)//tei:persName/@ref |
+        root($model?data)//tei:persName[@type="full_sorted"]/@ref |
         root($model?data)//@scribe[starts-with(., 'per')]
     where exists($persons)
     return map {
@@ -375,15 +375,14 @@ function app:short-header-link($node as node(), $model as map(*)) {
 
 declare
     %templates:wrap    
-    %templates:default("name","")
     %templates:default("key","")
-function app:load-person($node as node(), $model as map(*), $name as xs:string, $key as xs:string) {
-    let $log := util:log("info", "app:load-person $name: " || $name || " - $key:" || $key)
+function app:load-person($node as node(), $model as map(*), $key as xs:string) {
     let $person := doc($config:data-root || "/person/person.xml")//tei:person[@xml:id = xmldb:decode($key)]
+    let $log := util:log("info", "app:load-person $name: " || $person/tei:persName[@type="full"]/text() || " - $key:" || $key)
     
     return 
         map {
-                "title": $person/tei:persName/text(),
+                "title": $person/tei:persName[@type="full"]/text(),
                 "key":$key,
                 "date":$person/tei:note[@type="date"]/text()
         }    
@@ -477,7 +476,7 @@ function app:show-map($node as node(), $model as map(*), $name as xs:string) {
 };
 
 declare %templates:default("name", "")  function app:person-name($node as node(), $model as map(*), $name as xs:string) {
-    let $name := if($model?name) then ($model?name) else xmldb:decode($name)
+    let $name := $model?title
     let $date := 
             if ( string-length( $model?date ) > 0 ) 
             then ( "(" || $model?date || ")" ) 
@@ -497,9 +496,9 @@ declare %templates:default("name", "")  function app:organization-name($node as 
 
 
 
-declare %templates:default("name", "")  function app:person-link($node as node(), $model as map(*), $name as xs:string) {
+declare function app:person-link($node as node(), $model as map(*)) {
     let $key := $model?key
-    let $name := if($model?name) then ($model?name) else $name
+    let $name := $model?title
     return
         element a { 
             attribute href { "https://www.ssrq-sds-fds.ch/persons-db-edit/?query=" || $key },
@@ -521,18 +520,16 @@ declare %templates:default("name", "")  function app:place-link($node as node(),
 
 declare %templates:wrap 
         %templates:default("type", "place") 
-        %templates:default("name", "") 
-function app:mentions($node as node(), $model as map(*), $type as xs:string, $name as xs:string) {
+function app:mentions($node as node(), $model as map(*), $type as xs:string) {
     let $key := $model?key
-    let $name := if($model?name) then ($model?name) else $name
-    let $log := util:log("info", "app:mentions: $key: " || $key || " - $name: "||$name)
+    let $log := util:log("info", "app:mentions: $key: " || $key )
     return
         if($type = "person") 
         then ( 
-            let $person := doc($config:data-root || "/person/person.xml")//tei:person
+            let $person := doc($config:data-root || "/person/person.xml")//tei:person[@xml:id = $key]
             return
                 <div>
-                    <h3><pb-i18n key="mentions-of"/>{" " ||  $person[@xml:id = $key]/tei:persName/text()}</h3>
+                    <h3><pb-i18n key="mentions-of"/>{" " ||  $person/tei:persName[@type="full"]/text()}</h3>
                     <div class="mentions">{
                             for $col in $config:data-collections
                                 let $matches := collection($config:data-root || "/" || $col)//tei:TEI[(.//tei:persName/@ref | @scribe) = $key]

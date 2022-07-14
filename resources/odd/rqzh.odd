@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="teipublisher_odds.xsd"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
@@ -490,52 +491,52 @@
         </model>
                     <model predicate="parent::respStmt" behaviour="inline"/>
                     <model predicate="@ref and id(replace(@ref, ' ', '-'), doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;))" behaviour="inline" cssClass="semantic person">
-                        <param name="alternate" value="id(replace(@ref, ' ', '-'), doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;))"/>
-                        <param name="default" value="."/>
-                        <param name="ref" value="@ref"/>
-                        <pb:template xmlns="">
+            <param name="alternate" value="id(replace(@ref, ' ', '-'), doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;))"/>
+            <param name="default" value="."/>
+            <param name="ref" value="@ref"/>
+            <pb:template xmlns="" xml:space="preserve">
                             <pb-popover data-ref="[[ref]]">
                                 <span slot="default">[[default]]</span>
                                 <span slot="alternate">[[alternate]]</span>
                             </pb-popover>
                         </pb:template>
-                    </model>
+        </model>
                     <model predicate="@ref" behaviour="link" cssClass="semantic person">
-                        <param name="uri" value="'https://www.ssrq-sds-fds.ch/persons-db-edit/?query=' || replace(@ref, ' ', '-')"/>
-                    </model>
+            <param name="uri" value="'https://www.ssrq-sds-fds.ch/persons-db-edit/?query=' || replace(@ref, ' ', '-')"/>
+        </model>
                 </elementSpec>
                 <elementSpec ident="orgName" mode="add">
                     <desc>Semantic highlighting of organization names with tooltip and blue text color</desc>
                     <model predicate="@ref and id(replace(@ref, ' ', '-'), doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;))" behaviour="inline" cssClass="semantic person">
-                        <param name="alternate" value="id(replace(@ref, ' ', '-'), doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;))"/>
-                        <param name="default" value="."/>
-                        <param name="ref" value="@ref"/>
-                        <pb:template xmlns="">
+            <param name="alternate" value="id(replace(@ref, ' ', '-'), doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;))"/>
+            <param name="default" value="."/>
+            <param name="ref" value="@ref"/>
+            <pb:template xmlns="" xml:space="preserve">
                             <pb-popover data-ref="[[ref]]">
                                 <span slot="default">[[default]]</span>
                                 <span slot="alternate">[[alternate]]</span>
                             </pb-popover>
                         </pb:template>
-                    </model>
+        </model>
                     <model predicate="@ref" behaviour="link" cssClass="semantic organization">
-                        <param name="uri" value="'https://www.ssrq-sds-fds.ch/persons-db-edit/?query=' || replace(@ref, ' ', '-')"/>
-                    </model>
+            <param name="uri" value="'https://www.ssrq-sds-fds.ch/persons-db-edit/?query=' || replace(@ref, ' ', '-')"/>
+        </model>
                 </elementSpec>
                 <elementSpec ident="placeName" mode="add">
                     <model predicate="@ref and id(replace(@ref, ' ', '-'), doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;))" behaviour="inline" cssClass="semantic place">
-                        <param name="alternate" value="id(replace(@ref, ' ', '-'), doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;))"/>
-                        <param name="default" value="."/>
-                        <param name="ref" value="@ref"/>
-                        <pb:template xmlns="">
+            <param name="alternate" value="id(replace(@ref, ' ', '-'), doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;))"/>
+            <param name="default" value="."/>
+            <param name="ref" value="@ref"/>
+            <pb:template xmlns="" xml:space="preserve">
                             <pb-popover data-ref="[[ref]]">
                                 <span slot="default">[[default]]</span>
                                 <span slot="alternate">[[alternate]]</span>
                             </pb-popover>
                         </pb:template>
-                    </model>
+        </model>
                     <model predicate="@ref" behaviour="link" cssClass="semantic place">
-                        <param name="uri" value="'https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id=' || replace(@ref, ' ', '-')"/>
-                    </model>
+            <param name="uri" value="'https://www.ssrq-sds-fds.ch/places-db-edit/views/view-place.xq?id=' || replace(@ref, ' ', '-')"/>
+        </model>
                 </elementSpec>
                 <elementSpec ident="origPlace" mode="add">
                     <model predicate="parent::origin and node()" behaviour="listItem">
@@ -766,7 +767,7 @@
                     <model predicate="$parameters?view='volumes'" behaviour="block">
             <param name="stmtTitle" value="seriesStmt/title"/>
             <param name="fileDescTitle" value="ec:short-title(titleStmt/title)"/>
-            <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
+            <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName[@type='full'])"/>
             <param name="count" value="$parameters?count"/>
             <pb:template xmlns="" xml:space="preserve"><h3>[[fileDescTitle]] <span class="count">[[count]]</span></h3>
                             <p>
@@ -789,7 +790,7 @@
             <param name="idno-format" value="ec:format-id(seriesStmt/idno)"/>
             <param name="stmtTitle" value="seriesStmt/title"/>
             <param name="fileDescTitle" value="titleStmt/title"/>
-            <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
+            <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName[@type='full'])"/>
             <param name="credits" value="./publicationStmt/availability/p[@xml:id='facs']/text()"/>
             <param name="link" value="'https://rechtsquellen.sources-online.org/' || substring-after(util:collection-name(.), '/db/apps/rqzh-data/') || '/' || replace(seriesStmt/idno, '^(.*)_1$', '$1')"/>
             <pb:template xmlns="" xml:space="preserve">
@@ -1154,7 +1155,7 @@
                 </elementSpec>
                 <elementSpec ident="teiHeader" mode="change">
                     <model predicate="$parameters?header='context'" behaviour="pass-through">
-            <param name="persons" value="let $register := doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;) let $entries:=     for $p in root(.)//persName[@ref]   group by $k := $p/@ref     return     id($p[1]/@ref , $register)  return  for $p in $entries   order by $p/persName ascending   return    $p"/>
+            <param name="persons" value="let $register := doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;) let $entries:=     for $p in root(.)//persName[@ref]   group by $k := $p/@ref     return     id($p[1]/@ref , $register)  return  for $p in $entries   order by $p/persName[@type=&#34;full_sorted&#34;] ascending   return    $p"/>
             <param name="places" value="let $register := doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;) let $entries:=     for $p in root(.)//text//(placeName[@ref]|origPlace[@ref])          group by $k := $p/@ref   return     id($p[1]/@ref,$register)   return  for $p in $entries   order by $p/@n ascending   return    $p"/>
             <param name="organizations" value=" let $register := doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)  let $entries:=      for $p in root(.)//text//orgName[@ref]             group by $k := $p/@ref    return          id($p[1]/@ref, $register)      return   for $p in $entries          order by $p/orgName ascending             return                 $p                    "/>
             <param name="taxonomies" value="let $register := doc(&#34;/db/apps/rqzh-data/taxonomy/taxonomy.xml&#34;) let $entries:=     for $p in root(.)//keywords//term[starts-with(@ref, &#34;key&#34;)]         group by $k := $p/@ref             return                 id($p[1]/@ref, $register)  return  for $p in $entries      order by $p/desc ascending          return                 $p"/>
@@ -1291,26 +1292,26 @@
                     <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
                 </elementSpec>
             <elementSpec ident="person" mode="add">
-                <model predicate="$parameters?header='context'" behaviour="pass-through">
-                    <param name="content" value="."/>
-                    <param name="ref" value="@xml:id"/>
-                    <param name="value" value="( &lt;a href=&#34;../people/all/{./persName/string()}?key={@xml:id}&#34; target=&#34;_blank&#34;&gt;{./persName/string()}&lt;/a&gt;, if (string-length(./note) &gt; 0) then( &lt;span&gt; ({./note/string()})&lt;/span&gt;) else () )"/>
-                    <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
+                    <model predicate="$parameters?header='context'" behaviour="pass-through">
+            <param name="content" value="."/>
+            <param name="ref" value="@xml:id"/>
+            <param name="value" value="( &lt;a href=&#34;../people/all/{./persName[@type='full_sorted']/string()}?key={@xml:id}&#34; target=&#34;_blank&#34;&gt;{./persName[@type='full_sorted']/string()}&lt;/a&gt;, if (string-length(./note) &gt; 0) then( &lt;span&gt; ({./note/string()})&lt;/span&gt;) else () )"/>
+            <pb:template xmlns="" xml:space="preserve"><li data-ref="[[ref]]">
         <paper-checkbox class="select-facet" title="i18n(highlight-facet)"/>
         <div>[[value]]</div>
         </li></pb:template>
-                </model>
-                <modelSequence>
-                    <model behaviour="inline">
-                        <param name="content" value="(ec:label('person'), ' ')"/>
-                    </model>
-                    <model behaviour="link">
-                        <param name="link" value="'../people/all/' || persName[@type=&#34;full&#34;]/string() || '?key=' || @xml:id"/>
-                        <param name="content" value="persName[@type=&#34;full&#34;]/string()"/>
-                        <param name="target" value="'_new'"/>
-                    </model>
-                </modelSequence>
-            </elementSpec>
+        </model>
+                    <modelSequence>
+            <model behaviour="inline">
+                <param name="content" value="(ec:label('person'), ' ')"/>
+            </model>
+            <model behaviour="link">
+                <param name="link" value="'../people/all/' || persName[@type='full_sorted']/string() || '?key=' || @xml:id"/>
+                <param name="content" value="persName[@type='full_sorted']/string()"/>
+                <param name="target" value="'_new'"/>
+            </model>
+        </modelSequence>
+                </elementSpec>
                 <elementSpec ident="place" mode="add">
                     <model predicate="$parameters?header='context'" behaviour="pass-through">
             <param name="content" value="."/>
@@ -1322,18 +1323,18 @@
 </li></pb:template>
         </model>
                     <modelSequence>
-                        <model behaviour="inline">
-                            <param name="content" value="(ec:label('place'), ' ')"/>
-                        </model>
-                        <model behaviour="link">
-                            <param name="link" value="'../places/all/' || placeName[@type=&#34;main&#34;]/string() || '?key=' || @xml:id"/>
-                            <param name="content" value="placeName[@type=&#34;main&#34;]/string()"/>
-                            <param name="target" value="'_new'"/>
-                        </model>
-                        <model behaviour="inline">
-                            <param name="content" value="&#34; &#34; || placeName[@type=&#34;add&#34;]/string()"/>
-                        </model>
-                    </modelSequence>
+            <model behaviour="inline">
+                <param name="content" value="(ec:label('place'), ' ')"/>
+            </model>
+            <model behaviour="link">
+                <param name="link" value="'../places/all/' || placeName[@type=&#34;main&#34;]/string() || '?key=' || @xml:id"/>
+                <param name="content" value="placeName[@type=&#34;main&#34;]/string()"/>
+                <param name="target" value="'_new'"/>
+            </model>
+            <model behaviour="inline">
+                <param name="content" value="&#34; &#34; || placeName[@type=&#34;add&#34;]/string()"/>
+            </model>
+        </modelSequence>
                 </elementSpec>
                 <elementSpec ident="org" mode="add">
                     <model predicate="$parameters?header='context'" behaviour="pass-through">
@@ -1346,18 +1347,18 @@
 </li></pb:template>
         </model>
                     <modelSequence>
-                        <model behaviour="inline">
-                            <param name="content" value="(ec:label('organisation'), ' ')"/>
-                        </model>
-                        <model behaviour="link">
-                            <param name="link" value="'../organization/all/' || orgName/string() || '?key=' || @xml:id"/>
-                            <param name="content" value="orgName/string()"/>
-                            <param name="target" value="'_new'"/>
-                        </model>
-                        <model behaviour="inline">
-                            <param name="content" value="&#34; &#34; || @type/string()"/>
-                        </model>
-                    </modelSequence>
+            <model behaviour="inline">
+                <param name="content" value="(ec:label('organisation'), ' ')"/>
+            </model>
+            <model behaviour="link">
+                <param name="link" value="'../organization/all/' || orgName/string() || '?key=' || @xml:id"/>
+                <param name="content" value="orgName/string()"/>
+                <param name="target" value="'_new'"/>
+            </model>
+            <model behaviour="inline">
+                <param name="content" value="&#34; &#34; || @type/string()"/>
+            </model>
+        </modelSequence>
                 </elementSpec>
                 <elementSpec ident="category" mode="add">
                     <model predicate="$parameters?header='context'" behaviour="pass-through">

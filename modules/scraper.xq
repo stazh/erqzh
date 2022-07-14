@@ -27,7 +27,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 (:        scraper:download-persons-batch-number($number):)
 (:(:scraper:download-persons-batch-from(282):):)
 (:scraper:download-persons-batch-number(285):)
-(: scraper:generate-person-xml-for-col():)
+ scraper:generate-person-xml-for-col()
 
 (:scraper:analyze-json-batches():)
 (: let $errors := scraper:analyze-json-batches():)
@@ -44,7 +44,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 (: ORGANIZATION :) 
 (:scraper:organizations-all(10):)
 (: scraper:generate-organizations():)
-scraper:generate-organizations-xml-for-col()
+(:scraper:generate-organizations-xml-for-col():)
  
 (:  ERROR HANDLING  :)
 (:scraper:rescraper-errors():)
