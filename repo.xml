@@ -9,7 +9,7 @@
     <prepare>pre-install.xql</prepare>
     <finish>post-install.xql</finish>
     <target>rqzh2</target>
-    <permissions user="rqzh" group="tei" mode="rw-r--r--"/>
+    <permissions user="rqzh" group="tei" password="rqzh" mode="rw-r--r--"/>
     <deployed>2021-02-08T13:54:30.56+01:00</deployed>
     <changelog>
         <change version="1.0.0">
