@@ -1181,22 +1181,50 @@
   </ul>
 </div></pb:template>
         </model>
-                    <model predicate="$parameters?mode='footer-prev'" behaviour="block" cssClass="footer button-prev">
-            <param name="target" value="let $idno := .//seriesStmt/idno                         let $col := substring-after(util:collection-name($idno), &#34;/db/apps/rqzh-data/&#34;)                         let $temp  := replace($idno, &#34;^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$&#34;, &#34;$1 $2&#34;)                         let $parts := tokenize($temp)                         let $start := $parts[1]                         let $id    :=                             if (matches($parts[2], &#34;^\d{8}&#34;)) then                                 replace($parts[2], &#34;_&#34;, &#34;-&#34;)                             else if (matches($parts[2], &#34;^\d{4}_\d{3}&#34;)) then                                 number(substring-before($parts[2], &#34;_&#34;)) || &#34;-&#34; || number(substring-after($parts[2], &#34;_&#34;))                             else if (count($parts) eq 1)                             then ()                             else                                 number($parts[2])                          let $next := xs:string($id - 1)                         let $len := string-length($next)                         let $next-id := if ($len &gt; 2) then $next else substring(&#34;000&#34;, 1, 3 - $len) || $next                         let $idn := $start || &#34;_&#34; || $next-id                         let $match := for $m in collection(&#34;/db/apps/rqzh-data&#34;)//idno[starts-with(., $idn)] order by $m return $m                         let $link := if (count($match)) then $col || &#34;/&#34; || substring-before(util:document-name(head($match)), '.xml') else ()                          return $link"/>
+        <model predicate="$parameters?mode='footer-prev'" behaviour="block" cssClass="footer button-prev">
+            <param name="target" value="
+            let $idno := .//seriesStmt/idno
+                let $col := substring-after(util:collection-name($idno), &#34;/db/apps/rqzh-data/&#34;)                         
+                let $temp  := replace($idno, &#34;^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$&#34;, &#34;$1 $2&#34;)
+                let $parts := tokenize($temp)
+                let $start := $parts[1]                         
+                let $id := 
+                    if (matches($parts[2], &#34;^\d{8}&#34;)) then
+                        replace($parts[2], &#34;_&#34;, &#34;-&#34;)
+                    else if (matches($parts[2], &#34;^\d{4}_\d{3}&#34;)) then
+                        number(substring-before($parts[2], &#34;_&#34;)) || &#34;-&#34; || number(substring-after($parts[2], &#34;_&#34;))                             
+                    else if (count($parts) eq 1)                             
+                        then ()                             
+                    else                                 
+                        number($parts[2])
+                let $next := xs:string($id - 1)
+                let $len := string-length($next)
+                let $next-id := 
+                    if ($len &gt; 2) then 
+                        $next 
+                    else 
+                        substring(&#34;000&#34;, 1, 3 - $len) || $next                         
+                let $idn := $start || &#34;_&#34; || $next-id
+                let $match := for $m in collection(&#34;/db/apps/rqzh-data&#34;)//idno[starts-with(., $idn)] order by $m return $m                         
+                let $link := 
+                    if (count($match)) then 
+                        $col || &#34;/&#34; || substring-before(util:document-name(head($match)), '.xml')
+                    else ()                          
+                return replace($link, '^(.*)_1$', '$1')"/>
             <pb:template xmlns="" xml:space="preserve">
-                            <div>
-                                <pb-link id="prev" path="[[target]]" emit="transcription" class="part-nav">
-                                    <iron-icon icon="icons:chevron-left"/>
-                                    <pb-i18n class="sr-only" key="navigation.prev"/>
-                                </pb-link>
-                                <pb-popover for="prev" theme="light-border">
-                                    <pb-i18n class="tooltip" key="navigation.prev"/>
-                                </pb-popover>
-                            </div>
-                        </pb:template>
+                <div>
+                    <pb-link id="prev" path="[[target]]" emit="transcription" class="part-nav">
+                        <iron-icon icon="icons:chevron-left"/>
+                        <pb-i18n class="sr-only" key="navigation.prev"/>
+                    </pb-link>
+                    <pb-popover for="prev" theme="light-border">
+                        <pb-i18n class="tooltip" key="navigation.prev"/>
+                    </pb-popover>
+                </div>
+            </pb:template>
         </model>
-                    <model predicate="$parameters?mode='footer-next'" behaviour="block" cssClass="footer button-next">
-            <param name="target" value="let $idno := .//seriesStmt/idno                          let $col := substring-after(util:collection-name($idno), &#34;/db/apps/rqzh-data/&#34;)                          let $temp  := replace($idno, &#34;^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$&#34;, &#34;$1 $2&#34;)                          let $parts := tokenize($temp)                          let $start := $parts[1]                          let $id    :=                             if (matches($parts[2], &#34;^\d{8}&#34;)) then                                 replace($parts[2], &#34;_&#34;, &#34;-&#34;)                             else if (matches($parts[2], &#34;^\d{4}_\d{3}&#34;)) then                                 number(substring-before($parts[2], &#34;_&#34;)) || &#34;-&#34; || number(substring-after($parts[2], &#34;_&#34;))                             else if (count($parts) eq 1)                             then ()                             else                                 number($parts[2])                          let $next := xs:string($id + 1)                         let $len := string-length($next)                         let $next-id := if ($len &gt; 2) then $next else substring(&#34;000&#34;, 1, 3 - $len) || $next                         let $idn := $start || &#34;_&#34; || $next-id                         let $match := for $m in collection(&#34;/db/apps/rqzh-data&#34;)//idno[starts-with(., $idn)] order by $m return $m                         let $link := if (count($match)) then $col || &#34;/&#34; || substring-before(util:document-name(head($match)), '.xml') else ()                          return $link"/>
+        <model predicate="$parameters?mode='footer-next'" behaviour="block" cssClass="footer button-next">
+            <param name="target" value="let $idno := .//seriesStmt/idno                          let $col := substring-after(util:collection-name($idno), &#34;/db/apps/rqzh-data/&#34;)                          let $temp  := replace($idno, &#34;^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$&#34;, &#34;$1 $2&#34;)                          let $parts := tokenize($temp)                          let $start := $parts[1]                          let $id    :=                             if (matches($parts[2], &#34;^\d{8}&#34;)) then                                 replace($parts[2], &#34;_&#34;, &#34;-&#34;)                             else if (matches($parts[2], &#34;^\d{4}_\d{3}&#34;)) then                                 number(substring-before($parts[2], &#34;_&#34;)) || &#34;-&#34; || number(substring-after($parts[2], &#34;_&#34;))                             else if (count($parts) eq 1)                             then ()                             else                                 number($parts[2])                          let $next := xs:string($id + 1)                         let $len := string-length($next)                         let $next-id := if ($len &gt; 2) then $next else substring(&#34;000&#34;, 1, 3 - $len) || $next                         let $idn := $start || &#34;_&#34; || $next-id                         let $match := for $m in collection(&#34;/db/apps/rqzh-data&#34;)//idno[starts-with(., $idn)] order by $m return $m                         let $link := if (count($match)) then $col || &#34;/&#34; || substring-before(util:document-name(head($match)), '.xml') else ()                          return replace($link, '^(.*)_1$', '$1')"/>
             <pb:template xmlns="" xml:space="preserve">
                             <div>
                                 <pb-link id="next" path="[[target]]" emit="transcription" class="part-nav">
