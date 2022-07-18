@@ -767,7 +767,7 @@
                     <model predicate="$parameters?view='volumes'" behaviour="block">
             <param name="stmtTitle" value="seriesStmt/title"/>
             <param name="fileDescTitle" value="ec:short-title(titleStmt/title)"/>
-            <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName[@type='full'])"/>
+            <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
             <param name="count" value="$parameters?count"/>
             <pb:template xmlns="" xml:space="preserve"><h3>[[fileDescTitle]] <span class="count">[[count]]</span></h3>
                             <p>
@@ -790,7 +790,7 @@
             <param name="idno-format" value="ec:format-id(seriesStmt/idno)"/>
             <param name="stmtTitle" value="seriesStmt/title"/>
             <param name="fileDescTitle" value="titleStmt/title"/>
-            <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName[@type='full'])"/>
+            <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
             <param name="credits" value="./publicationStmt/availability/p[@xml:id='facs']/text()"/>
             <param name="link" value="'https://rechtsquellen.sources-online.org/' || substring-after(util:collection-name(.), '/db/apps/rqzh-data/') || '/' || replace(seriesStmt/idno, '^(.*)_1$', '$1')"/>
             <pb:template xmlns="" xml:space="preserve">
