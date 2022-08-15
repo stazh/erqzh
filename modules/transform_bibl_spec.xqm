@@ -1,6 +1,10 @@
 xquery version "3.1";
 
 (:~ This library module contains XQSuite tests for the bibliography transformation script.
+ : Since the input fails to validate the transformation attempts to correct most mistakes.
+ : 
+
+ : lastly  
  :
  : @author Duncan Paterson
  : @version 2.10.1
@@ -10,8 +14,46 @@ module namespace tests = "http://jinntec.de/ssrq/tests";
 import module namespace t-bibl = "http://jinntec.de/ssrq/t_bibl" at "transform_bibl.xqm";
 
 declare namespace test="http://exist-db.org/xquery/xqsuite";
+declare namespace validation="http://exist-db.org/xquery/validation";
+
 declare default element namespace "http://www.tei-c.org/ns/1.0";
 
+declare variable $tests:test-name := 'SSRQ_test';
+
+(:used in validation tests below:)
+declare variable $tests:mini-header := 
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Title</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>Publication Information</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>Information about the source</p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>;
+   
+
+(: jing as trouble with accessing the schema via URI directly so local it is :)
+declare variable $tests:schema-uri := xs:anyURI('http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng');
+declare variable $tests:schema-2 := doc('tei_all-2.rng');
+
+declare 
+    %test:setUp
+    function tests:store-and-fix(){
+            t-bibl:store-result($t-bibl:bibl, $tests:test-name),
+            t-bibl:fixup-series-dates(doc('../data/' || $tests:test-name || '.xml')),
+            t-bibl:fixup-monogr-dates(doc('../data/' || $tests:test-name || '.xml'))
+    };
+
+declare 
+    %test:tearDown
+    function tests:cleanup() {
+        xmldb:remove('../data/', $tests:test-name || '.xml')
+    };
 
 (: scope 1 :)
 declare
@@ -140,9 +182,7 @@ declare
     </monogr>
     <series><!-- series origin: MARC 830 -->
         <title>Neujahrsblatt der Hülfsgesellschaft von Winterthur</title>
-        <imprint>
-            <biblScope unit="volume">39</biblScope>
-        </imprint>
+        <biblScope unit="volume">39</biblScope>
     </series>
 </biblStruct>
 
@@ -178,22 +218,22 @@ declare
 };
 
 declare
-    %test:name('item-chbsg991001259148103977')
-    %test:args('chbsg991001259148103977')
+    %test:name('item-chbsg000091122')
+    %test:args('chbsg000091122')
     %test:assertTrue 
     function tests:diss-note-s1($item-id) {
        let $result := t-bibl:transform-list($t-bibl:bibl//id($item-id))
        let $test := 
-<biblStruct xmlns="http://www.tei-c.org/ns/1.0" xml:id="chbsg991001259148103977" type="W"><!-- Thesis -->
+<biblStruct xmlns="http://www.tei-c.org/ns/1.0" xml:id="chbsg000091122" type="W"><!-- Thesis -->
     <monogr><!-- author origin: MARC 100 -->
-        <author>Heidinger, Hermann</author>
-        <title type="full">Die Lebensmittel-Politik der Stadt Zürich im Mittelalter</title>
-        <title type="short">Heidinger 1910</title>
+        <author>Burghartz, Susanna</author>
+        <title type="full">Leib, Ehre und Gut – Delinquenz in Zürich Ende des 14. Jahrhunderts</title>
+        <title type="short">Burghartz 1990</title>
         <note>Diss.</note>
-        <imprint><!-- publisher origin: MARC 260 -->
-            <publisher>Buchdr. der Ipf- und Jagst-Zeitung</publisher><!-- pubPlace origin: MARC 260 -->
-            <pubPlace>Ellwangen</pubPlace><!-- date origin: MARC 260 -->
-            <date>1910</date>
+        <imprint><!-- imprint origin: MARC 260 -->
+            <publisher>Chronos-Verlag</publisher>
+            <pubPlace>Zürich</pubPlace><!-- date origin: MARC 260 -->
+            <date>1990</date>
         </imprint>
     </monogr>
 </biblStruct>
@@ -210,7 +250,7 @@ declare
        let $result := t-bibl:transform-list($t-bibl:bibl//id($item-id))
        let $test := 
 <biblStruct xmlns="http://www.tei-c.org/ns/1.0" xml:id="chbsg000135610" type="W"><!-- Selbständige Edition -->
-    <monogr type="edition"><!-- author origin: MARC 700 -->
+    <monogr><!-- author origin: MARC 700 -->
         <author>Egli, Emil</author>
         <title type="full">Actensammlung zur Geschichte der Zürcher Reformation in den Jahren 1519–1533</title>
         <title type="short">Egli, Actensammlung</title>
@@ -227,3 +267,138 @@ declare
 };
 
 (: validate :)
+(:~ helpter function to assemble result fragment into a full fledged tei document for validation testing :)
+declare
+    %private function tests:assemble-fragments($item-id)  {
+        document { <TEI>
+            { $tests:mini-header }
+            <text>
+                <body>
+                    <p> tests </p>
+                    <listBibl>
+                    { t-bibl:transform-list($t-bibl:bibl//id($item-id)) }
+                    </listBibl>
+                </body>
+            </text>    
+        </TEI> }
+    };
+
+
+(: %test:assumeIntenetAccess('http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng') :)
+declare
+    %test:name('item-chbsg000068827')
+    %test:args('chbsg000068827')
+    %test:assertTrue 
+    function tests:monogr-invalid-imprint($item-id) {
+       let $result := tests:assemble-fragments($item-id)
+
+       return
+           validation:jing($result, $tests:schema-2)
+};
+    
+declare
+    %test:name('item-chbsg000026120')
+    %test:args('chbsg000026120')
+    %test:assertTrue 
+    function tests:ev-invalid-date($item-id) {
+       let $result := tests:assemble-fragments($item-id)
+
+       return
+           validation:jing($result, $tests:schema-2)
+}; 
+
+declare
+    %test:name('item-chbsg000135610')
+    %test:args('chbsg000135610')
+    %test:assertTrue 
+    function tests:work-valid($item-id) {
+       let $result := tests:assemble-fragments($item-id)
+
+       return
+           validation:jing($result, $tests:schema-2)
+}; 
+
+
+
+declare
+    %test:name('item-chbsg991001180048503977')
+    %test:args('chbsg991001180048503977')
+    %test:assertTrue 
+    function tests:ev-invalid-author($item-id) {
+       let $result := tests:assemble-fragments($item-id)
+
+       return
+           validation:jing($result, $tests:schema-2)
+}; 
+
+declare
+    %test:name('item-chbsg000143225')
+    %test:args('chbsg000143225')
+    %test:assertTrue 
+    function tests:ja-invalid-diss-note($item-id) {
+       let $result := tests:assemble-fragments($item-id)
+
+       return
+           validation:jing($result, $tests:schema-2)
+};
+
+declare
+    %test:name('item-chbsg991001259148003977')
+    %test:pending('fixup')
+    %test:args('chbsg991001259148003977')
+    %test:assertTrue 
+    function tests:w-invalid-series-date-s1($item-id) {
+       let $result := tests:assemble-fragments($item-id)
+
+       return
+           validation:jing($result, $tests:schema-2)
+};
+
+declare
+    %test:name('item-chbsg000055330')
+    %test:args('chbsg000055330')
+    %test:assertTrue 
+    function tests:ja-inconsistent-date($item-id) {
+       let $result := tests:assemble-fragments($item-id)
+
+       return
+           validation:jing($result, $tests:schema-2)
+};
+
+declare
+    %test:name('item-chbsg000135490')
+    %test:pending('fixup')
+    %test:args('chbsg000135490')
+    %test:assertTrue 
+    function tests:ev-bad-scope-date($item-id) {
+       let $result := tests:assemble-fragments($item-id)
+
+       return
+           validation:jing($result, $tests:schema-2)
+};
+
+declare
+    %test:name('item-chbsg000105140')
+    %test:pending('fixup')
+    %test:args('chbsg000105140')
+    %test:assertTrue 
+    function tests:ja-invalid-date-s2($item-id) {
+       let $result := tests:assemble-fragments($item-id)
+
+       return
+           validation:jing($result, $tests:schema-2)
+};
+
+(:~ header validation erros on exist-db make this fail, 
+ : however the same file validates fine via oxygen
+ : I am leaning towards exist's results as <date type="print"/> seems pretty non-sensical to me
+ :)
+declare
+    %test:name('validate-fixed')
+    %test:assertFalse
+    function tests:invalid-fixed() {
+       let $result := doc('../data/' || $tests:test-name || '.xml')
+
+       return
+           validation:jing($result, $tests:schema-2)
+};

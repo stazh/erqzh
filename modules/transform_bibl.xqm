@@ -10,8 +10,16 @@ declare variable $t-bibl:bibl := doc('../data/SSRQ_ZH_NF_Bibliographie_integral.
 (:~ Updates the provided bibliography file for easier processing and display within the tei-publisher app.
  : !!!NOTE!!! These modifications are permanent
  : @see https://gitlab.existsolutions.com/rqzh/rqzh2/-/issues/96
+ : 
+ : Three entries should be manually corrected before any further processing.
+ : 
+ : @see https://gitlab.existsolutions.com/rqzh/rqzh2/-/issues/83#note_19630 
+ : @see transform_bibl_spec.xqm
+ : 
  : @author Duncan Paterson
  :)
+
+
 
 
 (:~ Take the marc 700 based type, for each biblStruc and add it as attribute instead of inline comment.
@@ -80,8 +88,8 @@ declare function t-bibl:scope-1($scope as xs:string?) as element(bibleScope)*{
     let $type := if (contains($token, "S")) then ('page') else ('volume')
     return
         if (matches($token, '(18|19|20)\d{2}')) 
-        then (<date xmlns="http://www.tei-c.org/ns/1.0">{$clean}</date>)
-        else(<biblScope xmlns="http://www.tei-c.org/ns/1.0" unit='{$type}'> {$clean} </biblScope>)
+        then (<date>{$clean}</date>)
+        else(<biblScope unit='{$type}'> {$clean} </biblScope>)
         
 };
 
@@ -98,8 +106,8 @@ declare function t-bibl:scope-2($node as node()*) as item()*{
 declare function t-bibl:scope-3($node as node()*) as item()*{
     let $t := tokenize($node, ',') ! normalize-space()
     return
-        (   <biblScope xmlns="http://www.tei-c.org/ns/1.0" unit='issue'>{$t[1]}</biblScope>,
-            <date xmlns="http://www.tei-c.org/ns/1.0">{$t[2]}</date>,
+        (   <biblScope unit='issue'>{$t[1]}</biblScope>,
+            <date>{$t[2]}</date>,
             t-bibl:scope-1($t[3]))
         
 };
@@ -114,8 +122,13 @@ declare function t-bibl:add-date($node as node()*) as item()*{
 
 (:~ Non-destructive transformation calling the other functions to modify list 
  : for debugging simply call t-bibl:transform-list($t-bibl:bibl//id('XXX')) with xml:id of item 
- : to see a quick preview of the transformation 
- : TODO: cleanup dates in invalid locations in input data, and prevent duplicate dates after transform. 
+ : to see a quick preview of the transformation. 
+ : 
+ : removes type=edition attributes as these are inconsistently applied, and always put in an invalid location
+ : keeps inline comments as is
+ : filter invalid and duplicate dates
+ : 
+ : @param body the body element of the input list
  :)
 declare function t-bibl:transform-list($body as node()*) as item()*{
     for $e in $body
@@ -128,7 +141,12 @@ declare function t-bibl:transform-list($body as node()*) as item()*{
             case element (title)    
                 return (t-bibl:full-title($e), t-bibl:transform-list($e/node())) 
             case element (biblScope)    
-                return (t-bibl:analyze-scope($e), t-bibl:transform-list($e/node()))
+                return if ($e/../series or $e/../../analytic)  then (t-bibl:analyze-scope($e), t-bibl:transform-list($e/node()))
+                else (t-bibl:analyze-scope($e)/*, t-bibl:transform-list($e/node()))
+            case element (monogr)    
+                return element {name($e)} {t-bibl:transform-list($e/node())}
+            case element (analytic)    
+                return element {name($e)} {t-bibl:transform-list($e/node())}      
             case element (author)    
                 return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}
             case element (publisher)    
@@ -136,11 +154,23 @@ declare function t-bibl:transform-list($body as node()*) as item()*{
             case element (pubPlace)    
                 return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}
             case element (date)    
-                return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}
+                return if (t-bibl:analyze-scope($e/../biblScope)/date) then ()
+                else (element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))})
             case element (note)    
-                return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}     
+                return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}
+            case element (head)    
+                return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}
+            case element (p)    
+                return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}
+            case element (ref)    
+                return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}
+            case element (orgName)    
+                return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}
+            case element (resp)    
+                return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}
+            case element (idno)    
+                return element {name($e)} {($e/@*, $e/text(), t-bibl:transform-list($e/node()))}    
         default return element {name($e)} {($e/@*, t-bibl:transform-list($e/node()))}        
-(:        default return t-bibl:transform-list($e/node())         :)
 
 };
 
@@ -155,4 +185,56 @@ function t-bibl:update-list($body as node()*) as item()*{
     
     return
        $body
+};
+
+(: FIXUP :)
+(:~ Fix remaining invalid entries.
+ : The main transformation will return 16 invalid entries:
+ : 
+ : ('chbsg991001259148003977', 'chbsg000104927', 'chbsg000151044', 'chbsg000109616', 'chbsg991001261449703977', 
+ :   'chbsg000137916', 'chbsg991001261449803977', 'chbsg000151048', 'chbsg000135484', 'chbsg000143814', 'chbsg000134441', 
+ :   'chbsg000135489',  'chbsg000134489', 'chbsg000134488', 'chbsg000135490', 'chbsg000105140')
+ : 
+ : @see t-bibl:store-result()
+ : 
+ :)
+ 
+ 
+(:~ delete dates provided on series which is incorrect, and often at odds with the date provided for the bibliographical item :)
+declare function t-bibl:fixup-series-dates ($new-doc as node()) as item()*{
+    let $bad_ids := ('chbsg991001259148003977', 'chbsg000104927', 'chbsg000151044', 'chbsg000109616', 'chbsg991001261449703977', 
+    'chbsg000137916', 'chbsg991001261449803977', 'chbsg000151048', 'chbsg000135484', 'chbsg000143814', 'chbsg000134441', 
+    'chbsg000135489',  'chbsg000134489', 'chbsg000134488', 'chbsg000135490')
+    
+    for $fix in $new-doc/id($bad_ids)
+    return
+        update delete $fix//series/date
+};
+
+
+declare function t-bibl:fixup-monogr-dates ($new-doc as node()) as item()*{
+
+    let $date := <date>1996</date>
+    return
+        update insert $date into $new-doc/id('chbsg000105140')//imprint,
+        update delete $new-doc/id('chbsg000105140')//monogr/date
+};
+
+
+
+(:~ Stores the result of transformation into db
+ : @param list the input list
+ : @param file-name name of new file without .xml ending
+ :)
+declare function t-bibl:store-result ($list as node()*, $file-name as xs:string) as item() {
+    let $header := $list/../../teiHeader
+    let $joined := 
+    <TEI xmlns:ssrq="http://ssrq-sds-fds.ch/ns/nonTEI" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="biblio" xml:lang="de">
+        {$header}
+        <text>
+        {t-bibl:transform-list($list)}
+        </text>
+    </TEI>
+    return
+        xmldb:store('/db/apps/rbibl/data/', $file-name || '.xml', $joined)  
 };
