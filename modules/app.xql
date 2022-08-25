@@ -615,7 +615,7 @@ function app:collection-title($node as node(), $model as map(*)) {
  : The Introduction blurb of the bibliography  
  : TODO(DP): need confirmation that this is the blurb wanted by client
 :)
-declare %private function app:bibl-blurb() as element(p) {     
+declare function app:bibl-blurb() as element(p) {     
     let $blurb := $app:LITERATUR//tei:body/tei:div/tei:div/tei:div/tei:p/text()
     return
         <p>{$blurb}</p>
@@ -625,7 +625,7 @@ declare %private function app:bibl-blurb() as element(p) {
  : Not all links go to BSG, but to … ?  
  : TODO(DP): find out new link target for non-BSG linksm should also be perma links no?
  :)
-declare %private function app:bibl-link($idno as xs:string) as xs:string {     
+declare function app:bibl-link($idno as xs:string) as xs:string {     
     let $chbsg := 'http://permalink.snl.ch/bib/'
     let $non-bsg := '/suche/detail/'
     
@@ -640,7 +640,7 @@ declare %private function app:bibl-link($idno as xs:string) as xs:string {
  : TODO(DP): add i18n entries <pb-i18n key="bibliography" /> 
  : @see app:bibl-quoted
  :)
-declare %private function app:bibl-thead() as element(thead) {
+declare function app:bibl-thead() as element(thead) {
     let $column-headings := ('Kurztitel', 'Bibliografische Angaben', 'Nachweis BSG')
     return
         <thead>
@@ -657,7 +657,7 @@ declare %private function app:bibl-thead() as element(thead) {
 (:~ Helper function for Literaturverzeichnis 
  : Kurztitle
  :)
-declare %private function app:bibl-short($node as node()) as element(td) {
+declare function app:bibl-short($node as node()) as element(td) {
     <td>{$node/tei:*/tei:title[@type="short"]/text()}</td>        
 };
 
@@ -666,7 +666,7 @@ declare %private function app:bibl-short($node as node()) as element(td) {
  : @param $secondary the container Work (Volume for article in Edited Volume) 
  : @see app:bibl-full
  :)
-declare %private function app:bibl-editors($secondary as node()) as xs:string* {
+declare function app:bibl-editors($secondary as node()) as xs:string* {
         if (exists($secondary/tei:author)) 
         then (string-join($secondary/tei:author, '; ')) 
         else ()
@@ -676,8 +676,8 @@ declare %private function app:bibl-editors($secondary as node()) as xs:string* {
  : note: some imprints are missing in source data
  : @see app:bibl-full
  :)
-declare %private function app:bibl-ev-imprint($secondary as node()) as xs:string* {
-    $secondary/tei:title[1]/string() || ", " || $secondary//tei:pubPlace[1] || " " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope
+declare function app:bibl-ev-imprint($secondary as node()) as xs:string* {
+    $secondary/tei:title[1]/string() || ", " || $secondary//tei:pubPlace[1] || " " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope[@unit = 'page']
 };
 
 (:~ Helper function to get the named imprint  of journals 
@@ -685,8 +685,8 @@ declare %private function app:bibl-ev-imprint($secondary as node()) as xs:string
  : @param $secondary the container Work (journal for journal article)
  : @see app:bibl-full
  :)
-declare %private function app:bibl-ja-imprint($secondary as node()) as xs:string* {
-    $secondary/tei:title[1]/string() || $secondary//tei:biblScope[@unit ='issue'] || ", " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope
+declare function app:bibl-ja-imprint($secondary as node()) as xs:string* {
+    $secondary/tei:title[1]/string() || ' ' || $secondary//tei:biblScope[@unit ='issue'] || ", " || $secondary//tei:date[1] || ", " || $secondary//tei:biblScope[@unit = 'page']
 };
 
 (:~ Helper function for Literaturverzeichnis 
@@ -702,15 +702,11 @@ declare %private function app:bibl-ja-imprint($secondary as node()) as xs:string
  : Nachname, Vorname: Titel, in: Titel Zeitschrift Nummer, Jahr, Seitenzahlen.
  :
  : TODO(DP): 
- : - Data Source is still missing datapoints, and invalid. e.g.:
- :  - series infomation  lost in web display both on old and new website
- :  - biblSope should be sibling of imprint (which is missing alltogether in about 90 places)
- :  - there are duplicate and conflicting dates
- :  - invalid and inconsistent use of @type='edition'
+ : - Data Source is still missing datapoints:
  : - make display prettier for missing data no "Titel , , 313-4.
  : - configure index for faster loading
  :)
-declare %private function app:bibl-full($node as node(), $type as xs:string) as xs:string {
+declare function app:bibl-full($node as node(), $type as xs:string) as xs:string {
     (: get primary bibliographical element for author and title (all) :)
     let $main := $node/*/tei:title[@type="short"]/..
     let $authors := string-join($main/tei:author, '; ')
@@ -734,7 +730,7 @@ declare %private function app:bibl-full($node as node(), $type as xs:string) as 
  : @param $list one of the two listBibls in the Bibliographie file
  : @return caption containing the header belonging to that listBibl
  :)
-declare %private function app:bibl-caption($list as node()) as xs:string {
+declare function app:bibl-caption($list as node()) as xs:string {
         $list/../../tei:head/string()
 };
 
@@ -791,7 +787,6 @@ function app:bibliography($node as node(), $model as map(*)) as element(div){
                                 <td>{ $short }</td>
                                 <td>{ app:bibl-full($entry, $type) }</td>
                                 <td><a href="{ app:bibl-link($id) }" target="_blank">BSG</a></td>
-                                <!-- <td>{ app:bibl-quoted($bsg) }</td> -->
                             </tr>
                 }
                 </tbody>
