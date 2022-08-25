@@ -3,8 +3,6 @@ xquery version "3.1";
 (:~ This library module contains XQSuite tests for the bibliography transformation script.
  : Since the input fails to validate the transformation attempts to correct most mistakes.
  : 
-
- : lastly  
  :
  : @author Duncan Paterson
  : @version 2.10.1
@@ -15,6 +13,7 @@ import module namespace t-bibl = "http://jinntec.de/ssrq/t_bibl" at "transform_b
 
 declare namespace test="http://exist-db.org/xquery/xqsuite";
 declare namespace validation="http://exist-db.org/xquery/validation";
+declare namespace xmldb="http://exist-db.org/xquery/xmldb";
 
 declare default element namespace "http://www.tei-c.org/ns/1.0";
 
