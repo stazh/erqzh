@@ -7,6 +7,8 @@
   <property name="project.app" value="${package(abbrev)}"/>
   <property name="build.dir" value="build"/>
   <property name="scripts.dir" value="node_modules/@teipublisher/pb-components/dist"/>
+  <property name="git.repo.path" value="${basedir}/.git"/>
+  <available file="${git.repo.path}" type="dir" property="git.present"/>
   <target name="clean">
     <delete dir="${build}"/>
     <delete dir="resources/scripts" includes="*.js *.map"/>

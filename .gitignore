@@ -5,6 +5,7 @@
 !.gitlab-ci.yml
 *.code-workspace
 local.*
+repo.xml
 .duncdrum/
 build/
 builds/
