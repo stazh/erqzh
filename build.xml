@@ -10,7 +10,7 @@
   <property name="git.repo.path" value="${basedir}/.git"/>
   <available file="${git.repo.path}" type="dir" property="git.present"/>
   <target name="clean">
-    <delete dir="${build}"/>
+    <delete dir="${build.dir}"/>
     <delete dir="resources/scripts" includes="*.js *.map"/>
     <delete dir="resources/images/leaflet"/>
     <delete dir="resources/images/openseadragon"/>
