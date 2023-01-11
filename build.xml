@@ -12,7 +12,7 @@
   <available file="${git.repo.path}" type="dir" property="git.present"/>
   
   <target name="clean">
-    <delete includeemptydirs="true">
+    <delete includeemptydirs="true" failonerror="false">
       <fileset dir="${build.dir}" includes="**/*"/>
     </delete>
   </target>
