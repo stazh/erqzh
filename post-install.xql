@@ -67,7 +67,8 @@ declare function local:generate-code($collection as xs:string) {
         if ($pi?output) then
             tokenize($pi?output)
         else
-            ("web", "print", "latex", "epub")
+            (: ("web", "print", "latex", "epub", "fo") :)
+            ("web")
     for $file in pmu:process-odd (
         (:    $odd as document-node():)
         odd:get-compiled($collection || "/resources/odd" , $source),

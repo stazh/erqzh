@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/vscode/devcontainers/java:dev-8
+FROM mcr.microsoft.com/vscode/devcontainers/java:8-bullseye
 
 ARG EXIST_VERSION=6.0.1
 ARG TEMPLATING_VERSION=v1.0.0
@@ -73,13 +73,8 @@ RUN  git clone https://github.com/eeditiones/roaster.git \
 
 RUN curl -L -o /usr/local/exist/autodeploy/atom-editor-${EDITOR_VERSION}.xar https://github.com/wolfgangmm/existdb-langserver/raw/master/resources/atom-editor-${EDITOR_VERSION}.xar
 
-RUN git clone  https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/stazh/erqzh-data.git \
-    && cd erqzh-data \
-    && ant \
-    && cp build/*.xar /usr/local/exist/autodeploy \
-    && cd .. \
-    && rm -rf erqzh-data
-
+# RUN git clone  https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/stazh/erqzh-data.git \
+ 
 WORKDIR /usr/local/exist
 ENV JAVA_HOME=/usr/local/sdkman/candidates/java/current
 
