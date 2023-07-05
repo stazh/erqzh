@@ -1,14 +1,9 @@
 {
-  "dependencies": {
-    "@teipublisher/pb-components" : "1.42.0"
-  },
   "name": "rqzh2",
   "version": "1.1.22",
   "description": "Rechtsquellen des Kantons Zürich",
-  "devDependencies": {
-    "cypress": "^10.6.0"
-  },  
-  "scripts": {
-    "e2e": "cypress run"
+  "dependencies" : {
+    "@teipublisher/pb-components" : "eeditiones/tei-publisher-components#url-patterns",
+    "@jinntec/fore": "jinntec/fore#ee-bl"
   }
 }
