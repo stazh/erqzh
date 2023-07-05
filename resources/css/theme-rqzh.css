@@ -8,6 +8,8 @@
     --thumbBG: #d1d3d6;
     --paper-checkbox-checked-color: #0076bd;
     --pb-popover-trigger: "mouseenter";
+    --pb-color-white: #F0F0F0;
+    --pb-menubar-color:var(--pb-color-white);
 }
 
 /* Custom scrollbar: Firefox */
@@ -34,10 +36,13 @@
 .logo {
     background-image: url("../images/logo.svg");
 }
-
-.menubar .logo {
-    margin: 0 3px;
+.menubar a,
+.menubar a:hover,
+.menubar a:visited,
+.menubar a:link {
+    color:var(--pb-menubar-color);
 }
+
 
 .menubar paper-item a > *,
 .menubar paper-item a:hover > *{
@@ -182,16 +187,16 @@ a {
     text-decoration: none;
 }
 
-a > * {
+a {
     color: var(--rqzh-link-color);
 }
 
 a:hover,
 a:active,
 a:focus,
-a:hover > *,
-a:active > *,
-a:focus > * {
+a:hover,
+a:active,
+a:focus {
     color: #00558a; /* hsl(203, 100%, 27%) a tad darker than the brand color */
     text-decoration: underline;
 }
