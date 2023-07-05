@@ -8,5 +8,8 @@
   },
   "devDependencies": {
     "cypress": "^12.16.0"
+  },
+  "scripts": {
+    "e2e": "cypress run"
   }
 }

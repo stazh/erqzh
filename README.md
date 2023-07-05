@@ -41,8 +41,17 @@ your existing clone
 
 ## Testing
 
-Inside `/cypress/…` you can find end-to-end tests for the deployed application, which is expected to run on `localhost:8080`. To execute the tests:
+Inside `/cypress/…` you can find end-to-end tests for the deployed application, which is expected to run on `localhost:8080`. To execute the tests run either npm or npx command below:
 
 ```shell
 npm run e2e
+npx cypress run
 ```
+
+To add new tests you might prefer the GUI overlay
+
+```shell
+npx cypress open
+```
+
+Select e2e test and then your preferred browser. 
