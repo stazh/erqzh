@@ -46,7 +46,72 @@ declare function app:is-writeable($node as node(), $model as map(*)) {
         }
 };
 
-declare 
+(:~
+ : List documents in data collection
+ :)
+declare
+    %templates:wrap
+    %templates:default("sort", "title")
+function app:list-works($node as node(), $model as map(*), $filter as xs:string?, $browse as xs:string?, $odd as xs:string?, $sort as xs:string) {
+    let $params := app:params2map($model?root)
+    let $cached := session:get-attribute($config:session-prefix || ".works")
+    let $filtered :=
+        if (app:use-cache($params, $cached)) then
+            $cached
+        else if (exists($filter) and $filter != '') then            
+            query:query-metadata($model?root, ($filter, "div")[1],$browse, $sort)
+        else
+            let $options := query:options($sort)
+            return
+                nav:get-root($model?root, $options)
+    let $sorted := app:sort($filtered, $sort)
+    return (
+        session:set-attribute($config:session-prefix || ".timestamp", current-dateTime()),
+        session:set-attribute($config:session-prefix || '.hits', $filtered),
+        session:set-attribute($config:session-prefix || '.params', $params),
+        session:set-attribute($config:session-prefix || ".works", $sorted),
+        map {
+            "all" : $sorted,
+            "mode": "browse"
+        }
+    )
+};
+
+declare %private function app:params2map($root as xs:string?) {
+    map:merge((
+        for $param in request:get-parameter-names()[not(. = ("start", "per-page"))]
+        return
+            map:entry($param, request:get-parameter($param, ())),
+        map { "root": $root }
+    ))
+};
+
+declare
+    %templates:wrap
+function app:sort($items as element()*, $sortBy as xs:string?) {
+    let $items :=
+        if (exists($config:data-exclude)) then
+            $items except $config:data-exclude
+        else
+            $items
+    return
+        if ($sortBy) then
+            nav:sort($sortBy, $items)
+        else
+            $items
+};
+
+declare function app:use-cache($params as map(*), $cached) {
+    let $cachedParams := session:get-attribute($config:session-prefix || ".params")
+    let $timestamp := session:get-attribute($config:session-prefix || ".timestamp")
+    return
+        if (exists($cached) and exists($cachedParams) and deep-equal($params, $cachedParams) and exists($timestamp)) then
+            empty(xmldb:find-last-modified-since(collection($config:data-root), $timestamp))
+        else
+            false()
+};
+
+declare
     %templates:wrap
 function app:clear-facets($node as node(), $model as map(*)) {
     session:set-attribute($config:session-prefix || ".hits", ()),
