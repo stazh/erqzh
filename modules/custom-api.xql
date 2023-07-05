@@ -11,8 +11,8 @@ module namespace api="http://teipublisher.com/api/custom";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 (: Add your own module imports here :)
-import module namespace rutil="http://exist-db.org/xquery/router/util";
-import module namespace errors = "http://exist-db.org/xquery/router/errors";
+import module namespace rutil="http://e-editiones.org/roaster/util";
+import module namespace errors = "http://e-editiones.org/roaster/errors";
 import module namespace app="http://existsolutions.com/ssrq/app" at "app.xql";
 import module namespace search="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
 import module namespace templates="http://exist-db.org/xquery/html-templating";
