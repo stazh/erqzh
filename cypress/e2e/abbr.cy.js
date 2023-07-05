@@ -1,5 +1,5 @@
 describe('abbreviation page', () => {
-    it('loads', () => {
+    before('loads', () => {
         cy.visit('abbr.html')
     })
 

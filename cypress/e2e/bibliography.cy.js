@@ -1,5 +1,5 @@
 describe('bibliography page', () => {
-    it('should load', () => {
+    beforeEach('should load', () => {
         cy.visit('literaturverzeichnis.html')
     })
 
