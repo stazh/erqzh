@@ -1,5 +1,5 @@
 describe('places page', () => {
-    it('loads', () => {
+    beforeEach('loads', () => {
         cy.visit('places.html')
     })
 
