@@ -128,9 +128,13 @@ declare function app:select-kanton() {
 
 declare function app:list-volumes($node as node(), $model as map(*), $root as xs:string?) {
     let $kanton := replace($model?root, "^/?(.*)$", "$1")
+    (: let $_ := util:log("info", "app:list-volumes $kanton" || $kanton)     :)
     for $volume in collection($config:data-root)/tei:TEI[@type='volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $kanton)]
     let $order := $volume/@n
-    let $count := count($model?all intersect collection(util:collection-name($volume))//tei:TEI[ft:query(., 'type:document')])
+    let $documents := collection(util:collection-name($volume))//tei:TEI/tei:text[ft:query(., 'type:document')]
+    (: let $_ := util:log("info", "$count docs: " || count($documents)) :)
+    let $count := count($model?all intersect $documents)
+    (: let $_ := util:log("info", "$count: " || $count) :)
     order by $order
     return
         if ($count > 0) then

@@ -58,16 +58,24 @@ declare function teis:query-default($fields as xs:string+, $query as xs:string, 
 };
 
 declare function teis:query-metadata($path as xs:string?, $field as xs:string?, $query as xs:string?, $sort as xs:string) {
+    (: let $_ := util:log("info",   map {
+            "name":"teis:query-metadata", 
+            "fielld":$field, 
+            "$query":$query, 
+            "$sort":$sort
+    }) :)
     let $queryExpr := 
         if ($field = "file" or empty($query) or $query = '') then 
-            "file:*" 
+            "corpus:*" 
         else
             ($field, "text")[1] || ":" || $query
     let $options := query:options($sort, ($field, "text")[1])
+    (: let $_ := util:log("info", map {"name":"teis:query-metadata", "$queryExpr":$queryExpr, "$options":$options}) :)
     let $result :=
         $config:data-default ! (
             collection(. || "/" || $path)//tei:text[ft:query(., $queryExpr, $options)]
-        )
+        ) 
+   (: let $_ := util:log("info", map {"name":"teis:query-metadata", "result-count:":count($result)}) :)
     return
         query:sort($result, $sort)
 };

@@ -55,11 +55,18 @@ function capi:list-works($root as xs:string?, $cached, $params as map(*)) {
     let $sort := request:get-parameter("sort", "title")
     let $filter := request:get-parameter("field", ())
     let $query := request:get-parameter("query", ())
+    (: let $_ := util:log("info",   map {
+            "name":"capi:list-works", 
+            "filter":$filter, 
+            "$query":$query, 
+            "$sort":$sort
+    })     :)
     let $filtered :=
         if (exists($cached)) then
             $cached
         else
             query:query-metadata($root, ($filter, "div")[1], $query, $sort)
+    (: let $_ := util:log("info", "capi-list-works filtered: " || count($filtered)) :)
     return (
         session:set-attribute($config:session-prefix || ".timestamp", current-dateTime()),
         session:set-attribute($config:session-prefix || '.hits', $filtered?all),

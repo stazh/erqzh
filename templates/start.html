@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="resources/css/theme-rqzh.css"/>
     <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
     <script src="resources/scripts/app/app.js"/>
-    <script src="resources/scripts/app/index.js"/>
+    <script src="resources/scripts/browse.js"/>
     <custom-style>
         <style>
 
@@ -266,28 +266,33 @@
 
                                 <div class="card-content card-padding">
                                     <div class="browse" slot="page">
-                                        <pb-browse-docs id="document-list" url="api/collection/" sort-options="[{&#34;label&#34;: &#34;browse.orig-date&#34;, &#34;value&#34;: &#34;idno&#34;},{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;}]" sort-by="idno" filter-options="[{&#34;label&#34;: &#34;browse.title&#34;, &#34;value&#34;: &#34;title&#34;},{&#34;label&#34;: &#34;browse.author&#34;, &#34;value&#34;: &#34;author&#34;},{&#34;label&#34;: &#34;browse.file&#34;, &#34;value&#34;: &#34;file&#34;}]" filter-by="title" auto="auto" history="history" login="login" subforms="#options" emit="docs" subscribe="docs">
-                                            <div slot="header" class="timeline">
-                                                <pb-timeline url="api/timeline" scopes="[&#34;D&#34;, &#34;M&#34;, &#34;Y&#34;, &#34;5Y&#34;, &#34;10Y&#34;]" resettable="" max-interval="80" subscribe="docs" emit="timeline">
-                                                    <span slot="label">Angezeigter Zeitraum: </span>
-                                                </pb-timeline>
-                                            </div>
-                                            <pb-paginate slot="toolbar" id="paginate" per-page="20" range="5" emit="docs" subscribe="docs"/>
-                                        </pb-browse-docs>
-                                        <pb-custom-form id="options" emit="docs" style="display: none">
-                                            <input slot="searchButtonBottom" type="hidden" name="dates" value="" data-template="templates:form-control"/>
+                                        <pb-search subscribe="search" data-template="pages:parse-params"
+                                        value="${query}" submit-on-load="" subforms="#options"></pb-search>
+                                        <div class="timeline">
+                                            <pb-timeline url="api/timeline"
+                                                scopes="[&#34;D&#34;, &#34;M&#34;, &#34;Y&#34;, &#34;5Y&#34;, &#34;10Y&#34;]"
+                                                resettable="" max-interval="80" subscribe="search" emit="timeline">
+                                                <span slot="label">Angezeigter Zeitraum: </span>
+                                            </pb-timeline>
+                                        </div>
+                                        <div id="document-list">
+                                            <pb-load url="api/collection/{collection}" expand="" emit="search"></pb-load>
+                                            <pb-paginate id="paginate" per-page="20" range="5" subscribe="search" emit="search" />
+                                        </div>
+                                        <pb-custom-form id="options" class="options" emit="search" style="display: none">
+                                            <input type="hidden" name="dates" value=""
+                                                data-template="templates:form-control" />
+                                            <input type="hidden" name="collection" value="" data-template="templates:form-control" />
+
                                         </pb-custom-form>
                                     </div>
                                 </div>
                             </main>
 
-                            <!-- search sidebar -->
-                            <div data-template="templates:include" data-template-path="templates/search-form.html"/>
-
 
                             <pb-restricted class="upload-panel main-grid__item" login="login">
                                 <aside class="upload" data-i18n="[heading]upload.upload" heading="Upload">
-                                    <pb-upload id="upload" emit="docs" accept=".xml, .tei, .odd, .docx" target="temp"/>
+                                    <pb-upload id="upload" emit="search" accept=".xml, .tei, .odd, .docx" target="temp" />
                                 </aside>
                             </pb-restricted>
 
