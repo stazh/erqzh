@@ -112,8 +112,9 @@ declare %private function sapi:show-hits($request as map(*), $hits as item()*, $
 
 declare function sapi:facets($request as map(*)) {
     
-    let $hits := session:get-attribute($config:session-prefix || ".hits")
+    let $hits := session:get-attribute($config:session-prefix || ".hits")    
     where count($hits) > 0
+    let $_ := util:log("info", "sapi:facets " || count($hits))
     return
         <div>
         {

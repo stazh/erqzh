@@ -12,12 +12,4 @@ builds/
 cypress/videos/
 cypress/screenshots/
 node_modules
-resources/css/leaflet/
-resources/css/prismjs
-resources/i18n/common
-resources/images/leaflet
-resources/images/openseadragon
-resources/lib/
-resources/scripts/*.js
-resources/scripts/*.map
 transform

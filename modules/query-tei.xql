@@ -25,6 +25,15 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation/tei" at "navigation-tei.xql";
 import module namespace query="http://www.tei-c.org/tei-simple/query" at "query.xql";
 
+declare variable $teis:REFERENCED_DOCS := collection($config:data-root)//tei:div[@type='collection']//tei:ref/string();
+
+declare function teis:filter-collections($docs) {
+    for $doc in $docs
+    where not(ft:field($doc, 'idno') = $teis:REFERENCED_DOCS)
+    return
+        $doc
+};
+
 declare function teis:query-default($fields as xs:string+, $query as xs:string, $target-texts as xs:string*,
     $sortBy as xs:string*) {
     if(string($query)) then
@@ -73,11 +82,17 @@ declare function teis:query-metadata($path as xs:string?, $field as xs:string?, 
     (: let $_ := util:log("info", map {"name":"teis:query-metadata", "$queryExpr":$queryExpr, "$options":$options}) :)
     let $result :=
         $config:data-default ! (
-            collection(. || "/" || $path)//tei:text[ft:query(., $queryExpr, $options)]
+            collection(. || "/" || $path)//tei:text[ft:query(., $queryExpr , $options)]
         ) 
+
+    let $result-filtered := for $item in $result 
+                                where ft:field($item, "type") = ("document", "introduction")
+                                return
+                                    $item
    (: let $_ := util:log("info", map {"name":"teis:query-metadata", "result-count:":count($result)}) :)
+
     return
-        query:sort($result, $sort)
+        query:sort($result-filtered, $sort)
 };
 
 declare function teis:autocomplete($doc as xs:string?, $fields as xs:string+, $q as xs:string) {
