@@ -513,3 +513,45 @@ declare function api:html-place($request as map(*)) {
     return
         templates:apply($template, vapi:lookup#2 , map { "editionseinheit":$request?parameters?editionseinheit,"name":$request?parameters?name } , $vapi:template-config)
 };
+
+declare function api:facets-search($request as map(*)) {
+    let $value := $request?parameters?value
+    let $query := $request?parameters?query
+    let $type := $request?parameters?type
+
+    let $_ := util:log("info", ("api:facets-search type: '", $type, "' - query: '" , $query, "' - value: '" , $value, "'"))    
+    let $hits := session:get-attribute($config:session-prefix || ".hits")
+    let $log := util:log("info", "api:facets-search: hits: " || count($hits))
+    let $facets := ft:facets($hits, $type, ())
+    let $log := util:log("info", "api:facets-search: $facets: " || count($facets))
+
+    
+    let $matches := 
+        for $key in if (exists($request?parameters?value)) 
+                            then $request?parameters?value 
+                            else map:keys($facets)
+            let $text := 
+                switch($type) 
+                    case "person" return
+                        $config:register-person/id($key)/tei:persName[@type='full']/text()
+                    default return 
+                        let $_ := util:log("warn", "api:facets-search: default return, $type: " || $type)
+                        return 
+                            ("unknown facet type " || $type)
+            return 
+                map {
+                    "text": $text,
+                    "freq": $facets($key),
+                    "value": $key
+                } 
+
+
+           
+        let $log := util:log("info", "api:facets-search: $matches: " || count($matches))
+        let $filtered := filter($matches, function($item) {
+            matches($item?text, '(?:^|\W)' || $request?parameters?query, 'i')
+        })
+        let $log := util:log("info", "api:facets-search: filtered $matches: " || count($filtered))
+        return
+            array { $filtered }
+};

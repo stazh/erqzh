@@ -858,7 +858,43 @@
                     }
                 }
             }
-        }
+        },		
+        "/api/facets/{type}": {
+            "get": {
+				"summary": "List facet values for people occurring in current search result set",
+				"operationId": "custom:facets-search",
+				"tags": ["search"],
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+				"responses": {
+					"200": {
+						"description": "Facets returned",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array"
+								}
+							}
+						}
+					}
+				}
+			}
+        }		
     },
     "security": [
         {

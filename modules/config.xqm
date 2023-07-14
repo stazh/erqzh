@@ -111,13 +111,7 @@ declare variable $config:pagination-fill := 5;
  : Display configuration for facets to be shown in the sidebar. The facets themselves
  : are configured in the index configuration, collection.xconf.
  :)
-declare variable $config:facets := [
-    map {
-        "dimension": "genre",
-        "heading": "facets.genre",
-        "max": 5,
-        "hierarchical": true()
-    },
+declare variable $config:facets := [    
     map {
         "dimension": "language",
         "heading": "facets.language",
@@ -125,12 +119,26 @@ declare variable $config:facets := [
         "hierarchical": false(),
         "output": function($label) {
             switch($label)
-                case "de" return "German"
-                case "es" return "Spanish"
-                case "la" return "Latin"
-                case "fr" return "French"
-                case "en" return "English"
+                case "Deutsch" return "DE"
+                case "Französisch" return "FR"
+                case "Latein" return "LAT"
                 default return $label
+        }
+    },
+    map {
+        "dimension": "person",
+        "heading": "Person",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/person"
+        },
+        "output": function($label) {
+            let $person := $config:register-person/id($label)/tei:persName[@type='full']/text()
+            return 
+                if ($person) 
+                then ($person)
+                else ($label)
         }
     }
 ];
@@ -323,6 +331,8 @@ declare variable $config:data-exclude := (
     doc($config:data-root || "/taxonomy.xml")/tei:TEI,
     collection($config:data-root || "/SG/SG_III_4/latest")/tei:TEI
 );
+
+declare variable $config:register-person := doc($config:data-root || "/person/person.xml")//tei:person;
 
 declare variable $config:default-odd :="rqzh.odd";
 

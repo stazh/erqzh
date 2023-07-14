@@ -275,9 +275,6 @@
                                             <pb-load url="api/collection/{collection}" expand="" emit="search"></pb-load>
                                             <pb-paginate id="paginate" per-page="20" range="5" subscribe="search" emit="search" />
                                         </div>
-                                        <!-- pb-custom-form id="facets" class="facets" url="api/search/facets" event="pb-results-received"
-                                                    subscribe="search" emit="search" /-->
-
                                     </div>
                                 </div>
                             </main>
@@ -291,7 +288,8 @@
                                                 data-template="templates:form-control" />
                                             <input type="hidden" name="collection" value="" data-template="templates:form-control" />
                                 </pb-custom-form>
-                                
+                                <pb-custom-form id="facets" class="facets options" url="api/search/facets" event="pb-results-received"
+                                                    subscribe="search" emit="search" />                                
                             </section>
 
 
