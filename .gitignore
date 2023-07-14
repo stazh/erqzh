@@ -1,8 +1,7 @@
-.*
 !.editorconfig
-!.existdb.json
-!.gitignore
 !.gitlab-ci.yml
+.DS_Store
+.idea
 *.code-workspace
 local.*
 repo.xml
