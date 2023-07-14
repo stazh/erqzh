@@ -140,6 +140,70 @@ declare variable $config:facets := [
                 then ($person)
                 else ($label)
         }
+    },
+    map {
+        "dimension": "organization",
+        "heading": "Organization",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/organization"
+        },
+        "output": function($label) {
+            let $organization := $config:register-organization/id($label)/tei:orgName/text()
+            return 
+                if ($organization) 
+                then ($organization)
+                else ($label)
+        }
+    },
+    map {
+        "dimension": "place",
+        "heading": "Place",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/place"
+        },
+        "output": function($label) {
+            let $place := $config:register-place/id($label)/tei:placeName[@type='main']/text()
+            return 
+                if ($place) 
+                then ($place)
+                else ($label)
+        }
+    },
+    map {
+        "dimension": "lemma",
+        "heading": "Lemma",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/lemma"
+        },
+        "output": function($label) {
+            let $lemma := $config:register-taxonomy/id($label)/tei:desc[@xml:lang='deu']/text()
+            return 
+                if ($lemma) 
+                then ($lemma)
+                else ($label)
+        }
+    },
+    map {
+        "dimension": "keyword",
+        "heading": "Keyword",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/keyword"
+        },
+        "output": function($label) {
+            let $keyword := $config:register-taxonomy/id($label)/tei:desc[@xml:lang='deu']/text()
+            return 
+                if ($keyword) 
+                then ($keyword)
+                else ($label)
+        }
     }
 ];
 
@@ -332,7 +396,10 @@ declare variable $config:data-exclude := (
     collection($config:data-root || "/SG/SG_III_4/latest")/tei:TEI
 );
 
+declare variable $config:register-organization := doc($config:data-root || "/organization/organization.xml")//tei:org;
 declare variable $config:register-person := doc($config:data-root || "/person/person.xml")//tei:person;
+declare variable $config:register-place := doc($config:data-root || "/place/place.xml")//tei:place;
+declare variable $config:register-taxonomy := doc($config:data-root || "/taxonomy/taxonomy.xml")//tei:category;
 
 declare variable $config:default-odd :="rqzh.odd";
 
