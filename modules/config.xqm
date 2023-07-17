@@ -111,23 +111,10 @@ declare variable $config:pagination-fill := 5;
  : Display configuration for facets to be shown in the sidebar. The facets themselves
  : are configured in the index configuration, collection.xconf.
  :)
-declare variable $config:facets := [    
-    map {
-        "dimension": "language",
-        "heading": "facets.language",
-        "max": 5,
-        "hierarchical": false(),
-        "output": function($label) {
-            switch($label)
-                case "Deutsch" return "DE"
-                case "Französisch" return "FR"
-                case "Latein" return "LAT"
-                default return $label
-        }
-    },
+declare variable $config:facets := [
     map {
         "dimension": "person",
-        "heading": "Person",
+        "heading": "person",
         (: "max": 5,
         "hierarchical": false(), :)
         "select": map {
@@ -143,7 +130,7 @@ declare variable $config:facets := [
     },
     map {
         "dimension": "organization",
-        "heading": "Organization",
+        "heading": "organisation",
         (: "max": 5,
         "hierarchical": false(), :)
         "select": map {
@@ -159,7 +146,7 @@ declare variable $config:facets := [
     },
     map {
         "dimension": "place",
-        "heading": "Place",
+        "heading": "place",
         (: "max": 5,
         "hierarchical": false(), :)
         "select": map {
@@ -175,7 +162,7 @@ declare variable $config:facets := [
     },
     map {
         "dimension": "lemma",
-        "heading": "Lemma",
+        "heading": "lemma",
         (: "max": 5,
         "hierarchical": false(), :)
         "select": map {
@@ -191,7 +178,7 @@ declare variable $config:facets := [
     },
     map {
         "dimension": "keyword",
-        "heading": "Keyword",
+        "heading": "keyword",
         (: "max": 5,
         "hierarchical": false(), :)
         "select": map {
@@ -203,6 +190,63 @@ declare variable $config:facets := [
                 if ($keyword) 
                 then ($keyword)
                 else ($label)
+        }
+    },
+    map {
+        "dimension": "language",
+        "heading": "language",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            switch($label)
+                case "Deutsch" return "DE"
+                case "Französisch" return "FR"
+                case "Latein" return "LAT"
+                default return $label
+        }
+    },
+    map {
+        "dimension": "archive",
+        "heading": "archive",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/archive"
+        },
+        "output": function($label) {
+            $label
+        }
+    },
+    map {
+        "dimension": "seal",
+        "heading": "seal",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            switch($label)
+                case "true" return "Yes"
+                case "false" return "No"
+                default return ""
+        }
+    },
+    map {
+        "dimension": "filiation",
+        "heading": "filiation",
+        "select": map {
+            "source": "api/facets/filiation"
+        },
+        "output": function($label) {
+            $label
+        }
+    },
+    map {
+        "dimension": "material",
+        "heading": "material",
+        "select": map {
+            "source": "api/facets/material"
+        },
+        "output": function($label) {
+            $label
         }
     }
 ];

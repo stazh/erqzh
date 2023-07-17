@@ -532,6 +532,8 @@ declare function api:facets-search($request as map(*)) {
                             else map:keys($facets)
             let $text := 
                 switch($type) 
+                    case "archive" return
+                        $key
                     case "person" return
                         $config:register-person/id($key)/tei:persName[@type='full']/text()
                     case "organization" return
@@ -541,10 +543,12 @@ declare function api:facets-search($request as map(*)) {
                     case "lemma"
                     case "keyword" return
                         $config:register-taxonomy/id($key)/tei:desc[@xml:lang='deu']/text()
+                    case "filiation"
+                    case "material" return $key
                     default return 
                         let $_ := util:log("warn", "api:facets-search: default return, $type: " || $type)
                         return 
-                            ("unknown facet type " || $type)
+                            $key
             return 
                 map {
                     "text": $text,
