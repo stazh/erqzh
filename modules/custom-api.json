@@ -460,7 +460,222 @@
 					}
 				}
 			}
-        },        
+        },		
+		"/keyword/{editionseinheit}/": {
+			"get": {
+				"summary": "Landing page for keywords",
+				"description": "Retrieve an HTML page expanded through eXist templating. This is used to load the top-level HTML pages, e.g. `index.html`.",
+				"tags": ["view"],
+				"operationId": "vapi:html",
+				"x-error-handler": "vapi:handle-error",
+				"parameters": [
+					{
+						"name": "file",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "keyword-list"
+						}
+					},
+					{
+						"name": "uri",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "/keyword/"
+						}
+					},
+					{
+						"name": "editionseinheit",
+						"in": "path",
+						"schema":{
+							"type": "string",
+							"default": "all"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "HTML of the page",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/keyword/{editionseinheit}": {
+			"get": {
+				"summary": "List organizations",
+				"description": "Retrieve list of keywords in format required by pb-split-list",
+				"operationId": "custom:keywords",
+				"parameters": [
+					{
+						"name": "sort",
+						"in": "query",
+						"schema":{
+							"type": "string",
+							"default": "id"
+						}
+					},
+					{
+						"name": "category",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "view",
+						"in": "query",
+						"schema":{
+							"type": "string",
+							"default": ""
+						}
+					},
+					{
+						"name": "dir",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"default": "asc"
+						}
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"schema": {
+							"type": "integer",
+							"default": 50
+						}
+					},
+					{
+						"name": "search",
+						"in": "query",
+						"schema":{
+							"type": "string"
+						}
+					},
+					{
+						"name": "editionseinheit",
+						"in": "path",
+						"schema":{
+							"type": "string",
+							"default": "all"
+						}
+					}
+
+				],				
+				"responses": {
+					"200": {
+						"description": "Categories and keyword to display",
+						"content": {
+							"application/json": {
+								"schema":{
+									"type": "object"
+								}
+							}
+						}
+					}
+				}
+			}
+		},        
+		"/keyword/{editionseinheit}/{name}": {
+			"get": {
+				"summary": "Retrieve the HTML template used for displaying keyword metadata",
+				"description": "Get the HTML template associated with the given document. This is called whenever the users tries to view a document. The actual content of the document will then be loaded by the template.",
+				"tags": ["view"],
+				"operationId": "vapi:html",	
+				"parameters": [
+					{
+						"name": "editionseinheit",
+						"in": "path",
+						"schema":{
+							"type": "string",
+							"default": "all"
+						}
+					},
+					{
+						"name": "name",
+						"in": "path",
+						"description": "Name of the keyword",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"example": ""
+						},
+						"allowReserved": true
+					},
+					{ 
+						"name":"file",
+						"in":"query",
+						"schema":{
+							"type": "string",
+							"default":"keyword-detail"
+						}
+					}
+
+				],
+				"responses": {
+					"200": {
+						"description": "HTML view for the document",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
+
 		"/places/{editionseinheit}/": {
             "get": {
 				"summary": "Landing page for places",
@@ -870,6 +1085,14 @@
                         "in": "query",
                         "schema": {
                             "type": "string"
+                        }
+                    },
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "schema":{
+                            "type": "string",
+                            "default": "de"
                         }
                     },
                     {

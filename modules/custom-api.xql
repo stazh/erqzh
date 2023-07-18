@@ -376,6 +376,91 @@ declare function api:output-organization($list, $letter as xs:string, $view as x
     }
 };
 
+declare function api:keywords($request as map(*)) {
+    let $search := normalize-space($request?parameters?search)
+    let $letterParam := $request?parameters?category
+    let $view := $request?parameters?view
+    let $sortDir := $request?parameters?dir
+    let $limit := $request?parameters?limit
+    let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
+    let $log := util:log("info","api:keywords $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit:" || $editionseinheit)
+    let $keywords := if( $editionseinheit = $config:data-collections )
+                    then (
+                        if ($search and $search != '') 
+                        then (
+                            doc($config:data-root || "/taxonomy/taxonomy-" || $editionseinheit || ".xml")//tei:category[ft:query(., 'keyword-name:(' || $search || '*)')]
+                        ) else (
+                            doc($config:data-root || "/taxonomy/taxonomy--" || $editionseinheit || ".xml")//tei:category
+                        )
+                    )
+                    else (
+                        if ($search and $search != '') 
+                        then (
+                            doc($config:data-root || "/taxonomy/taxonomy.xml")//tei:category[ft:query(., 'keyword-name:(' || $search || '*)')]    
+                        ) 
+                        else (
+                            doc($config:data-root || "/taxonomy/taxonomy.xml")//tei:category
+                        )
+                    )
+    let $log := util:log("info","api:keywords  found orgs:"||count($keywords))
+    let $byKey := for-each($keywords, function($keyword as element()) {
+        let $label := $keyword/tei:desc[@xml:lang="deu"]/text()
+        return
+            [lower-case($label), $label, $keyword]
+    })
+    let $sorted := api:sort($byKey, $sortDir)
+    let $letter := 
+        if (count($keywords) < $limit) then 
+            "Alle"
+        else if (not($letterParam) or $letterParam = '') then (
+            substring($sorted[1]?1, 1, 1) => upper-case()
+        )
+        else
+            $letterParam
+    let $byLetter :=
+        if ($letter = 'Alle') then
+            $sorted
+        else
+            filter($sorted, function($entry) {
+                starts-with($entry?1, lower-case($letter))
+            })
+
+    return
+        map {
+            "items": api:output-keyword($byLetter, $letter, $view, $search),
+            "categories":
+                if (count($keywords) < $limit) then
+                    []
+                else array {
+                    for $index in 1 to string-length('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+                    let $alpha := substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $index, 1)
+                    let $hits := count(filter($sorted, function($entry) { starts-with($entry?1, lower-case($alpha))}))
+                    where $hits > 0
+                    return
+                        map {
+                            "category": $alpha,
+                            "count": $hits
+                        },
+                    map {
+                        "category": "Alle",
+                        "count": count($sorted)
+                    }
+                }
+        }
+};
+
+declare function api:output-keyword($list, $letter as xs:string, $view as xs:string, $search as xs:string?) {
+    array {
+        for $keyword in $list            
+            let $letterParam := if ($letter = "Alle") then substring($keyword?3/tei:desc/text(), 1, 1) else $letter
+            let $params := "category=" || $letterParam || "&amp;view=" || $view || "&amp;search=" || $search
+            return
+                <span>
+                    <a href="{$keyword?3/tei:desc/text()}?{$params}&amp;key={$keyword?3/@xml:id}">{$keyword?2}</a>
+                </span>
+    }
+};
+
 declare function api:sort($people as array(*)*, $dir as xs:string) {
     let $sorted :=
         sort($people, "?lang=de-DE", function($entry) {
@@ -518,6 +603,7 @@ declare function api:facets-search($request as map(*)) {
     let $value := $request?parameters?value
     let $query := $request?parameters?query
     let $type := $request?parameters?type
+    let $lang := tokenize($request?parameters?language, '-')[1]
 
     let $_ := util:log("info", ("api:facets-search type: '", $type, "' - query: '" , $query, "' - value: '" , $value, "'"))    
     let $hits := session:get-attribute($config:session-prefix || ".hits")
@@ -543,8 +629,13 @@ declare function api:facets-search($request as map(*)) {
                     case "lemma"
                     case "keyword" return
                         $config:register-taxonomy/id($key)/tei:desc[@xml:lang='deu']/text()
-                    case "filiation"
-                    case "material" return $key
+                    case "filiation" return $key
+                    case "material" return
+                        let $i18n-path := $config:app-root || "/resources/i18n/app/" ||  $lang || ".json"
+                        let $json := json-doc($i18n-path)
+                        let $_ := util:log("info", "api:facets-search: material: $key : " || $key || " - $i18n-path: " || $i18n-path)
+                        return
+                            $json?($key)
                     default return 
                         let $_ := util:log("warn", "api:facets-search: default return, $type: " || $type)
                         return 

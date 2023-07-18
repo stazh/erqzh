@@ -47,6 +47,8 @@
   "origPlace": "Ausstellungsort",
   "paper": "Papier",
   "parchment": "Pergament",
+  "Papier":"Papier",  
+  "Pergament": "Pergament",
   "partners": "Projektpartner",
   "period": "Ausgewählter Zeitraum",
   "person": "Person",

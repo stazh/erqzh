@@ -394,6 +394,21 @@ function app:load-person($node as node(), $model as map(*), $key as xs:string) {
 
 declare
     %templates:wrap    
+    %templates:default("key","")
+function app:load-keyword($node as node(), $model as map(*), $key as xs:string) {
+    let $keyword := doc($config:data-root || "/taxonomy/taxonomy.xml")//tei:category[@xml:id = xmldb:decode($key)]
+    let $log := util:log("info", "app:load-keyword tei:desc: " || $keyword/tei:desc[@xml:lang="deu"]/text() || " - $key:" || $key)
+    
+    return 
+        map {
+                "title": $keyword/tei:desc[@xml:lang="deu"]/text(),
+                "key":$key
+        }
+};
+
+
+declare
+    %templates:wrap    
     %templates:default("name","")
     %templates:default("key","")
 function app:load-organization($node as node(), $model as map(*), $name as xs:string, $key as xs:string) {
@@ -488,6 +503,11 @@ declare %templates:default("name", "")  function app:person-name($node as node()
     return
         $name || " " || $date
 };
+
+declare %templates:default("name", "")  function app:keyword-name($node as node(), $model as map(*), $name as xs:string) {
+    $model?title
+};
+
 declare %templates:default("name", "")  function app:organization-name($node as node(), $model as map(*), $name as xs:string) {
     let $name := if($model?name) then ($model?name) else xmldb:decode($name)
     let $date := 

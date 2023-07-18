@@ -113,7 +113,44 @@
                     </a>
                 </paper-item>
             </paper-listbox>
-        </paper-menu-button>        
+        </paper-menu-button>
+        <paper-menu-button>
+            <a href="#" slot="dropdown-trigger" data-i18n="[title]menu.keywords" title="foo">
+                <pb-i18n key="menu.keywords">Keywords</pb-i18n>
+            </a>
+            <paper-listbox slot="dropdown-content">
+                <paper-item>
+                    <a href="${app}/keyword/all/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.all-keywords">all</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/keyword/ZH_NF_I_1_3/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.ZH_NF_I_1_3">ZH_NF_I_1_3</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/keyword/ZH_NF_I_1_11/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.ZH_NF_I_1_11">ZH_NF_I_1_11</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/keyword/ZH_NF_I_2_1/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.ZH_NF_I_2_1">ZH_NF_I_2_1</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/keyword/ZH_NF_II_3/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.ZH_NF_II_3">ZH_NF_II_3</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/organization/ZH_NF_II_11/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.ZH_NF_II_11">ZH_NF_II_11</pb-i18n>
+                    </a>
+                </paper-item>
+            </paper-listbox>
+        </paper-menu-button>
         <a href="${app}/abbr.html" data-template="pages:parse-params" class="tp-menu-item" title="Abbreviations">
             <div>
                 <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
