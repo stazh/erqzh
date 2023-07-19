@@ -383,14 +383,14 @@ declare function api:keywords($request as map(*)) {
     let $sortDir := $request?parameters?dir
     let $limit := $request?parameters?limit
     let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
-    let $log := util:log("info","api:keywords $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit:" || $editionseinheit)
+    (: let $log := util:log("info","api:keywords $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit?:" || $editionseinheit = $config:data-collections) :)
     let $keywords := if( $editionseinheit = $config:data-collections )
                     then (
                         if ($search and $search != '') 
                         then (
                             doc($config:data-root || "/taxonomy/taxonomy-" || $editionseinheit || ".xml")//tei:category[ft:query(., 'keyword-name:(' || $search || '*)')]
                         ) else (
-                            doc($config:data-root || "/taxonomy/taxonomy--" || $editionseinheit || ".xml")//tei:category
+                            doc($config:data-root || "/taxonomy/taxonomy-" || $editionseinheit || ".xml")//tei:category
                         )
                     )
                     else (
