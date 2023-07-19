@@ -4,7 +4,7 @@
   "description": "Rechtsquellen des Kantons Zürich",
   "dependencies": {
     "@jinntec/fore": "jinntec/fore#ee-bl",
-    "@teipublisher/pb-components": "eeditiones/tei-publisher-components#url-patterns"
+    "@teipublisher/pb-components": "2.10.1"
   },
   "devDependencies": {
     "cypress": "^12.16.0"
