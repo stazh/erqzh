@@ -213,10 +213,10 @@ declare function api:people($request as map(*)) {
                             else (
                                 if ($search and $search != '') 
                                 then (
-                                    doc($config:data-root || "/person/person.xml")//tei:person[ft:query(., 'name:(' || $search || '*)')]    
+                                    $config:register-person[ft:query(., 'name:(' || $search || '*)')]    
                                 ) 
                                 else (
-                                    doc($config:data-root || "/person/person.xml")//tei:person
+                                    $config:register-person
                                 )
                             )
     let $sorted_peoples := for $people in $peoples 

@@ -381,7 +381,7 @@ declare
     %templates:wrap    
     %templates:default("key","")
 function app:load-person($node as node(), $model as map(*), $key as xs:string) {
-    let $person := doc($config:data-root || "/person/person.xml")//tei:person[@xml:id = xmldb:decode($key)]
+    let $person := $config:register-person/id(xmldb:decode($key))
     let $log := util:log("info", "app:load-person $name: " || $person/tei:persName[@type="full"]/text() || " - $key:" || $key)
     
     return 
@@ -545,75 +545,42 @@ declare %templates:default("name", "")  function app:place-link($node as node(),
 declare %templates:wrap 
         %templates:default("type", "place") 
 function app:mentions($node as node(), $model as map(*), $type as xs:string) {
-    let $key := $model?key
-    let $log := util:log("info", "app:mentions: $key: " || $key )
+    let $key := $model?key    
+    let $log := util:log("info", "app:mentions: $key: " || $key || " -  type: " || $type || " - title: " || $model?title)
     return
-        if($type = "person") 
-        then ( 
-            let $person := doc($config:data-root || "/person/person.xml")//tei:person[@xml:id = $key]
-            return
-                <div>
-                    <h3><pb-i18n key="mentions-of"/>{" " ||  $person/tei:persName[@type="full"]/text()}</h3>
-                    <div class="mentions">{
-                            for $col in $config:data-collections
-                                let $matches := collection($config:data-root || "/" || $col)//tei:TEI[(.//tei:persName/@ref | @scribe) = $key]
-                                let $log := util:log("info", "app:mentions: col: " || $col || " - $matches: " || count($matches))
-                                return
-                                    if(count($matches) > 0)
-                                    then (
-                                        <h4><pb-i18n key="menu.{$col}"/></h4>,
-                                        <ul>{app:ref-list("place", $matches, $col, $key)}</ul>
-                                    ) else()
-                    }</div>
-                </div>
-        ) else if ($type = "place")
-        then (
-            let $places := doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
-            return
-                <div>
-                    <h3><pb-i18n key="mentions-of"/>{" " ||  $places[@xml:id = $key]/@n/string()}</h3>
-                    <div class="mentions">{
-                            for $col in $config:data-collections
-                                let $matches := collection($config:data-root || "/" || $col)//tei:TEI[(.//tei:placeName/@ref|.//tei:origPlace/@ref) = $key]
-                                let $log := util:log("info", "app:mentions: col: " || $col || " - $matches: " || count($matches))
-                                return
-                                    if(count($matches) > 0)
-                                    then (
-                                        <h4><pb-i18n key="menu.{$col}"/></h4>,
-                                        <ul>{app:ref-list("place", $matches, $col, $key)}</ul>
-                                    ) else()
-                    }</div>
-                </div>
-        ) else if ($type = "organization")
-        then (
-            let $orgs := doc($config:data-root || "/organization/organization.xml")//tei:org
-            return
-
-            <div>
-                <h3><pb-i18n key="mentions-of"/>{" " ||  $orgs[@xml:id = $key]/tei:orgName/text()}</h3>
-                <div class="mentions">{
-                        for $col in $config:data-collections
-                            let $matches := collection($config:data-root || "/" || $col)//tei:TEI[.//tei:orgName/@ref = $key]
-                            let $log := util:log("info", "app:mentions: col: " || $col || " - $matches: " || count($matches))
-                            return
-                                if(count($matches) > 0)
-                                then (
-                                    <h4><pb-i18n key="menu.{$col}"/></h4>,
-                                    <ul>{app:ref-list("place", $matches, $col, $key)}</ul>
-                                ) else()
-                }</div>
-            </div>
-        )
-        else ()
+        <div>
+            <h3><pb-i18n key="mentions-of"/>{' ' || $model?title}</h3>
+            <div class="mentions">{
+                    for $col in $config:data-collections
+                        let $tei-date := collection($config:data-root || "/" || $col)//tei:TEI
+                        let $matches := switch($type) 
+                                        case "person" return 
+                                            $tei-date[(.//tei:persName/@ref | @scribe) = $key]
+                                        case "place" return 
+                                            $tei-date[(.//tei:placeName/@ref|.//tei:origPlace/@ref) = $key]
+                                        case "organization" return 
+                                            $tei-date[.//tei:orgName/@ref = $key]
+                                        case "keyword" return 
+                                            $tei-date[.//tei:term/@ref = $key]
+                                        default return ()
+                        (: let $log := util:log("info", "app:mentions: col: " || $col || " - $matches: " || count($matches)) :)
+                        return
+                            if(count($matches) > 0)
+                            then (
+                                <h4><pb-i18n key="menu.{$col}"/></h4>,
+                                <ul>{app:ref-list($matches, $col, $key)}</ul>
+                            ) else()
+            }</div>
+        </div>
 };
-declare function app:ref-list($type, $list, $col, $key) {
+declare function app:ref-list($list, $col, $key) {
     for $doc in $list
         let $doc-name := util:document-name($doc)
-        let $log := util:log("info", "app:ref-list: name: " || $doc-name)
+        (: let $log := util:log("info", "app:ref-list: name: " || $doc-name) :)
         let $idno := $doc//tei:seriesStmt//tei:idno/text()
-        let $log := util:log("info", "app:ref-list: $idno: " || $idno)
+        (: let $log := util:log("info", "app:ref-list: $idno: " || $idno) :)
         let $title := $doc//tei:msDesc/tei:head/text()
-        let $log := util:log("info", "app:ref-list: $title: " || $title)
+        (: let $log := util:log("info", "app:ref-list: $title: " || $title) :)
         return
             if($title)
             then (
