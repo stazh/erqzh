@@ -454,10 +454,10 @@ declare variable $config:data-exclude := (
     collection($config:data-root || "/SG/SG_III_4/latest")/tei:TEI
 );
 
-declare variable $config:register-organization := doc($config:data-root || "/organization/organization.xml")//tei:org;
-declare variable $config:register-person := doc($config:data-root || "/person/person.xml")//tei:person;
-declare variable $config:register-place := doc($config:data-root || "/place/place.xml")//tei:place;
-declare variable $config:register-taxonomy := doc($config:data-root || "/taxonomy/taxonomy.xml")//tei:category;
+declare variable $config:register-organization := doc($config:data-root || "/organization/organization.xml");
+declare variable $config:register-person := doc($config:data-root || "/person/person.xml");
+declare variable $config:register-place := doc($config:data-root || "/place/place.xml");
+declare variable $config:register-taxonomy := doc($config:data-root || "/taxonomy/taxonomy.xml");
 
 declare variable $config:default-odd :="rqzh.odd";
 

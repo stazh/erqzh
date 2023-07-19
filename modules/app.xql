@@ -382,8 +382,7 @@ declare
     %templates:default("key","")
 function app:load-person($node as node(), $model as map(*), $key as xs:string) {
     let $person := $config:register-person/id(xmldb:decode($key))
-    let $log := util:log("info", "app:load-person $name: " || $person/tei:persName[@type="full"]/text() || " - $key:" || $key)
-    
+    (: let $log := util:log("info", "app:load-person $name: " || $person/tei:persName[@type="full"]/text() || " - $key:" || $key) :)    
     return 
         map {
                 "title": $person/tei:persName[@type="full"]/text(),
@@ -397,7 +396,7 @@ declare
     %templates:default("key","")
 function app:load-keyword($node as node(), $model as map(*), $key as xs:string) {
     let $keyword := doc($config:data-root || "/taxonomy/taxonomy.xml")//tei:category[@xml:id = xmldb:decode($key)]
-    let $log := util:log("info", "app:load-keyword tei:desc: " || $keyword/tei:desc[@xml:lang="deu"]/text() || " - $key:" || $key)
+    (: let $log := util:log("info", "app:load-keyword tei:desc: " || $keyword/tei:desc[@xml:lang="deu"]/text() || " - $key:" || $key) :)
     
     return 
         map {

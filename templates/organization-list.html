@@ -134,7 +134,7 @@
                 <section>
                     <div class="pb-container">
                         <h1>
-                                <pb-i18n key="menu.people"/>:
+                                <pb-i18n key="menu.organizations"/>:
                             <span data-editionseinheit="${editionseinheit}" data-template="app:get-edition-unit"/>
                         </h1>
                     </div>
@@ -148,9 +148,9 @@
                                 <paper-input id="query" name="search" label="Suche" data-template="templates:form-control">
                                     <paper-icon-button icon="search" slot="suffix"/>
                                 </paper-input>
-                            </pb-custom-form>
+                            </pb-custom-form>                            
                             
-                            <pb-split-list url="api/people/${editionseinheit}" subforms="#options" selected="A" emit="transcription" subscribe="transcription" data-template="pages:parse-params"/>
+                            <pb-split-list url="api/register/organization/${editionseinheit}" subforms="#options" selected="A" emit="transcription" subscribe="transcription" data-template="pages:parse-params"/>
                         </div>
                     </div>
                 </section>

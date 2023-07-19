@@ -38,7 +38,7 @@
 						"in": "query",
 						"schema": {
 							"type": "string",
-                            "default": "peoples"
+                            "default": "people-list"
 						}
 					},
 					{
@@ -131,7 +131,7 @@
 						"in":"query",
 						"schema":{
 							"type": "string",
-							"default":"pages/people"
+							"default":"people-detail"
 						}
 					}
 
@@ -169,88 +169,11 @@
 					}
 				}
 			}
-        },        
-        "/api/people/{editionseinheit}": {
-            "get": {
-                "summary": "List people",
-                "description": "Retrieve list of people in format required by pb-split-list",
-                "operationId": "custom:people",
-                "parameters": [
-                    {
-                        "name": "sort",
-                        "in": "query",
-                        "schema":{
-                            "type": "string",
-                            "default": "id"
-                        }
-                    },
-					{
-						"name": "category",
-						"in": "query",
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"name": "view",
-						"in": "query",
-						"schema":{
-							"type": "string",
-							"default": "correspondents"
-						}
-					},
-                    {
-                        "name": "dir",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "default": "asc"
-                        }
-                    },
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "default": 50
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "schema":{
-                            "type": "string"
-                        }
-                    },
-                    {
-						"name": "editionseinheit",
-						"in": "path",
-						"schema":{
-							"type": "string",
-							"default": "all"
-						}
-					}
-
-                ],                
-                
-                "responses": {
-                    "200": {
-                        "description": "Categories and people to display",
-                        "content": {
-                            "application/json": {
-                                "schema":{
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
+        },                
 		"/organization/{editionseinheit}/": {
             "get": {
-				"summary": "Landing page for organizations",
-				"description": "Retrieve an HTML page expanded through eXist templating. This is used to load the top-level HTML pages, e.g. `index.html`.",
+				"summary": "Retrieve HTML template: organisation-list.html",
+				"description": "Retrieve an HTML page expanded through eXist templating.",
 				"tags": ["view"],
 				"operationId": "vapi:html",
 				"x-error-handler": "vapi:handle-error",
@@ -260,7 +183,7 @@
 						"in": "query",
 						"schema": {
 							"type": "string",
-                            "default": "organizations"
+                            "default": "organization-list"
 						}
 					},
 					{
@@ -313,87 +236,10 @@
 					}
 				}
 			}
-        },
-		"/api/organization/{editionseinheit}": {
-            "get": {
-                "summary": "List organizations",
-                "description": "Retrieve list of people in format required by pb-split-list",
-                "operationId": "custom:organizations",
-                "parameters": [
-                    {
-                        "name": "sort",
-                        "in": "query",
-                        "schema":{
-                            "type": "string",
-                            "default": "id"
-                        }
-                    },
-					{
-						"name": "category",
-						"in": "query",
-						"schema": {
-							"type": "string"
-						}
-					},
-                    {
-                        "name": "dir",
-                        "in": "query",
-                        "schema": {
-                            "type": "string",
-                            "default": "asc"
-                        }
-                    },
-					{
-						"name": "view",
-						"in": "query",
-						"schema":{
-							"type": "string",
-							"default": "correspondents"
-						}
-					},
-                    {
-                        "name": "limit",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "default": 50
-                        }
-                    },
-                    {
-                        "name": "search",
-                        "in": "query",
-                        "schema":{
-                            "type": "string"
-                        }
-                    },
-                    {
-						"name": "editionseinheit",
-						"in": "path",
-						"schema":{
-							"type": "string",
-							"default": "all"
-						}
-					}
-
-                ],                
-                
-                "responses": {
-                    "200": {
-                        "description": "Categories and people to display",
-                        "content": {
-                            "application/json": {
-                                "schema":{
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },        
+        },		   
         "/organization/{editionseinheit}/{name}": {
             "get": {
-				"summary": "Retrieve the HTML template used for displaying person metadata",
+				"summary": "Retrieve HTML template: organization-detail.html",
 				"description": "Get the HTML template associated with the given document. This is called whenever the users tries to view a document. The actual content of the document will then be loaded by the template.",
 				"tags": ["view"],
 				"operationId": "vapi:html",	
@@ -422,7 +268,7 @@
 						"in":"query",
 						"schema":{
 							"type": "string",
-							"default":"pages/organization"
+							"default":"organization-detail"
 						}
 					}
 
@@ -527,83 +373,7 @@
 					}
 				}
 			}
-		},
-		"/api/keyword/{editionseinheit}": {
-			"get": {
-				"summary": "List organizations",
-				"description": "Retrieve list of keywords in format required by pb-split-list",
-				"operationId": "custom:keywords",
-				"parameters": [
-					{
-						"name": "sort",
-						"in": "query",
-						"schema":{
-							"type": "string",
-							"default": "id"
-						}
-					},
-					{
-						"name": "category",
-						"in": "query",
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"name": "view",
-						"in": "query",
-						"schema":{
-							"type": "string",
-							"default": ""
-						}
-					},
-					{
-						"name": "dir",
-						"in": "query",
-						"schema": {
-							"type": "string",
-							"default": "asc"
-						}
-					},
-					{
-						"name": "limit",
-						"in": "query",
-						"schema": {
-							"type": "integer",
-							"default": 50
-						}
-					},
-					{
-						"name": "search",
-						"in": "query",
-						"schema":{
-							"type": "string"
-						}
-					},
-					{
-						"name": "editionseinheit",
-						"in": "path",
-						"schema":{
-							"type": "string",
-							"default": "all"
-						}
-					}
-
-				],				
-				"responses": {
-					"200": {
-						"description": "Categories and keyword to display",
-						"content": {
-							"application/json": {
-								"schema":{
-									"type": "object"
-								}
-							}
-						}
-					}
-				}
-			}
-		},        
+		},		
 		"/keyword/{editionseinheit}/{name}": {
 			"get": {
 				"summary": "Retrieve the HTML template used for displaying keyword metadata",
@@ -674,8 +444,6 @@
 				}
 			}
 		},
-
-
 		"/places/{editionseinheit}/": {
             "get": {
 				"summary": "Landing page for places",
@@ -689,7 +457,7 @@
 						"in": "query",
 						"schema": {
 							"type": "string",
-                            "default": "places"
+                            "default": "place-list"
 						}
 					},
 					{
@@ -751,34 +519,6 @@
 				}
 			}
         },
-        "/api/bibliography":{
-            "get": {
-                "summary": "Literaturverzeichnis",
-                "operationId": "vapi:bibliography",
-                "parameters": [
-                    {
-                        "name": "language",
-                        "in": "query",
-                        "schema":{
-                            "type": "string",
-                            "default": "de"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200":{
-                        "description": "Literaturverzeichnis",
-                        "content": {
-                            "text/html":{
-                                "schema":{
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
 		"/places/{editionseinheit}/{name}": {
             "get": {
 				"summary": "Retrieve the HTML template used for displaying places metadata",
@@ -810,7 +550,7 @@
 						"in":"query",
 						"schema":{
 							"type": "string",
-							"default":"pages/place"
+							"default":"place-detail"
 						}
 					}
  				],
@@ -850,8 +590,8 @@
         },	        
 		"/api/places-all/{editionseinheit}": {
             "get": {
-                "summary": "List all places",
-                "description": "Retrieve list of all places",
+                "summary": "List all places for pb-leaflet-map",
+                "description": "Retrieve list of all places like required by pb-leaflet-map",
                 "operationId": "custom:places-all",
                 "parameters": [
 					{
@@ -876,59 +616,35 @@
                     }
 				}
 			}			
-		},	        
-		"/api/places/{editionseinheit}": {
+		},		
+        "/api/bibliography":{
             "get": {
-                "summary": "List places",
-                "description": "Retrieve list of places in format required by pb-split-list",
-                "operationId": "custom:places",
+                "summary": "Literaturverzeichnis",
+                "operationId": "vapi:bibliography",
                 "parameters": [
-					{
-						"name": "category",
-						"in": "query",
-						"schema": {
-							"type": "string"
-						}
-					},
                     {
-                        "name": "limit",
-                        "in": "query",
-                        "schema": {
-                            "type": "integer",
-                            "default": 50
-                        }
-                    },
-                    {
-                        "name": "search",
+                        "name": "language",
                         "in": "query",
                         "schema":{
-                            "type": "string"
+                            "type": "string",
+                            "default": "de"
                         }
-                    },
-					{
-						"name": "editionseinheit",
-						"in": "path",
-						"schema":{
-							"type": "string",
-							"default": "all"
-						}
-					}
-
+                    }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Categories and places to display",
+                    "200":{
+                        "description": "Literaturverzeichnis",
                         "content": {
-                            "application/json": {
+                            "text/html":{
                                 "schema":{
-                                    "type": "object"
+                                    "type": "string"
                                 }
                             }
                         }
                     }
                 }
             }
-        },        
+        },		        
         "/api/timeline": {
 			"get": {
 				"summary": "Retrieve timeline data",
@@ -947,6 +663,89 @@
 				}
 			}
 		},
+		"/api/register/{type}/{editionseinheit}": {
+            "get": {
+                "summary": "returns different kind of register data, called by pb-split-list ",
+                "description": "Retrieve list of people in format required by pb-split-list",
+                "operationId": "custom:split-list",
+                "parameters": [
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "schema":{
+                            "type": "string",
+                            "default": "id"
+                        }
+                    },
+					{
+						"name": "category",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "view",
+						"in": "query",
+						"schema":{
+							"type": "string",
+							"default": "correspondents"
+						}
+					},
+                    {
+                        "name": "dir",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "asc"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "default": 50
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema":{
+                            "type": "string"
+                        }
+                    },
+                    {
+						"name": "editionseinheit",
+						"in": "path",
+						"schema":{
+							"type": "string",
+							"default": "all"
+						}
+					},					
+                    {
+						"name": "type",
+						"in": "path",
+						"schema":{
+							"type": "string"							
+						}
+					}
+                ],
+                
+                "responses": {
+                    "200": {
+                        "description": "Categories and people to display",
+                        "content": {
+                            "application/json": {
+                                "schema":{
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },		
         "/api/register/{id}": {
             "get": {
                 "summary": "Registerdaten abrufen",

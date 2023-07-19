@@ -134,7 +134,7 @@
                 <section>
                     <div class="pb-container">
                         <h1>
-                                <pb-i18n key="menu.organizations"/>:
+                                <pb-i18n key="menu.people"/>:
                             <span data-editionseinheit="${editionseinheit}" data-template="app:get-edition-unit"/>
                         </h1>
                     </div>
@@ -150,7 +150,7 @@
                                 </paper-input>
                             </pb-custom-form>
                             
-                            <pb-split-list url="api/organization/${editionseinheit}" subforms="#options" selected="A" emit="transcription" subscribe="transcription" data-template="pages:parse-params"/>
+                            <pb-split-list url="api/register/people/${editionseinheit}" subforms="#options" selected="A" emit="transcription" subscribe="transcription" data-template="pages:parse-params"/>
                         </div>
                     </div>
                 </section>
