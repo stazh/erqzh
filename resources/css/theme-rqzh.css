@@ -33,6 +33,12 @@
     border: 2px solid var(--scrollbarBG);
 }
 
+.pb-container {
+    padding: 0 20px;
+    position: relative;
+    margin: 0 auto;
+}
+
 .logo {
     background-image: url("../images/logo.svg");
 }

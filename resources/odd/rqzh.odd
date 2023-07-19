@@ -625,8 +625,10 @@
                 <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
                 <param name="facs" value="normalize-space(@facs)"/>
                 <param name="name" value="'pb-facs-link'"/>
+                <param name="emit" value="'transcription'"/>
+                <param name="order" value="@n"/>
                 <outputRendition xml:space="preserve">
-                display: none;
+                visibility: hidden;
                 </outputRendition>
             </model>
             <model predicate="not(@n)" behaviour="pass-through" cssClass="pb-empty">
@@ -634,9 +636,10 @@
                 <param name="content" value="'|'"/>
                 <param name="alternate" value="ec:label('pb')"/>
                 <param name="facs" value="normalize-space(@facs)"/>
+                <param name="order" value="@n"/>
                 <pb:template xmlns="" xml:space="preserve">
                                 <a href="#">
-                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click"  order="[[order]]">
                                     <pb-popover>
                                         [[content]]
                                         <template slot="alternate">[[alternate]]</template>
@@ -652,9 +655,10 @@
                 <param name="content" value="'[fol. ' || @n || ']'"/>
                 <param name="alternate" value="ec:label('pb')"/>
                 <param name="facs" value="normalize-space(@facs)"/>
+                <param name="order" value="@n"/>
                 <pb:template xmlns="" xml:space="preserve">
                                 <a href="#">
-                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click"  order="[[order]]">
                                     <pb-popover>
                                         [[content]]
                                         <template slot="alternate">[[alternate]]</template>
@@ -670,9 +674,10 @@
                 <param name="content" value="('[', ec:label('page-abbr', false()), ' ', @n, '] ')"/>
                 <param name="facs" value="normalize-space(@facs)"/>
                 <param name="alternate" value="ec:label('pb')"/>
+                <param name="order" value="@n"/>
                 <pb:template xmlns="" xml:space="preserve">
                                 <a href="#">
-                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click" order="[[order]]">
                                     <pb-popover>
                                         [[content]]
                                         <template slot="alternate">[[alternate]]</template>
