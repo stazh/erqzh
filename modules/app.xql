@@ -401,6 +401,7 @@ function app:load-keyword($node as node(), $model as map(*), $key as xs:string) 
     return 
         map {
                 "title": $keyword/tei:desc[@xml:lang="deu"]/text(),
+                "gloss": $keyword/tei:gloss/text(),
                 "key":$key
         }
 };
@@ -470,8 +471,7 @@ function app:get-edition-unit($node as node(), $model as map(*), $editionseinhei
             <pb-i18n key="menu.ZH_NF_I_1_3"/>
         case "ZH_NF_I_2_1" return 
             <pb-i18n key="menu.ZH_NF_I_2_1"/>
-        default return 
-            <pb-i18n key="menu.all"/>
+        default return ()
 };
 
 declare 
@@ -503,9 +503,15 @@ declare %templates:default("name", "")  function app:person-name($node as node()
         $name || " " || $date
 };
 
-declare %templates:default("name", "")  function app:keyword-name($node as node(), $model as map(*), $name as xs:string) {
+declare %templates:wrap %templates:default("name", "")  
+function app:keyword-name($node as node(), $model as map(*), $name as xs:string) {
     $model?title
 };
+declare %templates:wrap %templates:default("name", "")  
+function app:keyword-gloss($node as node(), $model as map(*), $name as xs:string) {
+    $model?gloss
+};
+
 
 declare %templates:default("name", "")  function app:organization-name($node as node(), $model as map(*), $name as xs:string) {
     let $name := if($model?name) then ($model?name) else xmldb:decode($name)

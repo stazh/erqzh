@@ -283,4 +283,11 @@ paper-input {
 paper-input label {
     height: 0;
     display: none;
+} 
+
+.inline-facsimile {
+    max-height:50vh;
+    width:auto;
+    height:50vh;
+    --pb-facsimile-height: 50vh;
 }
