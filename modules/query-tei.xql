@@ -75,24 +75,19 @@ declare function teis:query-metadata($path as xs:string?, $field as xs:string?, 
     }) :)
     let $queryExpr := 
         if ($field = "file" or empty($query) or $query = '') then 
-            "corpus:*" 
+            "corpus:rqzh AND NOT type:variant" 
         else
-            ($field, "text")[1] || ":" || $query
+            ($field, "text")[1] || ":(" || $query || ") AND NOT type:variant"
     let $options := query:options($sort, ($field, "text")[1])
     (: let $_ := util:log("info", map {"name":"teis:query-metadata", "$queryExpr":$queryExpr, "$options":$options}) :)
     let $result :=
         $config:data-default ! (
             collection(. || "/" || $path)//tei:text[ft:query(., $queryExpr , $options)]
         ) 
-
-    let $result-filtered := for $item in $result 
-                                where ft:field($item, "type") = ("document", "introduction")
-                                return
-                                    $item
    (: let $_ := util:log("info", map {"name":"teis:query-metadata", "result-count:":count($result)}) :)
 
     return
-        query:sort($result-filtered, $sort)
+        query:sort($result, $sort)
 };
 
 declare function teis:autocomplete($doc as xs:string?, $fields as xs:string+, $q as xs:string) {

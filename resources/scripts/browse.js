@@ -55,12 +55,16 @@ document.addEventListener('DOMContentLoaded', function () {
                             }
                         });
                     }
-                    facets.submit();
+                    pbEvents.emit('pb-search-resubmit', 'search');
                 });
             });
         });
+
+        pbEvents.subscribe('pb-combo-box-change', null, function() {
+            pbEvents.emit('pb-search-resubmit', 'search');
+        });
     }
-    const options = document.querySelector('.options');
+
     const timeRangeLabel = document.getElementById('time-range');
     const timelineChanged = (ev) => {
         let categories = ev.detail.categories;
@@ -70,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
             expandDates(categories, 10);
         }
         document.querySelectorAll('[name=dates]').forEach(input => { input.value = categories.join(';') });
-        options.submit();
+        pbEvents.emit('pb-search-resubmit', 'search');
 
         timeRangeLabel.innerHTML = ev.detail.label === '' ? 'alles' : ev.detail.label;
     };
@@ -79,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
     pbEvents.subscribe('pb-timeline-reset-selection', 'timeline', () => {
         document.querySelectorAll('[name=dates]').forEach(input => { input.value = '' });
         timeRangeLabel.innerHTML = 'alles';
-        options.submit();
+        pbEvents.emit('pb-search-resubmit', 'search');
     });
     pbEvents.subscribe('pb-timeline-loaded', 'timeline', (ev) => {
         console.log("pb-timeline-loaded ", ev.detail.label);

@@ -280,16 +280,16 @@
                             </main>
                             <section>
                                 <pb-search subscribe="search" data-template="pages:parse-params"
-                                        value="${query}" submit-on-load="" subforms="#options"></pb-search>
+                                        value="${query}" submit-on-load="" subforms="#options,#facets"></pb-search>
 
-                                <pb-custom-form id="options" class="options" emit="search">
-                                            <label class="flexend"><pb-i18n key="period"/>: <span id="time-range"></span></label>
-                                            <input type="hidden" name="dates" value=""
-                                                data-template="templates:form-control" />
-                                            <input type="hidden" name="collection" value="" data-template="templates:form-control" />
+                                <pb-custom-form id="options" class="options">
+                                    <label class="flexend"><pb-i18n key="period"/>: <span id="time-range"></span></label>
+                                    <input type="hidden" name="dates" value=""
+                                        data-template="templates:form-control" />
+                                    <input type="hidden" name="collection" value="" data-template="templates:form-control" />
                                 </pb-custom-form>
-                                <pb-custom-form id="facets" class="facets options" url="api/search/facets" event="pb-results-received"
-                                                    subscribe="search" emit="search" />                                
+                                <pb-custom-form id="facets" class="facets options" url="api/search/facets" event="pb-results-received" 
+                                    subscribe="search"/>
                             </section>
 
 

@@ -127,24 +127,18 @@ declare function app:select-kanton() {
 };
 
 declare function app:list-volumes($node as node(), $model as map(*), $root as xs:string?) {
-    let $kanton := replace($model?root, "^/?(.*)$", "$1")
-    (: let $_ := util:log("info", "app:list-volumes $kanton" || $kanton)     :)
-    for $volume in collection($config:data-root)/tei:TEI[@type='volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $kanton)]
-    let $order := $volume/@n
-    let $documents := collection(util:collection-name($volume))//tei:TEI/tei:text[ft:query(., 'type:document')]
-    (: let $_ := util:log("info", "$count docs: " || count($documents)) :)
-    let $count := count($model?all intersect $documents)
-    (: let $_ := util:log("info", "$count: " || $count) :)
+    for $hits in $model?all
+    group by $volume := ft:field($hits, "volume")
+    let $volumeInfo := collection($config:data-root)/tei:TEI[@type='volinfo'][.//tei:seriesStmt/tei:idno[@type="machine"] = "SSRQ_" || $volume]
+    let $order := $volumeInfo/@n
+    let $count := count($hits)
     order by $order
     return
         if ($count > 0) then
             <div class="volume">
-                <a href="#" data-collection="{substring-after(util:collection-name($volume), $config:data-root || "/")}">{ 
-                    $pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "count": $count, "view": "volumes" }, $config:odd)
+                <a href="#" data-collection="{$volume}">{ 
+                    $pm-config:web-transform($volumeInfo/tei:teiHeader/tei:fileDesc, map { "root": $volume, "count": $count, "view": "volumes" }, $config:odd)
                 }</a>
-                {
-                    session:set-attribute("ssrq.kanton", $kanton)
-                }
             </div>
         else
             ()

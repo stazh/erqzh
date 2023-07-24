@@ -65,7 +65,7 @@ function capi:list-works($root as xs:string?, $cached, $params as map(*)) {
         if (exists($cached)) then
             $cached
         else
-            query:query-metadata($root, ($filter, "div")[1], $query, $sort)
+            query:query-metadata($root, ($filter, "text")[1], $query, $sort)
     (: let $_ := util:log("info", "capi-list-works filtered: " || count($filtered)) :)
     return (
         session:set-attribute($config:session-prefix || ".timestamp", current-dateTime()),
