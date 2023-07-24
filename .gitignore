@@ -12,3 +12,13 @@ cypress/videos/
 cypress/screenshots/
 node_modules
 transform
+resources/images/leaflet
+resources/images/openseadragon
+resources/css/leaflet
+resources/css/prismjs
+resources/css/tom-select
+resources/i18n/common
+resources/lib
+resources/scripts/*.js
+!resources/scripts/app
+!resources/scripts/browse.js
