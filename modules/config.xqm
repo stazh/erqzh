@@ -26,7 +26,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : If a version is given, the components will be loaded from a public CDN.
  : This is recommended unless you develop your own components.
  :)
-declare variable $config:webcomponents :="2.10.1";
+declare variable $config:webcomponents :="2.10.3";
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your
@@ -450,8 +450,7 @@ declare variable $config:data-default := $config:data-root;
  : documents displayed in the browsing view.
  :)
 declare variable $config:data-exclude := (
-    doc($config:data-root || "/taxonomy.xml")/tei:TEI,
-    collection($config:data-root || "/SG/SG_III_4/latest")/tei:TEI
+    doc($config:data-root || "/taxonomy.xml")/tei:TEI
 );
 
 declare variable $config:register-organization := doc($config:data-root || "/organization/organization.xml");
