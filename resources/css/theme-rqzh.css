@@ -32,7 +32,13 @@
     border-radius: 8px;
     border: 2px solid var(--scrollbarBG);
 }
-
+/* important style to fix fullscreen mode for OSD */
+#viewer.fullpage{
+    position: fixed !important;
+    z-index: 999;
+    left:0;
+    top:0;
+}
 .pb-container {
     padding: 0 20px;
     position: relative;
