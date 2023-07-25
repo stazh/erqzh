@@ -80,7 +80,7 @@ declare function query:options($sortBy as xs:string*) {
     query:options($sortBy, ())
 };
 
-declare function query:options($sortBy as xs:string*, $field as xs:string?) {
+declare function query:options($sortBy as xs:string*, $fields as xs:string*) {
     map:merge((
         $query:QUERY_OPTIONS,
         map {
@@ -100,9 +100,9 @@ declare function query:options($sortBy as xs:string*, $field as xs:string?) {
                 ))
         },
         if ($sortBy) then
-            map { "fields": ($sortBy, $config:default-fields, $field) }
+            map { "fields": ($sortBy, $config:default-fields, $fields) }
         else
-            map { "fields": ($config:default-fields, $field) }
+            map { "fields": ($config:default-fields, $fields) }
     ))
 };
 

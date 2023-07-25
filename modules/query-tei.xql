@@ -73,13 +73,14 @@ declare function teis:query-metadata($path as xs:string?, $field as xs:string?, 
             "$query":$query, 
             "$sort":$sort
     }) :)
+    let $subfields := request:get-parameter("subtype", "text")
     let $queryExpr := 
         if ($field = "file" or empty($query) or $query = '') then 
             "corpus:rqzh AND NOT type:variant" 
         else
-            ($field, "text")[1] || ":(" || $query || ") AND NOT type:variant"
-    let $options := query:options($sort, ($field, "text")[1])
-    (: let $_ := util:log("info", map {"name":"teis:query-metadata", "$queryExpr":$queryExpr, "$options":$options}) :)
+            "(" || teis:query-by-subfield($subfields, $query) || ") AND NOT type:variant"
+    let $options := query:options($sort, $subfields)
+    let $_ := util:log("info", map {"name":"teis:query-metadata", "$queryExpr":$queryExpr, "$options":$options})
     let $result :=
         $config:data-default ! (
             collection(. || "/" || $path)//tei:text[ft:query(., $queryExpr , $options)]
@@ -88,6 +89,15 @@ declare function teis:query-metadata($path as xs:string?, $field as xs:string?, 
 
     return
         query:sort($result, $sort)
+};
+
+declare function teis:query-by-subfield($fields as xs:string*, $query as xs:string?) {
+    string-join(
+        for $field in $fields
+        return
+            $field || ":(" || $query || ")",
+        " OR "
+    )
 };
 
 declare function teis:autocomplete($doc as xs:string?, $fields as xs:string+, $q as xs:string) {
