@@ -83,7 +83,7 @@
             <param name="url" value="graphic/@url/string()"/>
             <param name="head" value="head/text()"/>
             <param name="figDesc" value="figDesc/text()"/>
-            <pb:template xmlns="" xml:space="preserve"><pb-facsimile base-uri="https://apps.existsolutions.com/cantaloupe/iiif/2/erqzh!" facsimiles="[&#34;[[url]]&#34;]" default-zoom-level="0" show-navigation-control="show-navigation-control" show-home-control="show-home-control" class="inline-facsimile">      
+            <pb:template xmlns="" xml:space="preserve"><pb-facsimile base-uri="https://apps.existsolutions.com/cantaloupe/iiif/2/erqzh!" facsimiles="[&#34;[[url]]&#34;]" default-zoom-level="0" show-navigation-control="show-navigation-control" show-home-control="show-home-control" show-full-page-control="show-full-page-control" class="inline-facsimile">      
       <div style="text-align:center;">[[figDesc]]</div>
 </pb-facsimile>  </pb:template>
         </model>
@@ -647,7 +647,7 @@
                 <param name="order" value="@n"/>
                 <pb:template xmlns="" xml:space="preserve">
                                 <a href="#">
-                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click"  order="[[order]]">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click" order="[[order]]">
                                     <pb-popover>
                                         [[content]]
                                         <template slot="alternate">[[alternate]]</template>
@@ -666,7 +666,7 @@
                 <param name="order" value="@n"/>
                 <pb:template xmlns="" xml:space="preserve">
                                 <a href="#">
-                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click"  order="[[order]]">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click" order="[[order]]">
                                     <pb-popover>
                                         [[content]]
                                         <template slot="alternate">[[alternate]]</template>
