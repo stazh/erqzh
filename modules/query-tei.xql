@@ -95,7 +95,7 @@ declare function teis:query-by-subfield($fields as xs:string*, $query as xs:stri
     string-join(
         for $field in $fields
         return
-            if ($field = "edition") then "text" else $field || ":(" || $query || ")",
+            (if ($field = "edition") then "text" else $field) || ":(" || $query || ")",
         " OR "
     )
 };
