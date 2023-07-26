@@ -13,7 +13,8 @@
     "orig-date": "Date",
     "title": "Title",
     "search": "Search",
-    "documents":"Entities of edition"
+    "documents":"Entities of edition",
+    "items": "Found {{count}} matches"
   },
   "abbreviations": "Abbreviations",
   "archive": "Archive",
