@@ -184,19 +184,47 @@ declare function app:dispatch-action($node as node(), $model as map(*), $action 
 };
 
 declare function app:show-hits($node as node(), $model as map(*)) {
-    if (empty($model?query) or $model?query = '' or $model?field = 'title') then
-        ()
-    else
-        for $field in ft:highlight-field-matches($model?work, query:field-prefix($model?work) || $model?field)
-        let $matches := $field//exist:match
-        return
-            <div class="matches">
-                <div class="count"><pb-i18n key="browse.items" options='{{"count": {count($matches)}}}'></pb-i18n></div>
-                {
-                    for $match in subsequence($matches, 1, 5)
-                    let $config := <config width="60" table="no"/>
+    (: let $_ := util:log("info", map {"name":"app:show-hits", "model?field":$model?field, "model?query":$model?query}) :)
+    let $subtypes := request:get-parameter("subtype", ())
+    let $query := request:get-parameter("query", ())
+    let $start := request:get-parameter("start", ())
+    let $field-prefix := query:field-prefix($model?work)
+    (: let $_ := util:log("info", map {
+        "name": "app:show-hits request params",
+        "subtype":$subtypes,
+        "query":$query,
+        "start":$start,
+        "field-prefix":$field-prefix
+    }) :)
+        
+    return
+        if (empty($model?query) or $model?query = '' or $model?field = 'title') then ()
+        else (
+            for $subtype in $subtypes
+                let $field-name := if($subtype = "edition") then ('text') else ($subtype)                                
+                for $field-matches in ft:highlight-field-matches($model?work,$field-name)
+                    let $matches := $field-matches//exist:match
                     return
-                        kwic:get-summary($field, $match, $config)
-                }
-            </div>
+                        app:display-hits($matches, $field-matches, $field-name)
+        )
 };
+
+declare function app:display-hits($matches, $field, $type) {
+if(count($matches) = 0) then () 
+else ( 
+    <div class="matches">
+        <div>
+            <span class="search-result-tag field-{$type}"> <pb-i18n key="search-tags.{$type}">{$type}</pb-i18n></span>
+            <span class="count">
+                <pb-i18n key="browse.items" options='{{"count": {count($matches)}}}'></pb-i18n>
+            </span>
+        </div>
+        {
+            for $match in subsequence($matches, 1, 1)
+                let $config := <config width="60" table="no" />
+                (: let $config := <config width="60" table="no" link="{$docId}?{if ($docLink) then 'root=' || $docLink || '&amp;' else ()}action=search&amp;view={$config?view}&amp;odd={$config?odd}#{$matchId}"/> :)
+                return
+                    kwic:get-summary($field, $match, $config)
+        }
+    </div>
+)};

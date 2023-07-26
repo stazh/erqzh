@@ -63,6 +63,15 @@
   "search-results": "Search Results",
   "searchText": "Search Secondary Text",
   "search-query-attr": "Search For What?",
+  "search-tags": {
+    "comment":"Comment",
+    "idno":"idno",
+    "notes":"Notes",
+    "regest":"Regest",
+    "seal":"Seal",
+    "text":"Edition Text",
+    "title":"Title"    
+  },
   "signatur": "Shelfmark",
   "sorting": "Sort order",
   "term": "Term",
