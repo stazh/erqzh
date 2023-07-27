@@ -39,6 +39,31 @@ declare function api:lookup($name as xs:string, $arity as xs:integer) {
     }
 };
 
+declare function api:about($request as map(*)) {
+    let $_ := util:log("info", "api:about")
+    let $doc := $config:data-root  || "/about/about-the-edition-de.xml"
+    let $_ := util:log("info", "api:about doc: " || $doc)
+    let $xml := pages:load-xml($config:default-view, (), $doc)
+    let $_ := util:log("info", "api:about xml: ")
+    let $_ := util:log("info", $xml?data)
+    
+    let $template := doc($config:app-root || "/templates/pages/view.html")
+    let $_ := util:log("info", "api:about template: ")
+    let $_ := util:log("info", $template)
+    let $model := map {
+        "data": $xml?data,
+        "odd": $config:default-odd,
+        "view": $config:default-view,
+        "template": $config:default-template
+
+    }
+    return
+        templates:apply($template, api:lookup#2, $model, map {
+            $templates:CONFIG_APP_ROOT : $config:app-root,
+            $templates:CONFIG_STOP_ON_ERROR : true()
+        })
+};
+
 declare function api:registerdaten($request as map(*)) {
     let $doc := xmldb:decode-uri($request?parameters?id)
     let $view := head(($request?parameters?view, $config:default-view))
