@@ -198,19 +198,6 @@ declare variable $config:facets := [
         }
     },
     map {
-        "dimension": "language",
-        "heading": "language",
-        "max": 5,
-        "hierarchical": false(),
-        "output": function($label) {
-            switch($label)
-                case "Deutsch" return "DE"
-                case "Französisch" return "FR"
-                case "Latein" return "LAT"
-                default return $label
-        }
-    },
-    map {
         "dimension": "archive",
         "heading": "archive",
         (: "max": 5,
@@ -220,18 +207,6 @@ declare variable $config:facets := [
         },
         "output": function($label) {
             $label
-        }
-    },
-    map {
-        "dimension": "seal",
-        "heading": "seal",
-        "max": 5,
-        "hierarchical": false(),
-        "output": function($label) {
-            switch($label)
-                case "true" return "yes"
-                case "false" return "no"
-                default return ""
         }
     },
     map {
@@ -252,6 +227,31 @@ declare variable $config:facets := [
         },
         "output": function($label) {
             $label
+        }
+    },
+    map {
+        "dimension": "language",
+        "heading": "language",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            switch($label)
+                case "Deutsch" return "DE"
+                case "Französisch" return "FR"
+                case "Latein" return "LAT"
+                default return $label
+        }
+    },
+    map {
+        "dimension": "seal",
+        "heading": "seal",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            switch($label)
+                case "true" return "yes"
+                case "false" return "no"
+                default return ""
         }
     },
     map {
