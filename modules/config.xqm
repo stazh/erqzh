@@ -260,11 +260,11 @@ declare variable $config:facets := [
         "output": function($label) {
             switch($label)
                 case "" return ""
-                case "ZH_NF_I_1_3" return "ZH_NF_I_1_3"
-                case "ZH_NF_I_1_11" return "ZH_NF_I_1_11"
-                case "ZH_NF_I_2_1" return "ZH_NF_I_2_1"
-                case "ZH_NF_II_3" return "ZH_NF_II_3"
-                case "ZH_NF_II_11" return "ZH_NF_II_11"
+                case "ZH_NF_I_1_3" return "Stadt und Territorialstaat Zürich II"
+                case "ZH_NF_I_1_11" return "Gedruckte Mandate Zürich"
+                case "ZH_NF_I_2_1" return "Die Rechtsquellen der Stadt Winterthur"
+                case "ZH_NF_II_3" return "Die Landvogtei Greifensee"
+                case "ZH_NF_II_11" return "Die Obervogteien um die Stadt Zürich"
                 default return $label
         }
     }
