@@ -118,5 +118,8 @@
   "no-search-results": "[EN] Ihre Suche erzielte keinen Treffer.",
   "zitation": "Citation: ",
   "lizenz": "Licence: ",
-  "by": "by "
+  "by": "by ",
+  "timeline": {
+    "clear": "Clear"
+  }
 }

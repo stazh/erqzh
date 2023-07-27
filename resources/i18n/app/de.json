@@ -110,5 +110,8 @@
   "no-search-results": "Ihre Suche erzielte keinen Treffer.",
   "zitation": "Zitation: ",
   "lizenz": "Lizenz: ",
-  "by": "von"
+  "by": "von",
+  "timeline": {
+    "clear": "Zurücksetzen"
+  }
 }
