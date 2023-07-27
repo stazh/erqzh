@@ -85,7 +85,8 @@ function capi:list-works($root as xs:string?, $cached, $params as map(*)) {
                     if (exists($cached)) then 
                         session:get-attribute($config:session-prefix || ".collection")
                     else
-                        $root
+                        $root,
+                "mode": if (count($filtered?all) <= $config:collection-browsing-threshold) then () else "browse"
             }
         ))
     )

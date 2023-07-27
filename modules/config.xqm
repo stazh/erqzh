@@ -107,6 +107,11 @@ declare variable $config:pagination-depth := 0;
  :)
 declare variable $config:pagination-fill := 5;
 
+(:~
+ : Show collection view until number of search results falls below threshold
+ :)
+declare variable $config:collection-browsing-threshold := 10;
+
 (:
  : Display configuration for facets to be shown in the sidebar. The facets themselves
  : are configured in the index configuration, collection.xconf.
