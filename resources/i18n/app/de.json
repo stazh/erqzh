@@ -13,7 +13,8 @@
     "orig-date": "Datum",
     "title": "Titel",
     "search": "Suche",
-    "documents":"Editionseinheiten"
+    "documents":"Editionseinheiten",
+    "items": "{{count}} Treffer"
   },
   "abbreviations": "Abkürzungen",
   "archive": "Archiv",
@@ -27,8 +28,6 @@
   "credits": "Erstellung der Faksimiles:",
   "doctitle":"Rechtsquellen des Kantons Zürich",
   "title-text-1":"Von der Bürgerrechtsvergabe im vormodernen Zürich bis zur Holzwirtschaft vor den Stadttoren und von der Fischerei in Zürcher Gewässern bis zum Gesundheitswesen von Winterthur: Die digitalen Zürcher Rechtsquellen bieten Zugänge zu einer Vielzahl von Themen sowie reiches Anschauungsmaterial für quellenkundliche Untersuchungen.",
-  "title-text-2":"Finanziert durch den Gemeinnützigen Fonds des Kantons Zürich sowie Beiträge der Stadt Zürich und der Stadt Winterthur haben sechs Bearbeiterinnen und Bearbeiter im Zuge eines mehrjährigen Projekts Quellen zu den Städten Zürich und Winterthur, zur Landvogtei Greifensee sowie zu den Obervogteien im Umkreis der Stadt Zürich gesichtet, rund 900 zentrale Stücke ausgewählt und wissenschaftlich kommentiert. Die selektierten Quellenstücke aus dem Zeitraum zwischen 1180 und 1798 wurden in digitaler Form nach den Grundsätzen der Text Encoding Initiative (TEI) aufbereitet und online publiziert. Dank der Auszeichnung von Personen, Orten und Organisationen in den transkribierten Quellentexten sowie der Verlinkung zu externen Datenbanken bettet sich die Online-Edition der Zürcher Rechtsquellen in eine digital vernetzte Forschungslandschaft ein.",  
-  "title-text-link": "Zu den Editionseinheiten",
   "editiontext": "Editionstext",
   "family-organisation": "Familie/Organisation",
   "filiation": "Überlieferung",
@@ -59,11 +58,20 @@
   "scribe": "Schreiber",
   "seal": "Siegel",
   "section": "Abteilung",
+  "search": "Search",
   "searchEdition": "durchsuche Editionstext",
   "search-results":"Suchergebnis",
   "searchText": "durchsuche Bearbeitungstext",
   "search-query-attr": "Wonach suchen?",
-  "search": "Suche",
+  "search-tags": {
+    "comment":"Comment",
+    "idno":"idno",
+    "notes":"Notes",
+    "regest":"Regest",
+    "seal":"Seal",
+    "text":"Edition Text",
+    "title":"Title"
+  },
   "signatur": "Signatur",
   "sorting":"Sortierung",
   "term": "Term",
@@ -75,7 +83,6 @@
   "volume": "Editionseinheit",
   "work-id":"Stücknummer",
   "register": {
-    "toggle": "Registerdaten",
     "place": "Ort",
     "person": "Person",
     "organisation": "Familie/Organisation",
@@ -83,7 +90,7 @@
     "keywords": "Schlagwort"
   },
   "menu": {
-	  "people":"Personen",
+    "people":"Personen",
   	"places": "Orte",
   	"organizations":"Organisationen",
     "keywords":"Schlagworte",
@@ -96,9 +103,11 @@
   	"ZH_NF_I_2_1":"Die Rechtsquellen der Stadt Winterthur (ZH NF I/2/1)",
   	"ZH_NF_II_3":"Die Landvogtei Greifensee (ZH NF II/3)",
   	"ZH_NF_II_11":"Die Obervogteien um die Stadt Zürich (ZH NF II/11)"
-  },  
+  },
   "mentions-of":"Erwähnungen von",
   "feedback": "Feedback",
+  "about":"Über die Edition",
+  "contact":"Kontact",
   "yes": "ja",
   "no": "nein",
   "require-login":"Bitte einloggen",

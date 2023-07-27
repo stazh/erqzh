@@ -1089,74 +1089,15 @@ pb-browse-docs::part(delete-button) {
 
 /**************** footers ******************/
 
-footer:not(footer.footer__imprint) {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    height: var(--footer-height);
-    border-top: 1px solid #ebebeb;
-    -webkit-box-shadow: -3px 0px 14px -8px #ccc;
-    -moz-box-shadow: -3px 0px 14px -8px #ccc;
-    box-shadow: -3px 0px 14px -8px #ccc;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
-@media screen and (min-width: 769px) {
-    footer:not(footer.footer__imprint) {
-        /*padding: 15px 0 0 0;*/
-        justify-content: center;
-    }
-}
-
 footer p, address {
     font-size: 0.75rem;
     font-style: normal;
 }
 
 .footer__imprint {
-    padding: 20px 20px 0 20px;
+    margin-bottom: 1rem;;
+    text-align: center;
 }
-
-.footer__imprint .footer-col {
-    /* margin-bottom: 1.5rem; */
-}
-
-@media screen and (min-width: 520px) {
-    .footer__imprint {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 20px;
-        padding: 20px;
-    }
-}
-
-@media screen and (min-width: 961px) {
-    .footer__imprint {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media screen and (min-width: 1024px) {
-    .footer__imprint {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-.footer-button {
-    font: var(--pb-base-font);
-    color: var(--pb-toolbar-color);
-    font-family: var(--pb-base-font-family);
-    padding: 9px 0;
-    text-transform: uppercase;
-}
-
-.footer-button-next {
-    grid-column: 4;
-    text-align: end;
-}
-
 
 /* ==========================================================================
    Print styles.
