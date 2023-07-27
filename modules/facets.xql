@@ -50,16 +50,17 @@ declare function facets:print-table($config as map(*), $nodes as element()+, $va
             {
                 array:for-each(facets:sort($facets), function($entry) {
                     map:for-each($entry, function($label, $freq) {
+                        let $content :=
+                            if (exists($config?output)) then
+                                $config?output($label)
+                            else
+                                $label
+                        return
                         <tr>
                             <td>
                                 <paper-checkbox class="facet" name="facet-{$config?dimension}" value="{$label}">
                                     { if ($label = $params) then attribute checked { "checked" } else () }
-                                    {
-                                        if (exists($config?output)) then
-                                            $config?output($label)
-                                        else
-                                            $label
-                                    }
+                                    <pb-i18n key="{$content}">{$content}</pb-i18n>
                                 </paper-checkbox>
                             </td>
                             <td>{$freq}</td>
@@ -88,26 +89,24 @@ declare function facets:print-table($config as map(*), $nodes as element()+, $va
 declare function facets:display($config as map(*), $nodes as element()+) {
     if (map:contains($config, "select")) then
         if ($config?select instance of map(*) and map:contains($config?select, "source")) then
-            <pb-combo-box source="{$config?select?source}" close-after-select="">
-                <select name="facet-{$config?dimension}" placeholder="{$config?heading}" multiple=""
+            <pb-combo-box source="{$config?select?source}" close-after-select="" placeholder="{$config?heading}">
+                <select name="facet-{$config?dimension}" multiple=""
                     on-change="pb-search-resubmit">
                 {
                     for $param in facets:get-parameter("facet-" || $config?dimension)
+                    let $label :=
+                        if (map:contains($config, "output")) then
+                            $config?output($param)
+                        else
+                            $param
                     return
-                        <option value="{$param}" selected="">
-                        {
-                            if (map:contains($config, "output")) then
-                                $config?output($param)
-                            else
-                                $param
-                        }
-                        </option>     
+                        <option value="{$param}" data-i18n="{$label}" selected=""></option>
                 }
                 </select>
             </pb-combo-box>
         else
-            <pb-combo-box close-after-select="">
-                <select name="facet-{$config?dimension}" placeholder="{$config?heading}" multiple=""
+            <pb-combo-box close-after-select="" placeholder="{$config?heading}">
+                <select name="facet-{$config?dimension}" multiple=""
                     on-change="pb-search-resubmit">
                 {
                     let $hits := session:get-attribute($config:session-prefix || ".hits")
@@ -115,16 +114,15 @@ declare function facets:display($config as map(*), $nodes as element()+) {
                     let $params := facets:get-parameter("facet-" || $config?dimension)
                     let $facets := ft:facets($hits, "volume", ())
                     for $facet in map:keys($facets)
+                    let $label :=
+                        if (map:contains($config, "output")) then
+                            $config?output($facet)
+                        else
+                            $facet
                     return
-                        <option value="{$facet}">
+                        <option value="{$facet}" data-i18n="{$label}">
                         {
                             if ($facet = $params) then attribute selected { "selected" } else ()
-                        }
-                        {
-                            if (map:contains($config, "output")) then
-                                $config?output($facet)
-                            else
-                                $facet
                         }
                         </option>
                 }

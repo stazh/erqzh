@@ -26,7 +26,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : If a version is given, the components will be loaded from a public CDN.
  : This is recommended unless you develop your own components.
  :)
-declare variable $config:webcomponents :="2.10.3";
+declare variable $config:webcomponents :="2.10.4";
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your
@@ -162,7 +162,7 @@ declare variable $config:facets := [
     },
     map {
         "dimension": "lemma",
-        "heading": "lemma",
+        "heading": "register.lemma",
         (: "max": 5,
         "hierarchical": false(), :)
         "select": map {
@@ -224,8 +224,8 @@ declare variable $config:facets := [
         "hierarchical": false(),
         "output": function($label) {
             switch($label)
-                case "true" return "Yes"
-                case "false" return "No"
+                case "true" return "yes"
+                case "false" return "no"
                 default return ""
         }
     },
