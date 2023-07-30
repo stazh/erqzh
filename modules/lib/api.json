@@ -1285,7 +1285,7 @@
 						"description": "defines an optional mapping function (written in XQuery), which can be used to replace the document content to be processed with something else. Used to e.g. look up the translation for a given transcription and process it instead."
 					},
 					{
-						"name": "highlight",
+						"name": "user.highlight",
 						"in": "query",
 						"schema": {
 							"type": "string"

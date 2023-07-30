@@ -25,10 +25,10 @@ window.addEventListener("DOMContentLoaded", () => {
       creditsTarget.innerHTML = credits.innerHTML;
     }
 
-    const feedback = document.getElementById('feedback-mail');
-    const title = ev.detail.root.querySelector(".tei-teiHeader5");
-    const content = `%0a%0a---%0a${title.innerText}%0ahttps://rechtsquellen.sources-online.org/${ev.detail.data.collection}/${ev.detail.data.doc}`;
-    feedback.href = `mailto:staatsarchivzh@ji.zh.ch?subject=${ev.detail.data.doc}&body=${content}`;
+    // const feedback = document.getElementById('feedback-mail');
+    // const title = ev.detail.root.querySelector(".tei-teiHeader5");
+    // const content = `%0a%0a---%0a${title.innerText}%0ahttps://rechtsquellen.sources-online.org/${ev.detail.data.collection}/${ev.detail.data.doc}`;
+    // feedback.href = `mailto:staatsarchivzh@ji.zh.ch?subject=${ev.detail.data.doc}&body=${content}`;
     blocks.push(ev.detail.root);
     if (blocks.length === 2) {
       register._refresh();
