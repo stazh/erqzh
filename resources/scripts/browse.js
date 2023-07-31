@@ -58,6 +58,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     pbEvents.emit('pb-search-resubmit', 'search');
                 });
             });
+            ev.detail.querySelectorAll('pb-combo-box').forEach((select) => {
+                select.renderFunction = (data, escape) => {
+                    if (data) {
+                        return `<div>${escape(data.text)} <span class="freq">${escape(data.freq || '')}</span></div>`;
+                    }
+                    return '';
+                }
+            });
+
         });
 
         pbEvents.subscribe('pb-combo-box-change', null, function() {
