@@ -100,7 +100,7 @@ declare function facets:display($config as map(*), $nodes as element()+) {
                         else
                             $param
                     return
-                        <option value="{$param}" data-i18n="{$label}" selected=""></option>
+                        <option value="{$param}" data-i18n="{$label}" selected="">{$label}</option>
                 }
                 </select>
             </pb-combo-box>
@@ -122,7 +122,8 @@ declare function facets:display($config as map(*), $nodes as element()+) {
                     return
                         <option value="{$facet}" data-i18n="{$label}">
                         {
-                            if ($facet = $params) then attribute selected { "selected" } else ()
+                            if ($facet = $params) then attribute selected { "selected" } else (),
+                            $label
                         }
                         </option>
                 }
