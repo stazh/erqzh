@@ -165,7 +165,7 @@ declare variable $config:facets := [
                 else ($label)
         }
     },
-    map {
+    (: map {
         "dimension": "lemma",
         "heading": "register.lemma",
         (: "max": 5,
@@ -180,7 +180,7 @@ declare variable $config:facets := [
                 then ($lemma)
                 else ($label)
         }
-    },
+    }, :)
     map {
         "dimension": "keyword",
         "heading": "keyword",

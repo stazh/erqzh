@@ -403,7 +403,6 @@ declare function api:facets-search($request as map(*)) {
                         $config:register-organization/id($key)/tei:orgName/text()
                     case "place" return
                         $config:register-place/id($key)/tei:placeName[@type='main']/text()
-                    case "lemma"
                     case "keyword" return
                         $config:register-taxonomy/id($key)/tei:desc[@xml:lang='deu']/text()
                     case "filiation" return $key
