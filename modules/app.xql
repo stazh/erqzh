@@ -195,7 +195,7 @@ declare function app:api-keys($refs as xs:string*) {
         }
 };
 
-declare function app:list-places($node as node(), $model as map(*)) {
+(: declare function app:list-places($node as node(), $model as map(*)) {
     let $places := root($model?data)//(tei:placeName[@ref]|tei:origPlace[@ref])
     where exists($places)
     return map {
@@ -215,9 +215,9 @@ declare function app:list-places($node as node(), $model as map(*)) {
                     </div>
                 </li>
     }
-};
+}; :)
 
-declare function app:list-keys($node as node(), $model as map(*)) {
+(: declare function app:list-keys($node as node(), $model as map(*)) {
     let $keywords := root($model?data)//tei:term[starts-with(@ref, 'key')]
     where exists($keywords)
     return map {
@@ -235,9 +235,9 @@ declare function app:list-keys($node as node(), $model as map(*)) {
                     </div>
                 </li>
     }
-};
+}; :)
 
-declare function app:list-lemmata($node as node(), $model as map(*)) {
+(: declare function app:list-lemmata($node as node(), $model as map(*)) {
     let $lemmata := root($model?data)//tei:term[starts-with(@ref, 'lem')]
     where exists($lemmata)
     return map {
@@ -257,9 +257,9 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
                     </div>
                 </li>
     }
-};
+}; :)
 
-declare function app:list-persons($node as node(), $model as map(*)) {
+(: declare function app:list-persons($node as node(), $model as map(*)) {
     let $persons :=
         root($model?data)//tei:persName[@type="full_sorted"]/@ref |
         root($model?data)//@scribe[starts-with(., 'per')]
@@ -285,9 +285,9 @@ declare function app:list-persons($node as node(), $model as map(*)) {
                     </div>
                 </li>
     }
-};
+}; :)
 
-declare function app:list-organizations($node as node(), $model as map(*)) {
+(: declare function app:list-organizations($node as node(), $model as map(*)) {
     let $organizations := root($model?data)//tei:orgName/@ref
     where exists($organizations)
     return map {
@@ -311,16 +311,16 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
                     </div>
                 </li>
     }
-};
+}; :)
 
-declare
+(: declare
     %templates:wrap
 function app:show-list-items($node as node(), $model as map(*)) {
     for $item in $model?items
     order by $item/a collation "?lang=de_CH"
     return
         $item
-};
+}; :)
 
 declare function app:meta($node as node(), $model as map(*)) {
     let $data := config:get-document($model?doc)
@@ -783,4 +783,17 @@ function app:bibliography($node as node(), $model as map(*)) as element(div){
             </table>
         }
     </div>
+};
+
+
+declare
+    %templates:wrap
+function app:set-default-params($node as node(), $model as map(*)) {
+    let $new-model := map:merge(($model, 
+                                map { "type": "text" },
+                                map { "sort": "date" },
+                                map { "subtype": "edition" }
+                            ))    
+    return
+        templates:process($node/*, $new-model)
 };

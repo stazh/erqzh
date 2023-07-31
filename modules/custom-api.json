@@ -785,34 +785,7 @@
                 }
             }
         },		
-        "/api/register/{id}": {
-            "get": {
-                "summary": "Registerdaten abrufen",
-                "operationId": "custom:registerdaten",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "schema":{
-                            "type": "string"
-                        },
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200":{
-                        "description": "Registerdaten",
-                        "content": {
-                            "text/html":{
-                                "schema":{
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
+        
         "/api/abbreviations":{
             "get": {
                 "summary": "Abkürzungsverzeichnis",
