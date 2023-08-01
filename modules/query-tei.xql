@@ -121,7 +121,7 @@ declare function teis:autocomplete($doc as xs:string?, $fields as xs:string+, $q
                         function($key, $count) {
                             $key
                         }, 30, "lucene-index"),
-                    doc($config:data-root || "/" || $doc)/util:index-keys-by-qname(xs:QName("tei:text"), $lower-case-q,
+                    doc($config:data-root || "/" || $doc)/util:index-keys-by-qname(xs:QName("tei:TEI"), $lower-case-q,
                         function($key, $count) {
                             $key
                         }, 30, "lucene-index")
@@ -130,7 +130,7 @@ declare function teis:autocomplete($doc as xs:string?, $fields as xs:string+, $q
                         function($key, $count) {
                             $key
                         }, 30, "lucene-index"),
-                    collection($config:data-root)/util:index-keys-by-qname(xs:QName("tei:text"), $lower-case-q,
+                    collection($config:data-root)/util:index-keys-by-qname(xs:QName("tei:TEI"), $lower-case-q,
                         function($key, $count) {
                             $key
                         }, 30, "lucene-index")
@@ -183,50 +183,19 @@ declare function teis:get-breadcrumbs($config as map(*), $hit as node(), $parent
 declare function teis:expand($data as node()) {
     let $query := session:get-attribute($config:session-prefix || ".search")
     let $field := session:get-attribute($config:session-prefix || ".field")
-    let $div :=
-        if ($data instance of element(tei:pb)) then
-            let $nextPage := $data/following::tei:pb[1]
-            return
-                if ($nextPage) then
-                    if ($field = "text") then
-                        (
-                            ($data/ancestor::tei:div intersect $nextPage/ancestor::tei:div)[last()],
-                            $data/ancestor::tei:text
-                        )[1]
-                    else
-                        $data/ancestor::tei:text
-                else
-                    (: if there's only one pb in the document, it's whole
-                      text part should be returned :)
-                    if (count($data/ancestor::tei:text//tei:pb) = 1) then
-                        ($data/ancestor::tei:text)
-                    else
-                      ($data/ancestor::tei:div, $data/ancestor::tei:text)[1]
-        else
-            $data
-    let $result := teis:query-default-view($div, $query, $field)
+    let $result := teis:query-default-view($data, $query, $field)
     let $expanded :=
         if (exists($result)) then
             util:expand($result, "add-exist-id=all")
         else
-            $div
+            $data
     return
-        if ($data instance of element(tei:pb)) then
-            $expanded//tei:pb[@exist:id = util:node-id($data)]
-        else
-            $expanded
+        $expanded
 };
 
 
-declare %private function teis:query-default-view($context as element()*, $query as xs:string, $fields as xs:string+) {
-    for $field in $fields
-    return
-        switch ($field)
-            case "head" return
-                $context[./descendant-or-self::tei:head[ft:query(., $query, $query:QUERY_OPTIONS)]]
-            default return
-                $context[./descendant-or-self::tei:div[ft:query(., $query, $query:QUERY_OPTIONS)]] |
-                $context[./descendant-or-self::tei:text[ft:query(., $query, $query:QUERY_OPTIONS)]]
+declare %private function teis:query-default-view($context as node()*, $query as xs:string, $fields as xs:string*) {
+    $context[./descendant-or-self::tei:TEI[ft:query(., $query, $query:QUERY_OPTIONS)]]
 };
 
 declare function teis:get-current($config as map(*), $div as node()?) {

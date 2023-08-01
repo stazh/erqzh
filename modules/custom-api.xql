@@ -14,7 +14,6 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 import module namespace rutil="http://e-editiones.org/roaster/util";
 import module namespace errors = "http://e-editiones.org/roaster/errors";
 import module namespace app="http://existsolutions.com/ssrq/app" at "app.xql";
-import module namespace search="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
 import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xql";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
@@ -37,6 +36,31 @@ declare function api:lookup($name as xs:string, $arity as xs:integer) {
     } catch * {
         ()
     }
+};
+
+declare function api:about($request as map(*)) {
+    let $_ := util:log("info", "api:about")
+    let $doc := $config:data-root  || "/about/about-the-edition-de.xml"
+    let $_ := util:log("info", "api:about doc: " || $doc)
+    let $xml := pages:load-xml($config:default-view, (), $doc)
+    let $_ := util:log("info", "api:about xml: ")
+    let $_ := util:log("info", $xml?data)
+    
+    let $template := doc($config:app-root || "/templates/pages/view.html")
+    let $_ := util:log("info", "api:about template: ")
+    let $_ := util:log("info", $template)
+    let $model := map {
+        "data": $xml?data,
+        "odd": $config:default-odd,
+        "view": $config:default-view,
+        "template": $config:default-template
+
+    }
+    return
+        templates:apply($template, api:lookup#2, $model, map {
+            $templates:CONFIG_APP_ROOT : $config:app-root,
+            $templates:CONFIG_STOP_ON_ERROR : true()
+        })
 };
 
 declare function api:registerdaten($request as map(*)) {
@@ -258,7 +282,7 @@ declare function api:split-list($request as map(*)) {
 
 declare function api:query-register($reg-type as xs:string, $search as xs:string?, $editionseinheit as xs:string?) {
     (: let $_ := util:log("info","api:query-register $reg-type: " || $reg-type || " - $search " || $search || " - $editionseinheit: " || $editionseinheit ) :)
-    let $volume-facet := if($editionseinheit = $config:data-collections) then (' AND volume:(' || $editionseinheit || '*)' ) else ()
+    let $volume-facet := if($editionseinheit = $config:data-collections) then (' AND volume:(' || $editionseinheit || ')' ) else ()
     let $facet-string := if ($search and $search != '')
                         then ( 'name:(' || $search || '*)' || $volume-facet)
                         else ( 'name:*' || $volume-facet)
@@ -379,7 +403,6 @@ declare function api:facets-search($request as map(*)) {
                         $config:register-organization/id($key)/tei:orgName/text()
                     case "place" return
                         $config:register-place/id($key)/tei:placeName[@type='main']/text()
-                    case "lemma"
                     case "keyword" return
                         $config:register-taxonomy/id($key)/tei:desc[@xml:lang='deu']/text()
                     case "filiation" return $key

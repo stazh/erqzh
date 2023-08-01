@@ -165,7 +165,7 @@ declare variable $config:facets := [
                 else ($label)
         }
     },
-    map {
+    (: map {
         "dimension": "lemma",
         "heading": "register.lemma",
         (: "max": 5,
@@ -180,7 +180,7 @@ declare variable $config:facets := [
                 then ($lemma)
                 else ($label)
         }
-    },
+    }, :)
     map {
         "dimension": "keyword",
         "heading": "keyword",
@@ -198,19 +198,6 @@ declare variable $config:facets := [
         }
     },
     map {
-        "dimension": "language",
-        "heading": "language",
-        "max": 5,
-        "hierarchical": false(),
-        "output": function($label) {
-            switch($label)
-                case "Deutsch" return "DE"
-                case "Französisch" return "FR"
-                case "Latein" return "LAT"
-                default return $label
-        }
-    },
-    map {
         "dimension": "archive",
         "heading": "archive",
         (: "max": 5,
@@ -220,18 +207,6 @@ declare variable $config:facets := [
         },
         "output": function($label) {
             $label
-        }
-    },
-    map {
-        "dimension": "seal",
-        "heading": "seal",
-        "max": 5,
-        "hierarchical": false(),
-        "output": function($label) {
-            switch($label)
-                case "true" return "yes"
-                case "false" return "no"
-                default return ""
         }
     },
     map {
@@ -255,16 +230,41 @@ declare variable $config:facets := [
         }
     },
     map {
+        "dimension": "language",
+        "heading": "language",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            switch($label)
+                case "Deutsch" return "DE"
+                case "Französisch" return "FR"
+                case "Latein" return "LAT"
+                default return $label
+        }
+    },
+    map {
+        "dimension": "seal",
+        "heading": "seal",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            switch($label)
+                case "true" return "yes"
+                case "false" return "no"
+                default return ""
+        }
+    },
+    map {
         "dimension": "volume",
         "heading": "volume",
         "output": function($label) {
             switch($label)
                 case "" return ""
-                case "ZH_NF_I_1_3" return "ZH_NF_I_1_3"
-                case "ZH_NF_I_1_11" return "ZH_NF_I_1_11"
-                case "ZH_NF_I_2_1" return "ZH_NF_I_2_1"
-                case "ZH_NF_II_3" return "ZH_NF_II_3"
-                case "ZH_NF_II_11" return "ZH_NF_II_11"
+                case "ZH_NF_I_1_3" return "Stadt und Territorialstaat Zürich II"
+                case "ZH_NF_I_1_11" return "Gedruckte Mandate Zürich"
+                case "ZH_NF_I_2_1" return "Die Rechtsquellen der Stadt Winterthur"
+                case "ZH_NF_II_3" return "Die Landvogtei Greifensee"
+                case "ZH_NF_II_11" return "Die Obervogteien um die Stadt Zürich"
                 default return $label
         }
     }

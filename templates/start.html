@@ -137,15 +137,34 @@
                 margin-right: 20px;
             }
 
-            #facets {
-                flex: 0;
+            aside.search {
                 min-width: 220px;
-                margin-right: 20px;
-                background-color: #F0F0F0;
-                padding: 0 10px;
             }
 
-            #facets h3 {
+            .subtype {
+                list-style: none;
+            }
+            
+            #facets {
+                flex: 0;
+            }
+
+            #facets pb-combo-box {
+                margin-bottom: .5rem;
+            }
+
+            #facets div {
+                margin-bottom: .75rem;
+            }
+
+            #facets pb-combo-box .ts-control input::placeholder {
+                font-family: var(--pb-heading-font-family);
+                font-weight: 400 !important;
+            }
+
+            #facets h3, #facets h4 {
+                font-size: 1em;
+                margin: 0 0 .5rem 0;
                 display: flex;
                 flex-direction: row;
                 align-items: center;
@@ -178,25 +197,6 @@
             .tei-hi2 {
                 font-size: 80%;
                 vertical-align: top;
-            }
-
-            #kantone th {
-                text-align: left;
-            }
-
-            #kantone td {
-                padding: 10px 20px;
-            }
-
-            #kantone .badge {
-                display: inline-block;
-                margin-left: 20px;
-                background-color: #6b6b6b;
-                color: #f0f0f0;
-                border-radius: 10px;
-                font-size: .75em;
-                font-weight: bold;
-                padding: 4px;
             }
 
             .volume .part {
@@ -255,7 +255,7 @@
 
                 <section>
                     <div class="pb-container">
-                        <div class="main-grid" data-template="search:set-default-params">
+                        <div class="main-grid" data-template="app:set-default-params">
                             <main class="main-grid__item">
                                 <div class="header card-padding">
                                     <h2>
@@ -279,9 +279,12 @@
                                     </div>
                                 </div>
                             </main>
-                            <section>
+                            <aside class="search">
                                 <pb-search subscribe="search" data-template="pages:parse-params"
-                                        value="${query}" submit-on-load="" subforms="#options,#facets">
+                                        value="${query}" submit-on-load="" subforms="#genre,#options,#facets">
+                                    <paper-button slot="searchButton"><pb-i18n key="browse.search"></pb-i18n></paper-button>
+                                </pb-search>
+                                <pb-custom-form id="genre">
                                     <h4><pb-i18n key="genre"/></h4>
                                     <paper-checkbox id="bearbeitungstext" data-template="pages:parse-params"><pb-i18n key="searchText"/></paper-checkbox>
                                     <ul class="subtype">
@@ -305,7 +308,7 @@
                                         </li>
                                     </ul>
                                     <paper-checkbox id="editionstext" name="subtype" value="edition" data-template="pages:parse-params"><pb-i18n key="searchEdition"/></paper-checkbox>
-                                </pb-search>
+                                </pb-custom-form>
 
                                 <h4><pb-i18n key="filters"/></h4>
                                 <pb-custom-form id="options" class="options">
@@ -316,7 +319,7 @@
                                 </pb-custom-form>
                                 <pb-custom-form id="facets" class="facets options" url="api/search/facets" event="pb-results-received" 
                                     subscribe="search"/>
-                            </section>
+                            </aside>
 
 
                             <pb-restricted class="upload-panel main-grid__item" login="login">

@@ -163,12 +163,18 @@
             </div>
             <div class="ripple-container"/>
         </a>
-        <a id="feedback-mail" href="mailto:staatsarchivzh@ji.zh.ch" class="tp-menu-item">
+        <a href="${app}/about/" data-template="pages:parse-params" class="tp-menu-item" title="About">
+            <div>
+                <pb-i18n key="about">About</pb-i18n>
+            </div>
+            <div class="ripple-container"/>
+        </a>        
+        <!-- <a id="feedback-mail" href="mailto:staatsarchivzh@ji.zh.ch" class="tp-menu-item">
             <div>
                 <pb-i18n key="feedback">Feedback</pb-i18n>
             </div>
             <div class="ripple-container"/>
-        </a>
+        </a> -->
         <pb-restricted login="login" group="tei">
             <paper-menu-button>
                 <a href="#" slot="dropdown-trigger">

@@ -1116,33 +1116,34 @@ footer p, address {
 }
 
 .footer__imprint {
-    padding: 20px 20px 0 20px;
+    margin-bottom: 1rem;;
+    text-align: center;
 }
 
 .footer__imprint .footer-col {
     /* margin-bottom: 1.5rem; */
 }
 
-@media screen and (min-width: 520px) {
+/* @media screen and (min-width: 520px) {
     .footer__imprint {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 20px;
         padding: 20px;
     }
-}
+} */
 
-@media screen and (min-width: 961px) {
+/* @media screen and (min-width: 961px) {
     .footer__imprint {
         grid-template-columns: repeat(3, 1fr);
     }
-}
-
+} */
+/* 
 @media screen and (min-width: 1024px) {
     .footer__imprint {
         grid-template-columns: repeat(4, 1fr);
     }
-}
+} */
 
 .footer-button {
     font: var(--pb-base-font);

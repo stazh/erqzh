@@ -25,6 +25,45 @@
         }
     },
     "paths": {
+		"/about/": {
+			"get": {
+				"summary": "Get formatted overview of documents in the collection",
+				"tags": ["collection"],
+				"operationId": "api:about",
+				"responses": {
+					"200": {
+						"description": "HTML of the page",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The document was not found",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An error occurred",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+        },		
 		"/people/{editionseinheit}/": {
             "get": {
 				"summary": "Landing page for people",
@@ -746,34 +785,7 @@
                 }
             }
         },		
-        "/api/register/{id}": {
-            "get": {
-                "summary": "Registerdaten abrufen",
-                "operationId": "custom:registerdaten",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "schema":{
-                            "type": "string"
-                        },
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200":{
-                        "description": "Registerdaten",
-                        "content": {
-                            "text/html":{
-                                "schema":{
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
+        
         "/api/abbreviations":{
             "get": {
                 "summary": "Abkürzungsverzeichnis",
