@@ -282,7 +282,7 @@ declare function api:split-list($request as map(*)) {
 
 declare function api:query-register($reg-type as xs:string, $search as xs:string?, $editionseinheit as xs:string?) {
     (: let $_ := util:log("info","api:query-register $reg-type: " || $reg-type || " - $search " || $search || " - $editionseinheit: " || $editionseinheit ) :)
-    let $volume-facet := if($editionseinheit = $config:data-collections) then (' AND volume:(' || $editionseinheit || '*)' ) else ()
+    let $volume-facet := if($editionseinheit = $config:data-collections) then (' AND volume:(' || $editionseinheit || ')' ) else ()
     let $facet-string := if ($search and $search != '')
                         then ( 'name:(' || $search || '*)' || $volume-facet)
                         else ( 'name:*' || $volume-facet)
