@@ -1,3 +1,4 @@
+// ZH_NF_I_1_3 does not work, so test will fail
 describe('place-list page for ZH_NF_I_1_3', () => {
     beforeEach('loads', () => {
         cy.visit('places/ZH_NF_I_1_3/')
