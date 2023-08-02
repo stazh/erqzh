@@ -67,18 +67,27 @@ declare function teis:query-default($fields as xs:string+, $query as xs:string, 
 };
 
 declare function teis:query-metadata($path as xs:string?, $field as xs:string?, $query as xs:string?, $sort as xs:string) {
+    let $type := request:get-parameter("type", ())    
     (: let $_ := util:log("info",   map {
             "name":"teis:query-metadata", 
             "fielld":$field, 
             "$query":$query, 
-            "$sort":$sort
+            "$sort":$sort,
+            "$type":$type
     }) :)
     let $subfields := request:get-parameter("subtype", "text")
     let $queryExpr := 
-        if ($field = "file" or empty($query) or $query = '') then 
-            "corpus:rqzh AND NOT type:variant" 
-        else
-            "(" || teis:query-by-subfield($subfields, $query) || ") AND NOT type:variant"
+        if ($field = "file" or empty($query) or $query = '') then ( 
+            if($type = "document") 
+            then ( "corpus:rqzh AND type:document" )
+            else ( "corpus:rqzh AND NOT type:variant")
+        )
+        else (
+            if($type = "document") 
+            then ("(" || teis:query-by-subfield($subfields, $query) || ") AND type:document")
+            else ("(" || teis:query-by-subfield($subfields, $query) || ") AND NOT type:variant")
+            
+        )
     let $options := query:options($sort, $subfields)
     let $_ := util:log("info", map {"name":"teis:query-metadata", "$queryExpr":$queryExpr, "$options":$options})
     let $result :=

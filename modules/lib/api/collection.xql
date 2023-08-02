@@ -23,8 +23,12 @@ declare function capi:list($request as map(*)) {
     let $works := capi:list-works($path, if ($useCached) then $cached else (), $params)
     let $templatePath := $config:data-root || "/" || $path || "/collection.html"
     let $templateAvail := doc-available($templatePath) or util:binary-doc-available($templatePath)
+    let $show-collection := if ($request?parameters?type = "document")
+                            then (false())
+                            else (true())
+    (: let $_ := util:log("info", "capi:list $show-collection: " || $show-collection) :)
     let $template := 
-        if ($templateAvail and $works?mode = 'browse') then 
+        if ($templateAvail and $works?mode = 'browse' and $show-collection) then 
             $templatePath
         else
             $config:app-root || "/templates/documents.html"
@@ -55,17 +59,14 @@ function capi:list-works($root as xs:string?, $cached, $params as map(*)) {
     let $sort := request:get-parameter("sort", "title")
     let $filter := request:get-parameter("field", ())
     let $query := request:get-parameter("query", ())
+    
     (: let $_ := util:log("info",   map {
             "name":"capi:list-works", 
             "filter":$filter, 
             "$query":$query, 
             "$sort":$sort
-    })     :)
-    let $filtered :=
-        if (exists($cached)) then
-            $cached
-        else
-            query:query-metadata($root, ($filter, "text")[1], $query, $sort)
+    } :)
+    let $filtered := query:query-metadata($root, ($filter, "text")[1], $query, $sort)
     (: let $_ := util:log("info", "capi-list-works filtered: " || count($filtered)) :)
     return (
         session:set-attribute($config:session-prefix || ".timestamp", current-dateTime()),

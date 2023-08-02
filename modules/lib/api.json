@@ -420,6 +420,16 @@
 				"summary": "Get formatted overview of documents in the collection",
 				"tags": ["collection"],
 				"operationId": "capi:list",
+				"parameters": [
+					{
+						"name": "type",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					}
+					
+				],				
 				"responses": {
 					"200": {
 						"description": "Returns HTML describing the collection",
