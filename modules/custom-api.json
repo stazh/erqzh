@@ -25,14 +25,63 @@
         }
     },
     "paths": {
+		
 		"/about/": {
 			"get": {
-				"summary": "Get formatted overview of documents in the collection",
-				"tags": ["collection"],
-				"operationId": "api:about",
+				"summary": "Retrieve the HTML template used for displaying a document",
+				"description": "Get the HTML template associated with the given document. This is called whenever the users tries to view a document. The actual content of the document will then be loaded by the template.",
+				"tags": ["view"],
+				"operationId": "vapi:view",
+				"x-error-handler": "vapi:handle-error",
+				"parameters": [
+					{
+						"name": "docid",
+						"in": "query",
+						"description": "Relative path to the document",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"default": "about/about-the-edition-de"
+						},
+						"allowReserved": true
+					},
+					{
+						"name": "template",
+						"in": "query",
+						"description": "Name of the template to be used. Overwrites any default template setting.",
+						"schema": {
+							"type": "string",
+							"default":"about.html"
+						}
+					},
+					{
+						"name": "view",
+						"in": "query",
+						"schema": {
+							"type": "string",
+							"enum": ["page", "div", "single"]
+						},
+						"example": "div",
+						"description": "The view type used by the main view which displays the document, e.g. 'page' or 'div'. This has an influence on the generated links, which need to differ when linking to a page rather than a section."
+					},
+					{
+						"name": "odd",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "action",
+						"in": "query",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
 				"responses": {
 					"200": {
-						"description": "HTML of the page",
+						"description": "HTML view for the document",
 						"content": {
 							"text/html": {
 								"schema": {
