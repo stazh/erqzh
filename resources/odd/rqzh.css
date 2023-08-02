@@ -164,6 +164,15 @@ pb-i18n[key="by"]::after {
     content: ' ';
 }
 
+.footer {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+}
+
+.footer .part-nav[path=""] {
+    display: none;
+}
+
 .footer .part-nav a {
     height: 45px;
     color: #636363;
