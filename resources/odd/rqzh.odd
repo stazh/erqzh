@@ -1245,10 +1245,15 @@
                         else
                             ()"/>
                 <pb:template xmlns="">
-                    <pb-link path="[[target]]" emit="transcription" class="part-nav">
-                        <pb-i18n class="sr-only" key="navigation.next-in-search"/>
-                        <iron-icon icon="icons:first-page"/>
-                    </pb-link>
+                    <pb-popover theme="light-border">
+                        <pb-link path="[[target]]" emit="transcription" class="part-nav">
+                            <pb-i18n class="sr-only" key="navigation.prev-in-search"/>
+                            <iron-icon icon="icons:first-page"/>
+                        </pb-link>
+                        <template slot="alternate">
+                            <pb-i18n key="navigation.prev-in-search"></pb-i18n>
+                        </template>
+                    </pb-popover>
                 </pb:template>
             </model>
             <model behaviour="pass-through">
@@ -1263,10 +1268,15 @@
                         else
                             ()"/>
                 <pb:template xmlns="">
-                    <pb-link path="[[target]]" emit="transcription" class="part-nav">
-                        <pb-i18n class="sr-only" key="navigation.prev-in-search"/>
-                        <iron-icon icon="icons:last-page"/>
-                    </pb-link>
+                    <pb-popover theme="light-border">
+                        <pb-link path="[[target]]" emit="transcription" class="part-nav">
+                            <pb-i18n class="sr-only" key="navigation.next-in-search"/>
+                            <iron-icon icon="icons:last-page"/>
+                        </pb-link>
+                        <template slot="alternate">
+                            <pb-i18n key="navigation.next-in-search"></pb-i18n>
+                        </template>
+                    </pb-popover>
                 </pb:template>
             </model>
         </modelSequence>

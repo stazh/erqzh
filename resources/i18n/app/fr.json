@@ -6,8 +6,10 @@
     "addFill": "Présentation de la situation de tradition"
   },
   "navigation": {
-    "next": "texte suivant",
-    "prev": "texte précédent"
+    "next": "Texte suivant",
+    "prev": "Texte précédent",
+    "next-in-search": "Next in search result",
+    "prev-in-search": "Previous in search result"
   },
   "browse": {
     "orig-date": "Datation",

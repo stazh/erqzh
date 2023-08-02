@@ -6,8 +6,10 @@
     "addFill": "Weitere Überlieferungen"
   },
   "navigation": {
-    "next": "zum nächsten Stück",
-    "prev": "zum vorherigen Stück"
+    "next": "zum nächsten Stück im Band",
+    "prev": "zum vorherigen Stück im Band",
+    "next-in-search": "nächstes Stück in Suchergebnis",
+    "prev-in-search": "vorheriges Stück in Suchergebnis"
   },
   "browse": {
     "orig-date": "Datum",

@@ -6,8 +6,10 @@
     "addFill": "Additional Filiations"
   },
   "navigation": {
-    "next": "next text",
-    "prev": "previous text"
+    "next": "Next text in volume",
+    "prev": "Previous text in volume",
+    "next-in-search": "Next in search result",
+    "prev-in-search": "Previous in search result"
   },
   "browse": {
     "orig-date": "Date",
