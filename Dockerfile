@@ -34,7 +34,7 @@ ARG ROUTER_VERSION=1.8.0
 ARG ADMIN_PASS=dm18IWqn0OQBfSh5KubR
 
 ## erqzh-data at gitlab.existsolutions.com/rqzh/erqzh-data.git
-ARG GIT_BRANCH1=main
+ARG GIT_BRANCH1=tp8
 ARG ACCESS_TOKEN_NAME1=rqzh-data
 ARG ACCESS_TOKEN_VALUE1=glpat-xH4UNyWKyx2iwPgm58Hr
 
