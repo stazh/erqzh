@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 pbEvents.emit('pb-search-resubmit', 'search');
             });
         });
+
+        document.querySelector('[name=date-min]').value = null;
+        document.querySelector('[name=date-max]').value = null;
     });
 
     const facets = document.querySelector('.facets');
@@ -74,7 +77,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    const timeRangeLabel = document.getElementById('time-range');
+    const timeRangeStart = document.getElementById('period-start');
+    const timeRangeEnd = document.getElementById('period-end');
+
     const timelineChanged = (ev) => {
         let categories = ev.detail.categories;
         if (ev.detail.scope === '5Y') {
@@ -82,21 +87,38 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (ev.detail.scope === '10Y') {
             expandDates(categories, 10);
         }
-        document.querySelectorAll('[name=dates]').forEach(input => { input.value = categories.join(';') });
-        pbEvents.emit('pb-search-resubmit', 'search');
 
-        timeRangeLabel.innerHTML = ev.detail.label === '' ? 'alles' : ev.detail.label;
+        document.querySelectorAll('[name=dates]').forEach(input => { input.value = categories.join(';') });
+        const startEnd = ev.detail.label.split(/\s*–\s*/);
+        timeRangeStart.value = startEnd[0];
+        timeRangeEnd.value = startEnd[1];
+        pbEvents.emit('pb-search-resubmit', 'search');
     };
     pbEvents.subscribe('pb-timeline-date-changed', 'timeline', timelineChanged);
     pbEvents.subscribe('pb-timeline-daterange-changed', 'timeline', timelineChanged);
     pbEvents.subscribe('pb-timeline-reset-selection', 'timeline', () => {
         document.querySelectorAll('[name=dates]').forEach(input => { input.value = '' });
-        timeRangeLabel.innerHTML = 'alles';
         pbEvents.emit('pb-search-resubmit', 'search');
     });
     pbEvents.subscribe('pb-timeline-loaded', 'timeline', (ev) => {
-        console.log("pb-timeline-loaded ", ev.detail.label);
-        timeRangeLabel.innerHTML = ev.detail.label === '' ? 'alles' : ev.detail.label;
+        const startEnd = ev.detail.label.split(/\s+–\s+/);
+        timeRangeStart.value = startEnd[0];
+        if (startEnd.length === 2) {
+            timeRangeEnd.value = startEnd[1];
+        } else {
+            timeRangeEnd.value = null;
+        }
+    });
+
+    document.getElementById('period-submit').addEventListener('click', () => {
+        let start = timeRangeStart.value;
+        let end = timeRangeEnd.value;
+
+        document.querySelector('[name=date-min]').value = start;
+        document.querySelector('[name=date-max]').value = end;
+        document.querySelectorAll('[name=dates]').forEach(input => { input.value = '' });
+
+        pbEvents.emit('pb-search-resubmit', 'search');
     });
 
     // pbEvents.subscribe('pb-collection', 'docs', (ev) => {

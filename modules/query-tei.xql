@@ -88,7 +88,7 @@ declare function teis:query-metadata($path as xs:string?, $field as xs:string?, 
    (: let $_ := util:log("info", map {"name":"teis:query-metadata", "result-count:":count($result)}) :)
 
     return
-        query:sort($result, $sort)
+        query:sort(teis:filter-by-date($result), $sort)
 };
 
 declare function teis:query-by-subfield($fields as xs:string*, $query as xs:string?) {
@@ -98,6 +98,50 @@ declare function teis:query-by-subfield($fields as xs:string*, $query as xs:stri
             (if ($field = "edition") then "text" else $field) || ":(" || $query || ")",
         " OR "
     )
+};
+
+declare function teis:filter-by-date($result) {
+    let $minDate := teis:normalize-date(request:get-parameter("date-min", ()), ())
+    let $maxDate := teis:normalize-date(request:get-parameter("date-max", ()), true())
+    return
+        if (exists($minDate) and exists($maxDate)) then
+            filter($result, function($item) {
+                ft:field($item, "date-min", "xs:date") >= $minDate
+                and
+                ft:field($item, "date-min", "xs:date") <= $maxDate
+            })
+        else if (exists($minDate)) then
+            filter($result, function($item) {
+                ft:field($item, "date-min", "xs:date") >= $minDate
+            })
+        else
+            $result
+};
+
+declare function teis:normalize-date($date as xs:string?, $max) {
+    if (exists($date) and $date != '') then
+        let $tokens := tokenize($date, '-')
+        return
+            if (count($tokens) = 1) then
+                xs:date(format-integer(xs:int($tokens), "0000") || (if ($max) then "-12-31" else "-01-01"))
+            else if (count($tokens) = 2) then
+                let $reformatted :=
+                    format-integer(xs:int($tokens[1]), "0000") || "-" ||
+                    format-integer(xs:int($tokens[2]), "00") || 
+                    "-01"
+                return
+                    if ($max) then
+                        xs:date($reformatted) + xs:yearMonthDuration("P1M")
+                    else
+                        xs:date($reformatted)
+            else
+                xs:date(
+                    format-integer(xs:int($tokens[1]), "0000") || "-" ||
+                    format-integer(xs:int($tokens[2]), "00") || "-" ||
+                    format-integer(xs:int($tokens[3]), "00")
+                )
+    else
+        ()
 };
 
 declare function teis:autocomplete($doc as xs:string?, $fields as xs:string+, $q as xs:string) {
