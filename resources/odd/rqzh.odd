@@ -1399,6 +1399,15 @@
             <param name="content" value="(ec:label('imprint'), ec:colon(), translate((translate((pubPlace/text() || &#34; &#34; || publisher/text() ),&#34;)&#34;,&#34;&#34;)),&#34;(&#34;,&#34;&#34;))"/>
         </model>
                 </elementSpec>
+    <elementSpec ident="graphic" mode="change">
+        <model behaviour="graphic">
+            <param name="url" value="'resources/images/' || @url"/>
+            <param name="width" value="@width"/>
+            <param name="height" value="@height"/>
+            <param name="scale" value="@scale"/>
+            <param name="title" value="desc"/>
+        </model>
+                </elementSpec>
             </schemaSpec>
         </body>
     </text>
