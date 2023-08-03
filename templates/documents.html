@@ -1,10 +1,13 @@
 <div data-template="browse:is-writeable" class="collection">
     <div data-template="browse:dispatch-action"/>
     <div>
-        <paper-button class="parent-link" data-template="browse:parent-collection">
-            <iron-icon icon="icons:folder"></iron-icon>
-            <span data-template="app:volume-title"></span>
-        </paper-button>
+        <pb-popover>
+            <paper-button class="parent-link" data-template="browse:parent-collection">
+                <iron-icon icon="icons:folder"></iron-icon>
+                <span data-template="app:volume-title"></span>
+            </paper-button>
+            <template slot="alternate"><pb-i18n key="browse.up"></pb-i18n></template>
+        </pb-popover>
         <ul class="documents" data-template="browse:browse" data-template-per-page="10">
             <li class="document">
                 <div class="document-info">
