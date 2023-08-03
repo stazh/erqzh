@@ -39,6 +39,18 @@ else if ($exist:path eq "/") then
         <redirect url="index.html"/>
     </dispatch>
 
+(: static sitemap.xml :)
+else if ($exist:path eq '/sitemap.xml') then
+    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+        <forward url="/{$exist:controller}/sitemap.xml"/>
+    </dispatch>
+
+(: static robots.txt :)
+else if ($exist:path eq '/robots.txt') then
+    <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
+        <forward url="/{$exist:controller}/robots.txt"/>
+    </dispatch>
+
 (: static HTML page for API documentation should be served directly to make sure it is always accessible :)
 else if ($exist:path eq '/api.html') then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
