@@ -757,6 +757,9 @@ body[data-view="normalized"] .facsimile {
     margin: 16px 0 0 0;
     padding: 16px 0;
     border-bottom: thin solid var(--paper-grey-300);
+    text-transform: none;
+    font-family: var(--pb-heading-font-family);
+    font-weight: 400;
 }
 
 /* list of sub-collection in index.html */

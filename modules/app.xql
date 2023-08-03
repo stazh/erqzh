@@ -371,6 +371,17 @@ function app:short-header-link($node as node(), $model as map(*)) {
     )
 };
 
+declare 
+    %templates:wrap
+function app:volume-title($node as node(), $model as map(*)) {
+    if (not($model?root) or $model?root = "") then
+        ()
+    else
+        let $info := collection($config:data-root || "/" || $model?root)/tei:TEI[@type='volinfo']
+        return
+            replace(normalize-space($info//tei:titleStmt/tei:title/string()), "^.*?([^:]+)$", "$1")
+};
+
 declare
     %templates:wrap    
     %templates:default("key","")
