@@ -124,6 +124,83 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('[name=sort]').addEventListener('change', () => {
         pbEvents.emit('pb-search-resubmit', 'search');
     });
+
+    /**
+   * Retrieve search parameters from URL
+   */
+    function getUrlParameter(sParam) {
+        let urlParams = new URLSearchParams(window.location.search);
+        return urlParams.getAll(sParam);
+    }
+
+    // search options: handle genre checkboxes
+    const bearbeitungstext = document.getElementById("bearbeitungstext");
+    let submit = false;
+
+    function checkRequiredSubtypes() {
+        // at least one Bearbeitungstext subtype is selected
+        if (document.querySelector(".bearbeitungstext[checked]")) {
+            return;
+        }
+        document.getElementById('editionstext').checked = true;
+    }
+
+    if (bearbeitungstext) {
+        const checkboxes = document.querySelectorAll(".bearbeitungstext");
+        // click on Bearbeitungstext selects/deselects all subtypes
+        bearbeitungstext.addEventListener("click", () => {
+            submit = false;
+            checkboxes.forEach((item) => {
+                item.checked = bearbeitungstext.checked;
+            });
+            checkRequiredSubtypes();
+            pbEvents.emit('pb-search-resubmit', 'search');
+            submit = true;
+        });
+
+        // initialize checkboxes from URL
+        const subtypes = getUrlParameter('subtype');
+        if (subtypes && subtypes.length > 0) {
+            subtypes.forEach((subtype) => {
+                document.querySelector(`paper-checkbox[value=${subtype}]`).checked = true;
+            });
+            bearbeitungstext.checked = !document.querySelector(".bearbeitungstext:not([checked])");
+            document.getElementById('editionstext').checked = subtypes.includes('edition');
+        } else {
+            // no subtypes in URL: enable all checkboxes
+            bearbeitungstext.checked = true;
+            document.getElementById('editionstext').checked = true;
+            checkboxes.forEach((item) => {
+                item.checked = true;
+            });
+        }
+        checkRequiredSubtypes();
+        submit = true;
+
+        // for each subtype we need to enable/disable the broader Bearbeitungstext checkbox
+        checkboxes.forEach((item) => {
+            item.addEventListener("iron-change", (ev) => {
+                if (submit) {
+                    checkRequiredSubtypes();
+                    if (document.querySelector(".bearbeitungstext:not([checked])")) {
+                        bearbeitungstext.checked = false;
+                    } else {
+                        bearbeitungstext.checked = true;
+                    }
+                    pbEvents.emit('pb-search-resubmit', 'search');
+                }
+            });
+        });
+        document.getElementById('editionstext').addEventListener('click', () => {
+            if (!document.querySelector(".bearbeitungstext[checked]")) {
+                document.getElementById('editionstext').checked = true;
+                return;
+            }
+            if (submit) {
+                pbEvents.emit('pb-search-resubmit', 'search');
+            }
+        });
+    }
 });
 
 
