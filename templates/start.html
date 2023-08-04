@@ -87,6 +87,17 @@
                 ;
             }
 
+            .document-count {
+                display: inline-block;
+                font-family: var(--pb-heading-font-family);
+                font-weight: 400;
+                margin-bottom: 1rem;
+                background-color: var(--pb-timeline-background-color-title);
+                padding: 4px;
+                border-radius: 10px;
+                color: #f0f0f0;
+            }
+
             .panels .doclist .card-content {
                 padding: 0;
             }
@@ -98,8 +109,34 @@
                 padding: 0;
             }
 
-            #document-list::part(sort-dropdown), #document-list::part(filter-dropdown), #document-list::part(filter-input) {
-                display: none;
+            main {
+                animation: fadeInAnimation ease 3s;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+            }
+
+            main.faded {
+                animation: fadeOutAnimation ease 3s;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+            }
+ 
+            @keyframes fadeInAnimation {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeOutAnimation {
+                0% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
             }
 
             aside .upload {

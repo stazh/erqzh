@@ -5,9 +5,17 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    pbEvents.subscribe('pb-start-update', 'search', function() {
+        console.log('hiding');
+        document.querySelector('main').classList.toggle('faded');
+    });
+
     /* Parse the content received from the server */
     pbEvents.subscribe('pb-results-received', 'search', function(ev) {
         const { content } = ev.detail;
+        console.log(ev.detail);
+        document.querySelector('main').classList.toggle('faded');
+
         /* Check if the server passed an element containing the current 
            collection in attribute data-root */
         const root = content.querySelector('[data-root]');

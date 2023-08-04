@@ -126,6 +126,12 @@ declare function app:select-kanton() {
         $first
 };
 
+declare 
+    %templates:wrap
+function app:document-count($node as node(), $model as map(*)) {
+    <pb-i18n key="browse.items" options='{{"count": "{count($model?all)}"}}'></pb-i18n>
+};
+
 declare function app:list-volumes($node as node(), $model as map(*), $root as xs:string?) {
     for $hits in $model?all
     group by $volume := ft:field($hits, "volume")
