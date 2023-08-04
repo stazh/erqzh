@@ -179,14 +179,18 @@ declare function teis:autocomplete($doc as xs:string?, $fields as xs:string+, $q
                             $key
                         }, 30, "lucene-index")
                 ) else (
-                    collection($config:data-root)/util:index-keys-by-qname(xs:QName("tei:div"), $lower-case-q,
-                        function($key, $count) {
-                            $key
-                        }, 30, "lucene-index"),
-                    collection($config:data-root)/util:index-keys-by-qname(xs:QName("tei:TEI"), $lower-case-q,
-                        function($key, $count) {
-                            $key
-                        }, 30, "lucene-index")
+                    collection($config:data-root)/ft:index-keys-for-field("text", $lower-case-q,
+                    function($key, $count) {
+                        $key
+                    }, 30),
+                    collection($config:data-root)/ft:index-keys-for-field("regest", $lower-case-q,
+                    function($key, $count) {
+                        $key
+                    }, 30),
+                    collection($config:data-root)/ft:index-keys-for-field("comment", $lower-case-q,
+                    function($key, $count) {
+                        $key
+                    }, 30)
                 )
             case "head" return
                 if ($doc) then
