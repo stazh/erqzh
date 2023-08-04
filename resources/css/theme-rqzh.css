@@ -716,10 +716,6 @@ body[data-view="normalized"] .facsimile {
     padding: 0;
 }
 
-#document-list {
-    padding-top: 20px;
-}
-
 #document-list h3,
 #document-list p {
     margin: 0;
@@ -746,6 +742,12 @@ body[data-view="normalized"] .facsimile {
 }
 
 /* document list on document landing page */
+
+#sort {
+    display: block;
+    text-align: right;
+    font-family: var(--paper-font-common-base_-_font-family);
+}
 
 .parent-link iron-icon {
     padding-right: 4px;

@@ -226,7 +226,6 @@
 
             .timeline {
                 --pb-timeline-padding: 0 20px;
-                margin-bottom: 20px;
             }
         </style>
     </custom-style>
@@ -277,6 +276,13 @@
                                                 <paper-button id="period-submit"><pb-i18n key="period-change"></pb-i18n></paper-button>
                                             </div>
                                         </div>
+                                        <pb-custom-form id="sort">
+                                            <label><pb-i18n key="sorting"></pb-i18n>: </label>
+                                            <select name="sort" value="${sort}" data-template="templates:form-control">
+                                                <option value="date" data-i18n="browse.orig-date"></option>
+                                                <option value="title" data-i18n="title"></option>
+                                            </select>
+                                        </pb-custom-form>
                                         <div id="document-list">
                                             <pb-load url="api/collection/{collection}" expand="" emit="search"></pb-load>
                                             <pb-paginate id="paginate" per-page="20" range="5" subscribe="search" emit="search" />
@@ -286,7 +292,7 @@
                             </main>
                             <aside class="search">
                                 <pb-search subscribe="search" data-template="pages:parse-params"
-                                        value="${query}" submit-on-load="" subforms="#genre,#options,#facets">
+                                        value="${query}" submit-on-load="" subforms="#genre,#options,#facets,#sort">
                                     <paper-button slot="searchButton"><pb-i18n key="browse.search"></pb-i18n></paper-button>
                                     <input type="hidden" name="date-min"/>
                                     <input type="hidden" name="date-max"/>

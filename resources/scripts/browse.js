@@ -121,14 +121,9 @@ document.addEventListener('DOMContentLoaded', function () {
         pbEvents.emit('pb-search-resubmit', 'search');
     });
 
-    // pbEvents.subscribe('pb-collection', 'docs', (ev) => {
-    //     const timeline = document.querySelector('.timeline');
-    //     if (!ev.detail.collection) {
-    //         timeline.style.display = 'none';
-    //     } else {
-    //         timeline.style.display = 'block';
-    //     }
-    // });    
+    document.querySelector('[name=sort]').addEventListener('change', () => {
+        pbEvents.emit('pb-search-resubmit', 'search');
+    });
 });
 
 
