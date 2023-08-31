@@ -36,27 +36,9 @@
     <custom-style>
         <style>
             .main {
-                height: calc(100vh - 285px);
+                display: block;
             }
             
-            @media (max-width: 1023px) {
-                .doclist {
-                    margin-bottom: 20px;
-                }
-                .documents {
-                    padding-left: 10px;
-                }
-                .documents .label {
-                    display: none;
-                }
-                .toolbar pb-search {
-                    padding-left: 0;
-                }
-                #facets {
-                    display: none;
-                }
-            }
-
             @media (min-width: 1024px) {
                 .toolbar {
                     display: none;
@@ -68,7 +50,7 @@
             }
 
             pb-leaflet-map {
-                height: 40%;
+                height: 20rem;
                 width: 100%;
             }
     
@@ -76,9 +58,8 @@
                 max-width: none;
             }
     
-            .list {
-                height: 60%;
-                max-width: 41.24rem;
+            .list {                
+                max-width: 80rem;
                 margin: 0 auto;
                 overflow: auto;
             }
