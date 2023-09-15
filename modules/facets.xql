@@ -88,7 +88,30 @@ declare function facets:print-table($config as map(*), $nodes as element()+, $va
 
 declare function facets:display($config as map(*), $nodes as element()+) {
     if (map:contains($config, "select")) then
-        if ($config?select instance of map(*) and map:contains($config?select, "source")) then
+        if ($config?select instance of map(*) and map:contains($config?select, "source") and not($config?select?source instance of xs:string)) then (
+            <select name="facet-{$config?dimension}" on-change="pb-search-resubmit" class="dropdown">
+                {
+                    (: for $param in facets:get-parameter("facet-" || $config?dimension)
+                    let $label :=
+                        if (map:contains($config, "output")) then
+                            $config?output($param)
+                        else
+                            $param
+                    return
+                        <option value="{$param}" data-i18n="{$label}" selected="">{$label}</option>, :)
+                    <option value=""></option>,
+                    for $value in $config?select?source($config?dimension)?*
+                        let $selected := $value = facets:get-parameter("facet-" || $config?dimension)
+                        return
+                            <option value="{$value}">
+                                {if($selected) then attribute selected {""} else () }
+                                {$value}
+                            </option>
+                    }
+                </select>
+
+        )
+        else if ($config?select instance of map(*) and map:contains($config?select, "source")) then
             <pb-combo-box source="{$config?select?source}" close-after-select="" placeholder="{$config?heading}">
                 <select name="facet-{$config?dimension}" multiple=""
                     on-change="pb-search-resubmit">

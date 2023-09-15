@@ -359,14 +359,18 @@
                                     <paper-checkbox id="editionstext" name="subtype" value="edition" data-template="pages:parse-params"><pb-i18n key="searchEdition"/></paper-checkbox>
                                 </pb-custom-form>
 
-                                <h4><pb-i18n key="filters"/></h4>
+                                <h4><pb-i18n key="filters"/></h4>                                
+<!--                                <pb-custom-form class="options" url="api/search/facet-titles"
+                                        subscribe="search" event="pb-results-received"
+                                        data-template="pages:parse-params"/>
+-->                                        
                                 <pb-custom-form id="options" class="options">
                                     <input type="hidden" name="dates" value=""
                                         data-template="templates:form-control" />
                                     <input type="hidden" name="collection" value="" data-template="templates:form-control" />
                                 </pb-custom-form>
                                 <pb-custom-form id="facets" class="facets options" url="api/search/facets" event="pb-results-received" 
-                                    subscribe="search"/>
+                                    subscribe="search" auto-submit=".dropdown"/>
                             </aside>
 
 
@@ -379,11 +383,6 @@
                         </div>
                     </div>
                 </section>
-
-                <footer class="version" style="display:none">
-                    App: v<span data-template="pages:version"/> /
-                    web components: v<pb-version/>
-                </footer>
             </app-header-layout>
         </app-drawer-layout>
 

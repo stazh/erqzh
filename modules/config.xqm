@@ -203,7 +203,7 @@ declare variable $config:facets := [
         (: "max": 5,
         "hierarchical": false(), :)
         "select": map {
-            "source": "api/facets/archive"
+            "source": config:list-archive-entries#1
         },
         "output": function($label) {
             $label
@@ -774,4 +774,15 @@ declare function config:get-fonts-dir() as xs:string? {
             $repoDir || "/resources/fonts"
         else
             ()
+};
+
+declare function config:list-archive-entries($type) {
+    let $_ := util:log("info", ("config:list-archive-entries type: '", $type))
+    
+    let $results := for $hit in collection($config:data-root)//tei:text[ft:query(., "archive:* AND type:document", map { "leading-wildcard": "yes","filter-rewrite": "yes"})]
+                        group by $value := ft:field($hit,"archive")
+                        return
+                            $value
+    return
+        array { $results}
 };

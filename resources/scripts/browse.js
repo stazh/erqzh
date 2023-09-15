@@ -77,7 +77,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     return '';
                 }
             });
-
+            ev.detail.querySelectorAll('.dropdown').forEach((select) => {
+                select.addEventListener('change',() => {
+                    pbEvents.emit('pb-search-resubmit', 'search');
+                })
+            });
         });
 
         pbEvents.subscribe('pb-combo-box-change', null, function() {
