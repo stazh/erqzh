@@ -253,20 +253,6 @@ declare variable $config:facets := [
                 case "false" return "no"
                 default return ""
         }
-    },
-    map {
-        "dimension": "volume",
-        "heading": "volume",
-        "output": function($label) {
-            switch($label)
-                case "" return ""
-                case "ZH_NF_I_1_3" return "Stadt und Territorialstaat Zürich II"
-                case "ZH_NF_I_1_11" return "Gedruckte Mandate Zürich"
-                case "ZH_NF_I_2_1" return "Die Rechtsquellen der Stadt Winterthur"
-                case "ZH_NF_II_3" return "Die Landvogtei Greifensee"
-                case "ZH_NF_II_11" return "Die Obervogteien um die Stadt Zürich"
-                default return $label
-        }
     }
 ];
 

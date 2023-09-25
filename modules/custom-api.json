@@ -934,6 +934,42 @@
                 }
             }
         },		
+		"/api/search/facet-titles": {
+			"get": {
+				"summary": "List facets",
+				"description": "Return a list of facet counts for current search results",
+				"operationId": "custom:facet-titles",
+				"tags": ["search"],
+				"parameters": [
+				{
+					"name": "lang",
+					"in": "query",
+					"schema": {
+						"type": "string"
+					}
+				},
+				{
+					"name": "facet-volume",
+					"in": "query",
+					"schema": {
+						"type": "string"
+					}
+				}
+				],
+				"responses": {
+					"200": {
+						"description": "Facets returned",
+						"content": {
+							"text/html": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				}
+			}
+		},		
         "/api/facets/{type}": {
             "get": {
 				"summary": "List facet values for people occurring in current search result set",

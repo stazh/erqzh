@@ -433,3 +433,51 @@ declare function api:facets-search($request as map(*)) {
         return
             array { $filtered }
 };
+
+declare function api:facet-titles($request as map(*)) {
+    let $lang := ($request?parameters?lang, $config:default-language )[1]
+    let $hits := session:get-attribute($config:session-prefix || ".hits")
+    let $facets := ft:facets($hits, "volume", ())
+    let $facet-title := $request?parameters?facet-volume
+    
+
+    let $volumes :=
+        for $vol in $config:data-collections
+            let $title :=  switch($vol)
+                case "ZH_NF_I_1_3" return "Stadt und Territorialstaat Zürich II"
+                case "ZH_NF_I_1_11" return "Gedruckte Mandate Zürich"
+                case "ZH_NF_I_2_1" return "Die Rechtsquellen der Stadt Winterthur"
+                case "ZH_NF_II_3" return "Die Landvogtei Greifensee"
+                case "ZH_NF_II_11" return "Die Obervogteien um die Stadt Zürich"
+                default return $vol
+            
+            return map {
+                "title": $title,
+                "value": $vol,
+                "hits": ($facets?($vol), 0)[1]
+        }
+
+    return
+        <fieldset>
+            <legend>Volumes fieldset</legend>
+        {
+            for $vol in $volumes
+            let $checked := $vol?value = $facet-title
+            let $_ := util:log("info", map {
+                "vol":$vol?value,
+                "param":$facet-title, 
+                "checked":$vol?value = $facet-title
+            })
+            return
+                element paper-checkbox {
+                    attribute type { "checkbox" },
+                    attribute name { "facet-volume" },
+                    (: if ($j?hits = 0) then attribute disabled { "disabled" } else (), :)
+                    if ($checked) then attribute checked { "checked" } else (),
+                    attribute value { $vol?value },
+                    $vol?title 
+                    (: || " (" || $j?hits || ")" :)
+                }
+        }
+        </fieldset>
+};

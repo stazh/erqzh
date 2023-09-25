@@ -328,7 +328,7 @@
                             </main>
                             <aside class="search">
                                 <pb-search subscribe="search" data-template="pages:parse-params"
-                                        value="${query}" submit-on-load="" subforms="#genre,#options,#facets,#sort">
+                                        value="${query}" submit-on-load="" subforms="#genre,#volumes,#options,#facets,#sort">
                                     <paper-button slot="searchButton"><pb-i18n key="browse.search"></pb-i18n></paper-button>
                                     <input type="hidden" name="date-min"/>
                                     <input type="hidden" name="date-max"/>
@@ -359,11 +359,9 @@
                                     <paper-checkbox id="editionstext" name="subtype" value="edition" data-template="pages:parse-params"><pb-i18n key="searchEdition"/></paper-checkbox>
                                 </pb-custom-form>
 
-                                <h4><pb-i18n key="filters"/></h4>                                
-<!--                                <pb-custom-form class="options" url="api/search/facet-titles"
-                                        subscribe="search" event="pb-results-received"
-                                        data-template="pages:parse-params"/>
--->                                        
+                                <h4><pb-i18n key="filters"/></h4>
+                                <pb-custom-form id="volumes" class="options" url="api/search/facet-titles"
+                                        subscribe="search" event="pb-results-received" data-template="pages:parse-params" />
                                 <pb-custom-form id="options" class="options">
                                     <input type="hidden" name="dates" value=""
                                         data-template="templates:form-control" />

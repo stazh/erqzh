@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('[name=date-max]').value = null;
     });
 
-    const facets = document.querySelector('.facets');
+    const facets = document.querySelector('.facets,#volumes');
     if (facets) {
         facets.addEventListener('pb-custom-form-loaded', function(ev) {
             const elems = ev.detail.querySelectorAll('.facet');
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     return '';
                 }
             });
-            ev.detail.querySelectorAll('.dropdown').forEach((select) => {
+            ev.detail.querySelectorAll('.dropdown,[name=facet-volume]').forEach((select) => {
                 select.addEventListener('change',() => {
                     pbEvents.emit('pb-search-resubmit', 'search');
                 })
