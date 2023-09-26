@@ -459,7 +459,7 @@ declare function api:facet-titles($request as map(*)) {
 
     return
         <fieldset>
-            <legend>Volumes fieldset</legend>
+            <legend><pb-i18n key="volume"></pb-i18n></legend>
         {
             for $vol in $volumes
             let $checked := $vol?value = $facet-title

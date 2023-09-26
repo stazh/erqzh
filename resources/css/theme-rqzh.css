@@ -358,6 +358,15 @@ a:focus {
     input[type=radio]:checked {
         --s: .5;
     }
+    paper-checkbox {
+        display:block;
+        padding-top:0.3rem;
+    }
+}
+#volumes fieldset {
+    padding-top:0.3rem;
+    padding-bottom:0.3rem;
+    margin-bottom:1rem;
 }
 
 /* page title */
