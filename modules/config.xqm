@@ -213,7 +213,7 @@ declare variable $config:facets := [
         "dimension": "filiation",
         "heading": "filiation",
         "select": map {
-            "source": "api/facets/filiation"
+            "source": config:list-filiation-entries#1
         },
         "output": function($label) {
             $label
@@ -223,7 +223,7 @@ declare variable $config:facets := [
         "dimension": "material",
         "heading": "material",
         "select": map {
-            "source": "api/facets/material"
+            "source": config:list-material-entries#1
         },
         "output": function($label) {
             $label
@@ -767,8 +767,34 @@ declare function config:list-archive-entries($type) {
     
     let $results := for $hit in collection($config:data-root)//tei:text[ft:query(., "archive:* AND type:document", map { "leading-wildcard": "yes","filter-rewrite": "yes"})]
                         group by $value := ft:field($hit,"archive")
+                        order by $value
                         return
                             $value
     return
         array { $results}
 };
+
+declare function config:list-filiation-entries($type) {
+    let $_ := util:log("info", ("config:list-filiation-entries type: '", $type))
+    
+    let $results := for $hit in collection($config:data-root)//tei:text[ft:query(., "filiation:*", map { "leading-wildcard": "yes","filter-rewrite": "yes"})]
+                        group by $value := ft:field($hit,"filiation")
+                        order by $value
+                        return
+                            $value
+    return
+        array { $results}
+};
+
+declare function config:list-material-entries($type) {
+    let $_ := util:log("info", ("config:list-material-entries type: '", $type))
+    
+    let $results := for $hit in collection($config:data-root)//tei:text[ft:query(., "material:* AND type:document", map { "leading-wildcard": "yes","filter-rewrite": "yes"})]
+                        group by $value := ft:field($hit,"material")
+                        order by $value
+                        return
+                            $value
+    return
+        array { $results}
+};
+

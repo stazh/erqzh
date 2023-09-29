@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('[name=date-max]').value = null;
     });
 
-    const facets = document.querySelector('.facets,#volumes');
+    const facets = document.querySelector('.facets');
     if (facets) {
         facets.addEventListener('pb-custom-form-loaded', function(ev) {
             const elems = ev.detail.querySelectorAll('.facet');
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     return '';
                 }
             });
-            ev.detail.querySelectorAll('.dropdown,[name=facet-volume]').forEach((select) => {
+            ev.detail.querySelectorAll('.dropdown').forEach((select) => {
                 select.addEventListener('change',() => {
                     pbEvents.emit('pb-search-resubmit', 'search');
                 })
@@ -88,6 +88,21 @@ document.addEventListener('DOMContentLoaded', function () {
             pbEvents.emit('pb-search-resubmit', 'search');
         });
     }
+
+    const volumes = document.querySelector('#volumes');
+    if (volumes) {
+        volumes.addEventListener('pb-custom-form-loaded', function(ev) {
+            ev.detail.querySelectorAll('[name=facet-volume]').forEach((select) => {
+                select.addEventListener('change',() => {
+                    pbEvents.emit('pb-search-resubmit', 'search');
+                })
+            });
+        });
+    }
+
+
+
+
 
     const timeRangeStart = document.getElementById('period-start');
     const timeRangeEnd = document.getElementById('period-end');
