@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const searchParams1 = new URLSearchParams(new URL(window.location.href).search);
+    document.querySelector('[name=type]').value = searchParams1.get("type")
+
     pbEvents.subscribe('pb-login', null, function(ev) {
         if (ev.detail.userChanged) {
             pbEvents.emit('pb-search-resubmit', 'search');
