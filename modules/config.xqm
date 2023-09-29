@@ -763,8 +763,7 @@ declare function config:get-fonts-dir() as xs:string? {
 };
 
 declare function config:list-archive-entries($type) {
-    let $_ := util:log("info", ("config:list-archive-entries type: '", $type))
-    
+    (: let $_ := util:log("info", ("config:list-archive-entries type: '", $type)) :)    
     let $results := for $hit in collection($config:data-root)//tei:text[ft:query(., "archive:* AND type:document", map { "leading-wildcard": "yes","filter-rewrite": "yes"})]
                         group by $value := ft:field($hit,"archive")
                         order by $value
@@ -775,8 +774,7 @@ declare function config:list-archive-entries($type) {
 };
 
 declare function config:list-filiation-entries($type) {
-    let $_ := util:log("info", ("config:list-filiation-entries type: '", $type))
-    
+    (: let $_ := util:log("info", ("config:list-filiation-entries type: '", $type)) :)
     let $results := for $hit in collection($config:data-root)//tei:text[ft:query(., "filiation:*", map { "leading-wildcard": "yes","filter-rewrite": "yes"})]
                         group by $value := ft:field($hit,"filiation")
                         order by $value
@@ -787,8 +785,7 @@ declare function config:list-filiation-entries($type) {
 };
 
 declare function config:list-material-entries($type) {
-    let $_ := util:log("info", ("config:list-material-entries type: '", $type))
-    
+    (: let $_ := util:log("info", ("config:list-material-entries type: '", $type)) :)
     let $results := for $hit in collection($config:data-root)//tei:text[ft:query(., "material:* AND type:document", map { "leading-wildcard": "yes","filter-rewrite": "yes"})]
                         group by $value := ft:field($hit,"material")
                         order by $value

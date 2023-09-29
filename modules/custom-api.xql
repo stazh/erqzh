@@ -463,11 +463,11 @@ declare function api:facet-titles($request as map(*)) {
         {
             for $vol in $volumes
             let $checked := $vol?value = $facet-title
-            let $_ := util:log("info", map {
+            (: let $_ := util:log("info", map {
                 "vol":$vol?value,
                 "param":$facet-title, 
                 "checked":$vol?value = $facet-title
-            })
+            }) :)
             return
                 element paper-checkbox {
                     attribute type { "checkbox" },
