@@ -28,8 +28,8 @@ ENV PATH ${PATH}:${ANT_HOME}/bin
 FROM builder as tei
 
 ARG TEMPLATING_VERSION=1.1.0
-ARG PUBLISHER_LIB_VERSION=3.0.0
-ARG ROUTER_VERSION=1.8.0
+ARG PUBLISHER_LIB_VERSION=3.0.1
+ARG ROUTER_VERSION=1.8.1
 
 ARG ADMIN_PASS=dm18IWqn0OQBfSh5KubR
 
@@ -47,17 +47,13 @@ ARG ACCESS_TOKEN_VALUE2=glpat-fZA7FnjN7rwwMve4q8gY
 # add key
 RUN  mkdir -p ~/.ssh && ssh-keyscan -t rsa gitlab.existsolutions.com >> ~/.ssh/known_hosts
 
-RUN  git clone https://${ACCESS_TOKEN_NAME1}:${ACCESS_TOKEN_VALUE1}@gitlab.existsolutions.com/rqzh/erqzh-data.git \ 
+RUN  git clone --depth 1 -b tp8 https://${ACCESS_TOKEN_NAME1}:${ACCESS_TOKEN_VALUE1}@gitlab.existsolutions.com/rqzh/erqzh-data.git \ 
     && cd erqzh-data \
-    && echo Checking out ${GIT_BRANCH1} \
-    && git checkout ${GIT_BRANCH1} \
-    && ant     
+    && ant
 
 
-RUN  git clone https://${ACCESS_TOKEN_NAME2}:${ACCESS_TOKEN_VALUE2}@gitlab.existsolutions.com/rqzh/rqzh2.git \
+RUN  git clone --depth 1 -b tp8 https://${ACCESS_TOKEN_NAME2}:${ACCESS_TOKEN_VALUE2}@gitlab.existsolutions.com/rqzh/rqzh2.git \
     && cd rqzh2 \
-    && echo Checking out ${GIT_BRANCH2} \
-    && git checkout -b ${GIT_BRANCH2} origin/${GIT_BRANCH2} \
     && ant
 
 RUN curl -L -o /tmp/roaster-${ROUTER_VERSION}.xar http://exist-db.org/exist/apps/public-repo/public/roaster-${ROUTER_VERSION}.xar
@@ -71,8 +67,6 @@ COPY --from=tei /tmp/rqzh2/build/*.xar /exist/autodeploy/
 COPY --from=tei /tmp/*.xar /exist/autodeploy/
 
 WORKDIR /exist
-
-
 
 ARG HTTP_PORT=8080
 ARG HTTPS_PORT=8443
