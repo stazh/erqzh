@@ -1,4 +1,11 @@
 {
+  "index": {
+    "editionseinheiten": "Entities of edition",
+    "quellenstuecke": "Source items",
+    "orte": "Places",
+    "personen": "People",
+    "schlagwoerter": "Keywords"
+  },
   "meta": {
     "regest": "Summary",
     "metadata": "Metadata",

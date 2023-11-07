@@ -1,4 +1,11 @@
 {
+  "index": {
+    "editionseinheiten": "Editionseinheiten",
+    "quellenstuecke": "Quellenstücke",
+    "orte": "Orte",
+    "personen": "Personen",
+    "schlagwoerter": "Schlagwörter"
+  },
   "meta": {
     "regest": "Regest",
     "metadata": "Stückbeschreibung",

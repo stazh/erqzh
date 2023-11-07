@@ -1,4 +1,11 @@
 {
+  "index": {
+    "editionseinheiten": "Entités d'édition",
+    "quellenstuecke": "Pièces de sources",
+    "orte": "Lieux",
+    "personen": "Personnes",
+    "schlagwoerter": "Termes"
+  },
   "meta": {
     "regest": "Résumé",
     "metadata": "Description de la pièce source",
