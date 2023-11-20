@@ -6,6 +6,10 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
     baseUrl: "http://localhost:8080/exist/apps/rqzh2/",
+    reporter: 'tap',
+    reporterOptions: {
+      toConsole: true,
+    },
     includeShadowDom: true
   },
 });
