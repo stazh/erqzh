@@ -1,6 +1,6 @@
 {
   "index": {
-    "editionseinheiten": "Entities of edition",
+    "editionseinheiten": "Edition units",
     "quellenstuecke": "Source items",
     "orte": "Places",
     "personen": "People",
@@ -94,7 +94,7 @@
   "to": "bis",
   "view-switch": "Switch between normalized and diplomatic view",
   "view-normalized": "Normalized text with register",
-  "volume": "Volume",
+  "volume": "Edition units",
   "work-id":"Part Number",
   "register": {
     "place": "Place",
