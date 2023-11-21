@@ -1,6 +1,6 @@
 {
   "index": {
-    "editionseinheiten": "Entités d'édition",
+    "editionseinheiten": "Unités d'édition",
     "quellenstuecke": "Pièces de sources",
     "orte": "Lieux",
     "personen": "Personnes",
@@ -94,7 +94,7 @@
   "to": "à",
   "view-switch": "Changer de la présentation normalisée à la diplomatique.",
   "view-normalized": "Normalisé",
-  "volume": "Unité éditorial",
+  "volume": "Unités d'édition",
   "work-id": "Numéro",
   "register": {
     "place": "Lieu",
