@@ -4,7 +4,7 @@ describe('bibliography page', () => {
     })
 
     it('should display two separate tables', () => {
-        cy.get('caption')
+        cy.get('table')
         .should('be.visible')
         .should('have.length', 2)
     })
