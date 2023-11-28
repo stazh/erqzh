@@ -33,23 +33,62 @@
     <script src="resources/scripts/app/index.js"/>
     <custom-style>
         <style>
+            html {
+                --landing-page-max-height:60vh;
+                --page-max-width:62rem;
+            }
             main {
-                display: grid;
                 margin: 32px auto 128px auto;
-                grid-template-columns: 50% 50%;
-                gap: 10px 10px;
-                max-width: 980px;
+                max-width: var(--page-max-width);
             }
 
             h1 {
                 margin-top: 0;
             }
+
+            .split-two {
+                display: grid;
+                grid-template-columns: 40% auto;
+                max-width: var(--page-max-width);
+                width:100%;
+                grid-gap:1rem;
+
+            }
+            .left {
+                display:grid;
+                grid-template-rows: repeat(5,1fr);
+                grid-gap:1rem;
+            }
+            .right {
+                max-height: var(--landing-page-max-height);
+                max-width: calc(var(--page-max-width) / 2);
+                justify-self: center;
+            }
             .title-image {
-                display: block;
+                display:block;
             }
 
             .title-image img {
-                width: 100%;
+                max-height: var(--landing-page-max-height);
+
+            }
+            .box {
+                box-sizing: border-box;
+                border:1px solid black;
+            }
+            .box:hover {
+                opacity: 80%;
+                transition: opacity 0.6s;
+            }
+            .box.edition{ background-color: rgba(0, 118, 189,0.3)}
+            .box.sources{ background-color: rgba(0, 118, 189,0.3)}
+            .box.places{ background-color: rgba(0, 118, 189,0.2)}
+            .box.people{ background-color: rgba(0, 118, 189,0.2)}
+            .box.keywords{ background-color:rgba(0, 118, 189,0.2)}
+
+            .box .bottom{
+                padding-left:1rem;
+                padding-right:1rem;
             }
 
             @media (min-width: 1024px) {
@@ -66,14 +105,7 @@
                 main {
                     display: block;
                     margin: 32px 10px 0 10px;
-                }
-
-                .title-image {
-                    text-align: center;
-                }
-                .title-image img {
-                    width: 320px;
-                }
+                }              
             }
         </style>
     </custom-style>
@@ -92,26 +124,52 @@
                 </app-header>
 
                 <main class="homepage">
-                    <div class="title-text">
-                        <h1 class="tp-title">
-                                <pb-i18n key="doctitle"/>
-                            </h1>
+                    <section>
+                        <h1 class="tp-title"><pb-i18n key="doctitle"/></h1>
+                        <p class="teaser"><pb-i18n key="title-text-1"/></p>                
                         <p class="teaser">
-                                <pb-i18n key="title-text-1"/>
-                            </p>
-                        <p class="teaser">
-                                <pb-i18n key="title-text-2"/>
-                            </p>
-                        <p class="teaser">
-                                <a href="start.html">
-                                    <pb-i18n key="title-text-link"/>
-                                </a>
-                            </p>
-                    </div>
-                    
-                    <a href="start.html" class="title-image">
-                        <img src="resources/images/8562860-large.jpeg"/>
-                    </a>                                        
+                            <a href="start.html"><pb-i18n key="title-text-link"/></a>
+                        </p>
+                    </section>
+                    <section class="split-two">
+                        <div class="left" >
+                            <a href="${app}/start.html" data-template="pages:parse-params" class="box edition">
+                                <i class="fas fa-envelope"></i>
+                                <div class="bottom">
+                                    <h2><pb-i18n key="index.editionseinheiten">Editionseinheiten</pb-i18n></h2>
+                                </div>
+                            </a>
+                            <a href="${app}/start.html?type=document" data-template="pages:parse-params" class="box sources">
+                                <i class="fas fa-envelope"></i>
+                                <div class="bottom">
+                                    <h2><pb-i18n key="index.quellenstuecke">Quellenstücke</pb-i18n></h2>
+                                </div>
+                            </a>
+                            <a href="${app}/places/all/" data-template="pages:parse-params" class="box places">
+                                <i class="fas fa-envelope"></i>
+                                <div class="bottom">
+                                    <h2><pb-i18n key="index.orte">Places</pb-i18n></h2>
+                                </div>
+                            </a>
+                            <a href="${app}/people/all/" data-template="pages:parse-params" class="box people">
+                                <i class="fas fa-envelope"></i>
+                                <div class="bottom">
+                                    <h2><pb-i18n key="index.personen">People</pb-i18n></h2>
+                                </div>
+                            </a>
+                            <a href="${app}/keyword/all/" data-template="pages:parse-params" class="box keywords">
+                                <i class="fas fa-envelope"></i>
+                                <div class="bottom">
+                                    <h2><pb-i18n key="index.schlagwoerter">Keywords</pb-i18n></h2>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="right">
+                            <a href="start.html" class="title-image">
+                                <img src="resources/images/8562860-large.jpeg"/>
+                            </a>
+                        </div>
+                    </section>
                 </main>
 
                 <footer class="version" style="display:none">
@@ -150,8 +208,8 @@
 
     <div class="splash"/>
 
-    <footer data-template="templates:include" data-template-path="templates/footer.html"/>    
-    <script data-template="templates:include" data-template-path="templates/matomo.html"/>    
+    <footer data-template="templates:include" data-template-path="templates/footer.html"/>
+    <script data-template="templates:include" data-template-path="templates/matomo.html"/>
 </body>
 
 </html>

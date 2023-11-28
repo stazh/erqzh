@@ -11,10 +11,9 @@ module namespace api="http://teipublisher.com/api/custom";
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 (: Add your own module imports here :)
-import module namespace rutil="http://exist-db.org/xquery/router/util";
-import module namespace errors = "http://exist-db.org/xquery/router/errors";
+import module namespace rutil="http://e-editiones.org/roaster/util";
+import module namespace errors = "http://e-editiones.org/roaster/errors";
 import module namespace app="http://existsolutions.com/ssrq/app" at "app.xql";
-import module namespace search="http://existsolutions.com/ssrq/search" at "ssrq-search.xql";
 import module namespace templates="http://exist-db.org/xquery/html-templating";
 import module namespace pages="http://www.tei-c.org/tei-simple/pages" at "lib/pages.xql";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
@@ -23,6 +22,10 @@ import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at
 import module namespace dapi="http://teipublisher.com/api/documents" at "lib/api/document.xql";
 import module namespace vapi="http://teipublisher.com/api/view" at "lib/api/view.xql";
 
+declare variable $api:REGISTER-LUCENE-OPTIONS := map {
+                    "leading-wildcard": "yes",
+                    "filter-rewrite": "yes"
+                };
 
 (:~
  : Keep this. This function does the actual lookup in the imported modules.
@@ -33,6 +36,31 @@ declare function api:lookup($name as xs:string, $arity as xs:integer) {
     } catch * {
         ()
     }
+};
+
+declare function api:about($request as map(*)) {
+    let $_ := util:log("info", "api:about")
+    let $doc := $config:data-root  || "/about/about-the-edition-de.xml"
+    let $_ := util:log("info", "api:about doc: " || $doc)
+    let $xml := pages:load-xml($config:default-view, (), $doc)
+    let $_ := util:log("info", "api:about xml: ")
+    let $_ := util:log("info", $xml?data)
+    
+    let $template := doc($config:app-root || "/templates/pages/view.html")
+    let $_ := util:log("info", "api:about template: ")
+    let $_ := util:log("info", $template)
+    let $model := map {
+        "data": $xml?data,
+        "odd": $config:default-odd,
+        "view": $config:default-view,
+        "template": $config:default-template
+
+    }
+    return
+        templates:apply($template, api:lookup#2, $model, map {
+            $templates:CONFIG_APP_ROOT : $config:app-root,
+            $templates:CONFIG_STOP_ON_ERROR : true()
+        })
 };
 
 declare function api:registerdaten($request as map(*)) {
@@ -164,6 +192,10 @@ declare function api:timeline($request as map(*)) {
         )
 };
 
+(:~
+* retrieves all places as an json array 
+* called by <pb-leaflet-map> component 
+~:)
 declare function api:places-all($request as map(*)) {
     let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
     let $places := 
@@ -174,7 +206,7 @@ declare function api:places-all($request as map(*)) {
         else (
             doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
         )
-    let $log := util:log("info", "api:places-all found '" || count($places) || "' places in editionseinheit " || $editionseinheit)
+    (: let $log := util:log("info", "api:places-all found '" || count($places) || "' places in editionseinheit " || $editionseinheit) :)
     return 
         array { 
             for $place in $places
@@ -192,75 +224,47 @@ declare function api:places-all($request as map(*)) {
                 ) else()
             }        
 };
-
-declare function api:people($request as map(*)) {
-    let $search := normalize-space($request?parameters?search)
+declare function api:split-list($request as map(*)) {
+    let $search := normalize-space($request?parameters?search)    
     let $letterParam := $request?parameters?category
-    let $view := $request?parameters?view
-    let $sortDir := $request?parameters?dir
     let $limit := $request?parameters?limit
+    (: let $log := util:log("info","api:split-list $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit )  :)
+    let $reg-type := normalize-space($request?parameters?type)
     let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
-    let $log := util:log("info","api:people $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit:" || $editionseinheit)
-    let $peoples := if( $editionseinheit = $config:data-collections )
-                            then (
-                                if ($search and $search != '') 
-                                then (
-                                    doc($config:data-root || "/person/person-" || $editionseinheit || ".xml")//tei:person[ft:query(., 'name:(' || $search || '*)')]
-                                ) else (
-                                    doc($config:data-root || "/person/person-" || $editionseinheit || ".xml")//tei:person
-                                )
-                            )
-                            else (
-                                if ($search and $search != '') 
-                                then (
-                                    doc($config:data-root || "/person/person.xml")//tei:person[ft:query(., 'name:(' || $search || '*)')]    
-                                ) 
-                                else (
-                                    doc($config:data-root || "/person/person.xml")//tei:person
-                                )
-                            )
-    let $sorted_peoples := for $people in $peoples 
-                            order by $people/tei:persName[@type='sorted_full'] ascending
-                            return
-                                $people
-    let $log := util:log("info","api:people  found people:"||count($sorted_peoples) )
-    let $byKey := for-each($sorted_peoples, function($person as element()) {
-        let $label := $person/tei:persName[@type='full_sorted']/text()
-        let $sortKey :=
-            if (starts-with($label, "von ")) then
-                substring($label, 5)
-            else
-                $label
-        return
-            [lower-case($sortKey), $label, $person]
-    })
-    let $sorted := api:sort($byKey, $sortDir)
-    let $letter := 
-        if (count($sorted_peoples) < $limit) then 
-            "Alle"
-        else if (not($letterParam) or $letterParam = '') then (
-            substring($sorted[1]?1, 1, 1) => upper-case()
-        )
+    let $log := util:log("info","api:split-list: registry-type: " || $reg-type)
+    let $items := api:query-register($reg-type,$search,$editionseinheit)
+    let $log := util:log("info", "api:split-list found items: " || count($items))
+    let $byLetter := 
+        map:merge(
+            for $item in $items
+                let $name := ft:field($item, 'name')[1]
+                order by $name
+                group by $letter := substring($name, 1, 1) => upper-case()
+                return
+                    map:entry($letter, $item)
+    )
+    let $letter :=
+        if ((count($items) < $limit) or $search != '') then
+            "[A-Z]"
+        else if (not($letterParam) or $letterParam = '') then
+            head(sort(map:keys($byLetter)))
         else
             $letterParam
-    let $byLetter :=
-        if ($letter = 'Alle') then
-            $sorted
+    let $itemsToShow :=
+        if ($letter = '[A-Z]') then
+            $items
         else
-            filter($sorted, function($entry) {
-                starts-with($entry?1, lower-case($letter))
-            })
-
+            $byLetter($letter)
     return
         map {
-            "items": api:output-person($byLetter, $letter, $view, $search),
+            "items": api:output-split-list-items($itemsToShow, $letter, $search, $reg-type),
             "categories":
-                if (count($sorted_peoples) < $limit) then
+                if ((count($items) < $limit)  or $search != '') then
                     []
                 else array {
-                    for $index in 1 to string-length('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-                    let $alpha := substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $index, 1)
-                    let $hits := count(filter($sorted, function($entry) { starts-with($entry?1, lower-case($alpha))}))
+                    for $index in 1 to string-length('0123456789AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ')
+                    let $alpha := substring('0123456789AÄBCDEFGHIJKLMNOÖPQRSTUÜVWXYZ', $index, 1)
+                    let $hits := count($byLetter($alpha))
                     where $hits > 0
                     return
                         map {
@@ -268,117 +272,101 @@ declare function api:people($request as map(*)) {
                             "count": $hits
                         },
                     map {
-                        "category": "Alle",
-                        "count": count($sorted)
+                        "category": "[A-Z]",
+                        "count": count($items),
+                        "label": <pb-i18n key="all">Alle</pb-i18n>
                     }
                 }
         }
 };
 
-declare function api:output-person($list, $letter as xs:string, $view as xs:string, $search as xs:string?) {
-    array {
-        for $person in $list
-            let $dates := $person?3/tei:note[@type="date"]/text()
-            let $letterParam := if ($letter = "Alle") then substring($person?3/tei:persName[@type='full_sorted']/text(), 1, 1) else $letter
-            let $params := "category=" || $letterParam || "&amp;view=" || $view || "&amp;search=" || $search
-            return
-                <span>
-                    <a href="{$person?3/tei:persName[@type='full_sorted']/text()}?{$params}&amp;key={$person?3/@xml:id}">{$person?2}</a>
-                    { if ($dates) then <span class="dates"> ({$dates})</span> else () }
-                </span>
-    }
-};
-
-declare function api:organizations($request as map(*)) {
-    let $search := normalize-space($request?parameters?search)
-    let $letterParam := $request?parameters?category
-    let $view := $request?parameters?view
-    let $sortDir := $request?parameters?dir
-    let $limit := $request?parameters?limit
-    let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
-    let $log := util:log("info","api:organizations $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit:" || $editionseinheit)
-    let $orgs := if( $editionseinheit = $config:data-collections )
-                    then (
-                        if ($search and $search != '') 
-                        then (
-                            doc($config:data-root || "/organization/organization-" || $editionseinheit || ".xml")//tei:org[ft:query(., 'org-name:(' || $search || '*)')]
-                        ) else (
-                            doc($config:data-root || "/organization/organization-" || $editionseinheit || ".xml")//tei:org
-                        )
-                    )
-                    else (
-                        if ($search and $search != '') 
-                        then (
-                            doc($config:data-root || "/organization/organization.xml")//tei:org[ft:query(., 'org-name:(' || $search || '*)')]    
-                        ) 
-                        else (
-                            doc($config:data-root || "/organization/organization.xml")//tei:org
-                        )
-                    )
-    let $log := util:log("info","api:organizations  found orgs:"||count($orgs) )
-    let $byKey := for-each($orgs, function($org as element()) {
-        let $label := $org/tei:orgName/text()
-        return
-            [lower-case($label), $label, $org]
-    })
-    let $sorted := api:sort($byKey, $sortDir)
-    let $letter := 
-        if (count($orgs) < $limit) then 
-            "Alle"
-        else if (not($letterParam) or $letterParam = '') then (
-            substring($sorted[1]?1, 1, 1) => upper-case()
-        )
-        else
-            $letterParam
-    let $byLetter :=
-        if ($letter = 'Alle') then
-            $sorted
-        else
-            filter($sorted, function($entry) {
-                starts-with($entry?1, lower-case($letter))
-            })
-
+declare function api:query-register($reg-type as xs:string, $search as xs:string?, $editionseinheit as xs:string?) {
+    (: let $_ := util:log("info","api:query-register $reg-type: " || $reg-type || " - $search " || $search || " - $editionseinheit: " || $editionseinheit ) :)
+    let $volume-facet := if($editionseinheit = $config:data-collections) then (' AND volume:(' || $editionseinheit || ')' ) else ()
+    let $facet-string := if ($search and $search != '')
+                        then ( 'name:(' || $search || '*)' || $volume-facet)
+                        else ( 'name:*' || $volume-facet)
     return
-        map {
-            "items": api:output-organization($byLetter, $letter, $view, $search),
-            "categories":
-                if (count($orgs) < $limit) then
-                    []
-                else array {
-                    for $index in 1 to string-length('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-                    let $alpha := substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $index, 1)
-                    let $hits := count(filter($sorted, function($entry) { starts-with($entry?1, lower-case($alpha))}))
-                    where $hits > 0
-                    return
-                        map {
-                            "category": $alpha,
-                            "count": $hits
-                        },
-                    map {
-                        "category": "Alle",
-                        "count": count($sorted)
-                    }
-                }
-        }
+    switch($reg-type) 
+        case "people" return
+            if ($search and $search != '') 
+            then ( $config:register-person//tei:person[ft:query(., $facet-string)] ) 
+            else ( $config:register-person//tei:person[ft:query(., $facet-string, $api:REGISTER-LUCENE-OPTIONS)] )
+        case "organization" return         
+            if ($search and $search != '') 
+            then ( $config:register-organization//tei:org[ft:query(., $facet-string)] ) 
+            else ( $config:register-organization//tei:org[ft:query(., $facet-string, $api:REGISTER-LUCENE-OPTIONS)] )
+        case "place" return 
+            if ($search and $search != '') 
+            then ( $config:register-place//tei:place[ft:query(., $facet-string)] ) 
+            else ( $config:register-place//tei:place[ft:query(., $facet-string, $api:REGISTER-LUCENE-OPTIONS)] )
+        case "keyword" return 
+            if ($search and $search != '') 
+            then ( $config:register-taxonomy//tei:category[ft:query(., $facet-string)] ) 
+            else ( $config:register-taxonomy//tei:category[ft:query(., $facet-string, $api:REGISTER-LUCENE-OPTIONS)] )
+        default return
+            error($errors:NOT_FOUND, "Register type " || $reg-type || " not found")
 };
 
-declare function api:output-organization($list, $letter as xs:string, $view as xs:string, $search as xs:string?) {
+declare function api:output-split-list-items($list, $letter as xs:string, $search as xs:string?, $reg-type) {
     array {
-        for $org in $list
-            let $type := substring-before($org?3/@type/string(),"/")
-            let $letterParam := if ($letter = "Alle") then substring($org?3/tei:orgName/text(), 1, 1) else $letter
-            let $params := "category=" || $letterParam || "&amp;view=" || $view || "&amp;search=" || $search
+        for $item in $list
+            let $name := ft:field($item, 'name')[1]
             return
-                <span>
-                    <a href="{$org?3/tei:orgName/text()}?{$params}&amp;key={$org?3/@xml:id}">{$org?2}</a>
-                    { if ($type) then <span class="type"> ({$type})</span> else () }
-                </span>
+            if(string-length($name)>0)
+            then (
+                let $letterParam := if ($letter = "[A-Z]") then substring($name, 1, 1) else $letter
+                let $params := "&amp;category=" || $letterParam || "&amp;search=" || $search
+                
+                return
+                    <span class="{$reg-type}">
+                        <a href="{$name}?{$params}&amp;key={$item/@xml:id}">{$name}</a>
+                        { api:output-split-list-items-details($item, $reg-type)}
+                    </span>
+            ) else()
     }
 };
 
-declare function api:sort($people as array(*)*, $dir as xs:string) {
+declare function api:output-split-list-items-details($item, $reg-type) {
+    switch($reg-type) 
+        case "people" return
+            let $dates := $item/tei:note[@type="date"]/text()
+            return if($dates) then ( <span class="dates"> ({$dates})</span> ) else ()
+        case "organization" return
+            let $type := substring-before($item/@type/string(),"/")
+            return if ($type) then <span class="type"> ({$type})</span> else ()        
+        case "place" return
+            let $label := $item/@n/string()
+            let $type := substring-before($item/tei:trait[@type="type"][1]/tei:label/text(), "/")
+            let $coords := tokenize($item/tei:location/tei:geo)
+            return (
+                if (string-length($type) > 0) then <span class="type"> ({$type})</span> else (),
+                if(string-length(normalize-space($item/tei:location/tei:geo)) > 0) 
+                then (
+                    element pb-geolocation {
+                        attribute latitude { $coords[1] },
+                        attribute longitude { $coords[2] },
+                        attribute label { $label},
+                        attribute emit {"map"},
+                        attribute event { "click" },
+                        if ($item/@type != 'approximate') then attribute zoom { 9 } else (),
+                        
+                        element iron-icon {
+                            attribute icon {"maps:map" }
+                        }
+                    }
+                ) 
+                else ()
+        )
+        case "keyword" return ()
+        default return
+            error($errors:NOT_FOUND, "Register type " || $reg-type || " not found")    
+
+};
+
+declare function api:sort($items as array(*)*, $dir as xs:string) {
     let $sorted :=
-        sort($people, "?lang=de-DE", function($entry) {
+        sort($items, "?lang=de-DE", function($entry) {
             $entry?1
         })
     return
@@ -388,128 +376,108 @@ declare function api:sort($people as array(*)*, $dir as xs:string) {
             reverse($sorted)
 };
 
-declare function api:places($request as map(*)) {
-    let $search := normalize-space($request?parameters?search)
-    let $letterParam := $request?parameters?category
-    let $limit := $request?parameters?limit
-    let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
-    let $log := util:log("info","api:places $search:"||$search || " - $letterParam:"||$letterParam||" - $limit:" || $limit || " - $editionseinheit:" || $editionseinheit)
-    let $places := if( $editionseinheit = $config:data-collections )
-                            then (
-                                if ($search and $search != '') 
-                                then (
-                                    doc($config:data-root || "/place/place-" || $editionseinheit || ".xml")//tei:listPlace/tei:place[ft:query(., 'lname:(' || $search || '*)')]
-                                ) else (
-                                    doc($config:data-root || "/place/place-" || $editionseinheit || ".xml")//tei:listPlace/tei:place    
-                                )
-                            )
-                            else (
-                                if ($search and $search != '') 
-                                then (
-                                    doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place[ft:query(., 'lname:(' || $search || '*)')]
-                                ) else (
-                                    doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
-                                )
-                            )
-    let $log := util:log("info","api:places  found places:"||count($places) )
-    let $sorted := sort($places, "?lang=de-DE", function($place) { lower-case($place/@n) })
+declare function api:facets-search($request as map(*)) {
+    let $value := $request?parameters?value
+    let $query := $request?parameters?query
+    let $type := $request?parameters?type
+    let $lang := tokenize($request?parameters?language, '-')[1]
+
+    let $_ := util:log("info", ("api:facets-search type: '", $type, "' - query: '" , $query, "' - value: '" , $value, "'"))    
+    let $hits := session:get-attribute($config:session-prefix || ".hits")
+    let $log := util:log("info", "api:facets-search: hits: " || count($hits))
+    let $facets := ft:facets($hits, $type, ())
+    let $log := util:log("info", "api:facets-search: $facets: " || count($facets))
+
     
-    let $letter := 
-        if (count($places) < $limit) then 
-            "Alle"
-        else if (not($letterParam) or $letterParam = '') then
-            substring($sorted[1], 1, 1) => upper-case()
-        else
-            $letterParam
-    let $log := util:log("info","api:places  $letter:"||$letter )            
+    let $matches := 
+        for $key in if (exists($request?parameters?value)) 
+                            then $request?parameters?value 
+                            else map:keys($facets)
+            let $text := 
+                switch($type) 
+                    case "archive" return
+                        $key
+                    case "person" return
+                        $config:register-person/id($key)/tei:persName[@type='full']/text()
+                    case "organization" return
+                        $config:register-organization/id($key)/tei:orgName/text()
+                    case "place" return
+                        $config:register-place/id($key)/tei:placeName[@type='main']/text()
+                    case "keyword" return
+                        $config:register-taxonomy/id($key)/tei:desc[@xml:lang='deu']/text()
+                    case "filiation" return $key
+                    case "material" return
+                        let $i18n-path := $config:app-root || "/resources/i18n/app/" ||  $lang || ".json"
+                        let $json := json-doc($i18n-path)
+                        let $_ := util:log("info", "api:facets-search: material: $key : " || $key || " - $i18n-path: " || $i18n-path)
+                        return
+                            $json?($key)
+                    default return 
+                        let $_ := util:log("warn", "api:facets-search: default return, $type: " || $type)
+                        return 
+                            $key
+            return 
+                map {
+                    "text": $text,
+                    "freq": $facets($key),
+                    "value": $key
+                } 
+
+
+           
+        let $log := util:log("info", "api:facets-search: $matches: " || count($matches))
+        let $filtered := filter($matches, function($item) {
+            matches($item?text, '(?:^|\W)' || $request?parameters?query, 'i')
+        })
+        let $log := util:log("info", "api:facets-search: filtered $matches: " || count($filtered))
+        return
+            array { $filtered }
+};
+
+declare function api:facet-titles($request as map(*)) {
+    let $lang := ($request?parameters?lang, $config:default-language )[1]
+    let $hits := session:get-attribute($config:session-prefix || ".hits")
+    let $facets := ft:facets($hits, "volume", ())
+    let $facet-title := $request?parameters?facet-volume
     
-    let $byLetter :=
-        if ($letter = 'Alle') then
-            $sorted
-        else
-            filter($sorted, function($entry) {
-                starts-with(lower-case($entry/@n), lower-case($letter))
-            })
+
+    let $volumes :=
+        for $vol in $config:data-collections
+            let $title :=  switch($vol)
+                case "ZH_NF_I_1_3" return "Stadt und Territorialstaat Zürich II"
+                case "ZH_NF_I_1_11" return "Gedruckte Mandate Zürich"
+                case "ZH_NF_I_2_1" return "Die Rechtsquellen der Stadt Winterthur"
+                case "ZH_NF_II_3" return "Die Landvogtei Greifensee"
+                case "ZH_NF_II_11" return "Die Obervogteien um die Stadt Zürich"
+                default return $vol
+            
+            return map {
+                "title": $title,
+                "value": $vol,
+                "hits": ($facets?($vol), 0)[1]
+        }
+
     return
-        map {
-            "items": api:output-place($byLetter, $letter, $search),
-            "categories":
-                if (count($places) < $limit) then
-                    []
-                else array {
-                    for $index in 1 to string-length('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-                    let $alpha := substring('ABCDEFGHIJKLMNOPQRSTUVWXYZ', $index, 1)
-                    let $hits := count(filter($sorted, function($entry) { starts-with(lower-case($entry/@n), lower-case($alpha))}))
-                    where $hits > 0
-                    return
-                        map {
-                            "category": $alpha,
-                            "count": $hits
-                        },
-                    map {
-                        "category": "Alle",
-                        "count": count($sorted)
-                    }
+        <fieldset>
+            <legend><pb-i18n key="volume"></pb-i18n></legend>
+        {
+            for $vol in $volumes
+            let $checked := $vol?value = $facet-title
+            (: let $_ := util:log("info", map {
+                "vol":$vol?value,
+                "param":$facet-title, 
+                "checked":$vol?value = $facet-title
+            }) :)
+            return
+                element paper-checkbox {
+                    attribute type { "checkbox" },
+                    attribute name { "facet-volume" },
+                    (: if ($j?hits = 0) then attribute disabled { "disabled" } else (), :)
+                    if ($checked) then attribute checked { "checked" } else (),
+                    attribute value { $vol?value },
+                    $vol?title 
+                    (: || " (" || $j?hits || ")" :)
                 }
         }
-};
-
-declare function api:output-place($list, $category as xs:string, $search as xs:string?) {
-    array {
-        for $place in $list
-        let $categoryParam := if ($category = "Alle") then substring($place/@n, 1, 1) else $category
-        let $params := "category=" || $categoryParam || "&amp;search=" || $search || "&amp;key=" || $place/@xml:id
-        let $label := $place/@n/string()
-        let $type := substring-before($place/tei:trait[@type="type"][1]/tei:label/text(), "/")
-        let $coords := tokenize($place/tei:location/tei:geo)
-        return
-            element span {
-                attribute class { "place" },
-                element span {
-                    element a {
-                        attribute href { $label || "?" || $params },
-                        $label
-                    },
-                    if (string-length($type) > 0) then <span class="type"> ({$type})</span> else () 
-                },
-                if(string-length(normalize-space($place/tei:location/tei:geo)) > 0) 
-                then (
-                    element pb-geolocation {
-                        attribute latitude { $coords[1] },
-                        attribute longitude { $coords[2] },
-                        attribute label { $label},
-                        attribute emit {"map"},
-                        attribute event { "click" },
-                        if ($place/@type != 'approximate') then attribute zoom { 9 } else (),
-                        
-                        element iron-icon {
-                            attribute icon {"maps:map" }
-                        }
-                    }
-                ) 
-                else () 
-            }
-    }
-};
-
-declare function api:html-places($request as map(*)) {
-    let $path := $config:app-root || "/templates/" || xmldb:decode($request?parameters?file) || ".html"
-    let $template :=
-        if (doc-available($path)) then
-            doc($path)
-        else
-            error($errors:NOT_FOUND, "HTML file " || $path || " not found")
-    return
-        templates:apply($template, vapi:lookup#2 , map { "editionseinheit":$request?parameters?editionseinheit } , $vapi:template-config)
-};
-
-declare function api:html-place($request as map(*)) {
-    let $path := $config:app-root || "/templates/" || xmldb:decode($request?parameters?file) || ".html"
-    let $template :=
-        if (doc-available($path)) then
-            doc($path)
-        else
-            error($errors:NOT_FOUND, "HTML file " || $path || " not found")
-    return
-        templates:apply($template, vapi:lookup#2 , map { "editionseinheit":$request?parameters?editionseinheit,"name":$request?parameters?name } , $vapi:template-config)
+        </fieldset>
 };

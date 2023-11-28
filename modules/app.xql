@@ -126,21 +126,25 @@ declare function app:select-kanton() {
         $first
 };
 
+declare 
+    %templates:wrap
+function app:document-count($node as node(), $model as map(*)) {
+    <pb-i18n key="browse.items" options='{{"count": "{count($model?all)}"}}'></pb-i18n>
+};
+
 declare function app:list-volumes($node as node(), $model as map(*), $root as xs:string?) {
-    let $kanton := replace($model?root, "^/?(.*)$", "$1")
-    for $volume in collection($config:data-root)/tei:TEI[@type='volinfo'][matches(.//tei:seriesStmt/tei:idno[@type="machine"], '^\w+_' || $kanton)]
-    let $order := $volume/@n
-    let $count := count($model?all intersect collection(util:collection-name($volume))//tei:TEI[ft:query(., 'type:document')])
+    for $hits in $model?all
+    group by $volume := ft:field($hits, "volume")
+    let $volumeInfo := collection($config:data-root)/tei:TEI[@type='volinfo'][.//tei:seriesStmt/tei:idno[@type="machine"] = "SSRQ_" || $volume]
+    let $order := $volumeInfo/@n
+    let $count := count($hits)
     order by $order
     return
         if ($count > 0) then
             <div class="volume">
-                <a href="#" data-collection="{substring-after(util:collection-name($volume), $config:data-root || "/")}">{ 
-                    $pm-config:web-transform($volume/tei:teiHeader/tei:fileDesc, map { "root": $volume, "count": $count, "view": "volumes" }, $config:odd)
+                <a href="#" data-collection="{$volume}">{ 
+                    $pm-config:web-transform($volumeInfo/tei:teiHeader/tei:fileDesc, map { "root": $volume, "count": $count, "view": "volumes" }, $config:odd)
                 }</a>
-                {
-                    session:set-attribute("ssrq.kanton", $kanton)
-                }
             </div>
         else
             ()
@@ -197,7 +201,7 @@ declare function app:api-keys($refs as xs:string*) {
         }
 };
 
-declare function app:list-places($node as node(), $model as map(*)) {
+(: declare function app:list-places($node as node(), $model as map(*)) {
     let $places := root($model?data)//(tei:placeName[@ref]|tei:origPlace[@ref])
     where exists($places)
     return map {
@@ -217,9 +221,9 @@ declare function app:list-places($node as node(), $model as map(*)) {
                     </div>
                 </li>
     }
-};
+}; :)
 
-declare function app:list-keys($node as node(), $model as map(*)) {
+(: declare function app:list-keys($node as node(), $model as map(*)) {
     let $keywords := root($model?data)//tei:term[starts-with(@ref, 'key')]
     where exists($keywords)
     return map {
@@ -237,9 +241,9 @@ declare function app:list-keys($node as node(), $model as map(*)) {
                     </div>
                 </li>
     }
-};
+}; :)
 
-declare function app:list-lemmata($node as node(), $model as map(*)) {
+(: declare function app:list-lemmata($node as node(), $model as map(*)) {
     let $lemmata := root($model?data)//tei:term[starts-with(@ref, 'lem')]
     where exists($lemmata)
     return map {
@@ -259,9 +263,9 @@ declare function app:list-lemmata($node as node(), $model as map(*)) {
                     </div>
                 </li>
     }
-};
+}; :)
 
-declare function app:list-persons($node as node(), $model as map(*)) {
+(: declare function app:list-persons($node as node(), $model as map(*)) {
     let $persons :=
         root($model?data)//tei:persName[@type="full_sorted"]/@ref |
         root($model?data)//@scribe[starts-with(., 'per')]
@@ -287,9 +291,9 @@ declare function app:list-persons($node as node(), $model as map(*)) {
                     </div>
                 </li>
     }
-};
+}; :)
 
-declare function app:list-organizations($node as node(), $model as map(*)) {
+(: declare function app:list-organizations($node as node(), $model as map(*)) {
     let $organizations := root($model?data)//tei:orgName/@ref
     where exists($organizations)
     return map {
@@ -313,16 +317,16 @@ declare function app:list-organizations($node as node(), $model as map(*)) {
                     </div>
                 </li>
     }
-};
+}; :)
 
-declare
+(: declare
     %templates:wrap
 function app:show-list-items($node as node(), $model as map(*)) {
     for $item in $model?items
     order by $item/a collation "?lang=de_CH"
     return
         $item
-};
+}; :)
 
 declare function app:meta($node as node(), $model as map(*)) {
     let $data := config:get-document($model?doc)
@@ -373,13 +377,23 @@ function app:short-header-link($node as node(), $model as map(*)) {
     )
 };
 
+declare 
+    %templates:wrap
+function app:volume-title($node as node(), $model as map(*)) {
+    if (not($model?root) or $model?root = "") then
+        ()
+    else
+        let $info := collection($config:data-root || "/" || $model?root)/tei:TEI[@type='volinfo']
+        return
+            replace(normalize-space($info//tei:titleStmt/tei:title/string()), "^.*?([^:]+)$", "$1")
+};
+
 declare
     %templates:wrap    
     %templates:default("key","")
 function app:load-person($node as node(), $model as map(*), $key as xs:string) {
-    let $person := doc($config:data-root || "/person/person.xml")//tei:person[@xml:id = xmldb:decode($key)]
-    let $log := util:log("info", "app:load-person $name: " || $person/tei:persName[@type="full"]/text() || " - $key:" || $key)
-    
+    let $person := $config:register-person/id(xmldb:decode($key))
+    (: let $log := util:log("info", "app:load-person $name: " || $person/tei:persName[@type="full"]/text() || " - $key:" || $key) :)    
     return 
         map {
                 "title": $person/tei:persName[@type="full"]/text(),
@@ -387,6 +401,22 @@ function app:load-person($node as node(), $model as map(*), $key as xs:string) {
                 "date":$person/tei:note[@type="date"]/text()
         }    
 };
+
+declare
+    %templates:wrap    
+    %templates:default("key","")
+function app:load-keyword($node as node(), $model as map(*), $key as xs:string) {
+    let $keyword := doc($config:data-root || "/taxonomy/taxonomy.xml")//tei:category[@xml:id = xmldb:decode($key)]
+    (: let $log := util:log("info", "app:load-keyword tei:desc: " || $keyword/tei:desc[@xml:lang="deu"]/text() || " - $key:" || $key) :)
+    
+    return 
+        map {
+                "title": $keyword/tei:desc[@xml:lang="deu"]/text(),
+                "gloss": $keyword/tei:gloss/text(),
+                "key":$key
+        }
+};
+
 
 declare
     %templates:wrap    
@@ -452,8 +482,7 @@ function app:get-edition-unit($node as node(), $model as map(*), $editionseinhei
             <pb-i18n key="menu.ZH_NF_I_1_3"/>
         case "ZH_NF_I_2_1" return 
             <pb-i18n key="menu.ZH_NF_I_2_1"/>
-        default return 
-            <pb-i18n key="menu.all"/>
+        default return ()
 };
 
 declare 
@@ -484,6 +513,17 @@ declare %templates:default("name", "")  function app:person-name($node as node()
     return
         $name || " " || $date
 };
+
+declare %templates:wrap %templates:default("name", "")  
+function app:keyword-name($node as node(), $model as map(*), $name as xs:string) {
+    $model?title
+};
+declare %templates:wrap %templates:default("name", "")  
+function app:keyword-gloss($node as node(), $model as map(*), $name as xs:string) {
+    $model?gloss
+};
+
+
 declare %templates:default("name", "")  function app:organization-name($node as node(), $model as map(*), $name as xs:string) {
     let $name := if($model?name) then ($model?name) else xmldb:decode($name)
     let $date := 
@@ -521,75 +561,42 @@ declare %templates:default("name", "")  function app:place-link($node as node(),
 declare %templates:wrap 
         %templates:default("type", "place") 
 function app:mentions($node as node(), $model as map(*), $type as xs:string) {
-    let $key := $model?key
-    let $log := util:log("info", "app:mentions: $key: " || $key )
+    let $key := $model?key    
+    let $log := util:log("info", "app:mentions: $key: " || $key || " -  type: " || $type || " - title: " || $model?title)
     return
-        if($type = "person") 
-        then ( 
-            let $person := doc($config:data-root || "/person/person.xml")//tei:person[@xml:id = $key]
-            return
-                <div>
-                    <h3><pb-i18n key="mentions-of"/>{" " ||  $person/tei:persName[@type="full"]/text()}</h3>
-                    <div class="mentions">{
-                            for $col in $config:data-collections
-                                let $matches := collection($config:data-root || "/" || $col)//tei:TEI[(.//tei:persName/@ref | @scribe) = $key]
-                                let $log := util:log("info", "app:mentions: col: " || $col || " - $matches: " || count($matches))
-                                return
-                                    if(count($matches) > 0)
-                                    then (
-                                        <h4><pb-i18n key="menu.{$col}"/></h4>,
-                                        <ul>{app:ref-list("place", $matches, $col, $key)}</ul>
-                                    ) else()
-                    }</div>
-                </div>
-        ) else if ($type = "place")
-        then (
-            let $places := doc($config:data-root || "/place/place.xml")//tei:listPlace/tei:place
-            return
-                <div>
-                    <h3><pb-i18n key="mentions-of"/>{" " ||  $places[@xml:id = $key]/@n/string()}</h3>
-                    <div class="mentions">{
-                            for $col in $config:data-collections
-                                let $matches := collection($config:data-root || "/" || $col)//tei:TEI[(.//tei:placeName/@ref|.//tei:origPlace/@ref) = $key]
-                                let $log := util:log("info", "app:mentions: col: " || $col || " - $matches: " || count($matches))
-                                return
-                                    if(count($matches) > 0)
-                                    then (
-                                        <h4><pb-i18n key="menu.{$col}"/></h4>,
-                                        <ul>{app:ref-list("place", $matches, $col, $key)}</ul>
-                                    ) else()
-                    }</div>
-                </div>
-        ) else if ($type = "organization")
-        then (
-            let $orgs := doc($config:data-root || "/organization/organization.xml")//tei:org
-            return
-
-            <div>
-                <h3><pb-i18n key="mentions-of"/>{" " ||  $orgs[@xml:id = $key]/tei:orgName/text()}</h3>
-                <div class="mentions">{
-                        for $col in $config:data-collections
-                            let $matches := collection($config:data-root || "/" || $col)//tei:TEI[.//tei:orgName/@ref = $key]
-                            let $log := util:log("info", "app:mentions: col: " || $col || " - $matches: " || count($matches))
-                            return
-                                if(count($matches) > 0)
-                                then (
-                                    <h4><pb-i18n key="menu.{$col}"/></h4>,
-                                    <ul>{app:ref-list("place", $matches, $col, $key)}</ul>
-                                ) else()
-                }</div>
-            </div>
-        )
-        else ()
+        <div>
+            <h3><pb-i18n key="mentions-of"/>{' ' || $model?title}</h3>
+            <div class="mentions">{
+                    for $col in $config:data-collections
+                        let $tei-date := collection($config:data-root || "/" || $col)//tei:TEI
+                        let $matches := switch($type) 
+                                        case "person" return 
+                                            $tei-date[(.//tei:persName/@ref | @scribe) = $key]
+                                        case "place" return 
+                                            $tei-date[(.//tei:placeName/@ref|.//tei:origPlace/@ref) = $key]
+                                        case "organization" return 
+                                            $tei-date[.//tei:orgName/@ref = $key]
+                                        case "keyword" return 
+                                            $tei-date[.//tei:term/@ref = $key]
+                                        default return ()
+                        (: let $log := util:log("info", "app:mentions: col: " || $col || " - $matches: " || count($matches)) :)
+                        return
+                            if(count($matches) > 0)
+                            then (
+                                <h4><pb-i18n key="menu.{$col}"/></h4>,
+                                <ul>{app:ref-list($matches, $col, $key)}</ul>
+                            ) else()
+            }</div>
+        </div>
 };
-declare function app:ref-list($type, $list, $col, $key) {
+declare function app:ref-list($list, $col, $key) {
     for $doc in $list
         let $doc-name := util:document-name($doc)
-        let $log := util:log("info", "app:ref-list: name: " || $doc-name)
+        (: let $log := util:log("info", "app:ref-list: name: " || $doc-name) :)
         let $idno := $doc//tei:seriesStmt//tei:idno/text()
-        let $log := util:log("info", "app:ref-list: $idno: " || $idno)
+        (: let $log := util:log("info", "app:ref-list: $idno: " || $idno) :)
         let $title := $doc//tei:msDesc/tei:head/text()
-        let $log := util:log("info", "app:ref-list: $title: " || $title)
+        (: let $log := util:log("info", "app:ref-list: $title: " || $title) :)
         return
             if($title)
             then (
@@ -793,4 +800,17 @@ function app:bibliography($node as node(), $model as map(*)) as element(div){
             </table>
         }
     </div>
+};
+
+
+declare
+    %templates:wrap
+function app:set-default-params($node as node(), $model as map(*)) {
+    let $new-model := map:merge(($model, 
+                                map { "type": "text" },
+                                map { "sort": "date" },
+                                map { "subtype": "edition" }
+                            ))    
+    return
+        templates:process($node/*, $new-model)
 };

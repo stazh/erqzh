@@ -26,14 +26,14 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : If a version is given, the components will be loaded from a public CDN.
  : This is recommended unless you develop your own components.
  :)
-declare variable $config:webcomponents :="local";
+declare variable $config:webcomponents :="2.10.4";
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your
  : own library extending pb-components and published it to a CDN.
  :)
-(: declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@teipublisher/pb-components"; :)
-declare variable $config:webcomponents-cdn := "https://unpkg.com/@teipublisher/pb-components";
+declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@teipublisher/pb-components";
+(: declare variable $config:webcomponents-cdn := "https://unpkg.com/@teipublisher/pb-components"; :)
 (: declare variable $config:webcomponents-cdn := "http://localhost:8000"; :)
 (: declare variable $config:webcomponents-cdn := "local"; :)
 
@@ -107,30 +107,151 @@ declare variable $config:pagination-depth := 0;
  :)
 declare variable $config:pagination-fill := 5;
 
+(:~
+ : Show collection view until number of search results falls below threshold
+ :)
+declare variable $config:collection-browsing-threshold := 10;
+
 (:
  : Display configuration for facets to be shown in the sidebar. The facets themselves
  : are configured in the index configuration, collection.xconf.
  :)
 declare variable $config:facets := [
     map {
-        "dimension": "genre",
-        "heading": "facets.genre",
-        "max": 5,
-        "hierarchical": true()
+        "dimension": "person",
+        "heading": "person",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/person"
+        },
+        "output": function($label) {
+            let $person := $config:register-person/id($label)/tei:persName[@type='full']/text()
+            return 
+                if ($person) 
+                then ($person)
+                else ($label)
+        }
+    },
+    map {
+        "dimension": "organization",
+        "heading": "organisation",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/organization"
+        },
+        "output": function($label) {
+            let $organization := $config:register-organization/id($label)/tei:orgName/text()
+            return 
+                if ($organization) 
+                then ($organization)
+                else ($label)
+        }
+    },
+    map {
+        "dimension": "place",
+        "heading": "place",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/place"
+        },
+        "output": function($label) {
+            let $place := $config:register-place/id($label)/tei:placeName[@type='main']/text()
+            return 
+                if ($place) 
+                then ($place)
+                else ($label)
+        }
+    },
+    (: map {
+        "dimension": "lemma",
+        "heading": "register.lemma",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/lemma"
+        },
+        "output": function($label) {
+            let $lemma := $config:register-taxonomy/id($label)/tei:desc[@xml:lang='deu']/text()
+            return 
+                if ($lemma) 
+                then ($lemma)
+                else ($label)
+        }
+    }, :)
+    map {
+        "dimension": "keyword",
+        "heading": "keyword",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": "api/facets/keyword"
+        },
+        "output": function($label) {
+            let $keyword := $config:register-taxonomy/id($label)/tei:desc[@xml:lang='deu']/text()
+            return 
+                if ($keyword) 
+                then ($keyword)
+                else ($label)
+        }
+    },
+    map {
+        "dimension": "archive",
+        "heading": "archive",
+        (: "max": 5,
+        "hierarchical": false(), :)
+        "select": map {
+            "source": config:list-archive-entries#1
+        },
+        "output": function($label) {
+            $label
+        }
+    },
+    map {
+        "dimension": "filiation",
+        "heading": "filiation",
+        "select": map {
+            "source": config:list-filiation-entries#1
+        },
+        "output": function($label) {
+            $label
+        }
+    },
+    map {
+        "dimension": "material",
+        "heading": "material",
+        "select": map {
+            "source": config:list-material-entries#1
+        },
+        "output": function($label) {
+            $label
+        }
     },
     map {
         "dimension": "language",
-        "heading": "facets.language",
+        "heading": "language",
         "max": 5,
         "hierarchical": false(),
         "output": function($label) {
             switch($label)
-                case "de" return "German"
-                case "es" return "Spanish"
-                case "la" return "Latin"
-                case "fr" return "French"
-                case "en" return "English"
+                case "Deutsch" return "DE"
+                case "Französisch" return "FR"
+                case "Latein" return "LAT"
                 default return $label
+        }
+    },
+    map {
+        "dimension": "seal",
+        "heading": "seal",
+        "max": 5,
+        "hierarchical": false(),
+        "output": function($label) {
+            switch($label)
+                case "true" return "yes"
+                case "false" return "no"
+                default return ""
         }
     }
 ];
@@ -320,9 +441,13 @@ declare variable $config:data-default := $config:data-root;
  : documents displayed in the browsing view.
  :)
 declare variable $config:data-exclude := (
-    doc($config:data-root || "/taxonomy.xml")/tei:TEI,
-    collection($config:data-root || "/SG/SG_III_4/latest")/tei:TEI
+    doc($config:data-root || "/taxonomy.xml")/tei:TEI
 );
+
+declare variable $config:register-organization := doc($config:data-root || "/organization/organization.xml");
+declare variable $config:register-person := doc($config:data-root || "/person/person.xml");
+declare variable $config:register-place := doc($config:data-root || "/place/place.xml");
+declare variable $config:register-taxonomy := doc($config:data-root || "/taxonomy/taxonomy.xml");
 
 declare variable $config:default-odd :="rqzh.odd";
 
@@ -367,7 +492,7 @@ declare variable $config:session-prefix := $config:expath-descriptor/@abbrev/str
 
 declare variable $config:default-fields := ('date-min');
 
-declare variable $config:iiif-base-uri := 'https://apps.existsolutions.com/cantaloupe/iiif/2/erqzh!';
+declare variable $config:iiif-base-uri := 'https://media.sources-online.org/iiif/2/erqzh!';
 
 declare variable $config:dts-collections := map {
     "id": "default",
@@ -636,3 +761,37 @@ declare function config:get-fonts-dir() as xs:string? {
         else
             ()
 };
+
+declare function config:list-archive-entries($type) {
+    (: let $_ := util:log("info", ("config:list-archive-entries type: '", $type)) :)    
+    let $results := for $hit in collection($config:data-root)//tei:text[ft:query(., "archive:* AND type:document", map { "leading-wildcard": "yes","filter-rewrite": "yes"})]
+                        group by $value := ft:field($hit,"archive")
+                        order by $value
+                        return
+                            $value
+    return
+        array { $results}
+};
+
+declare function config:list-filiation-entries($type) {
+    (: let $_ := util:log("info", ("config:list-filiation-entries type: '", $type)) :)
+    let $results := for $hit in collection($config:data-root)//tei:text[ft:query(., "filiation:*", map { "leading-wildcard": "yes","filter-rewrite": "yes"})]
+                        group by $value := ft:field($hit,"filiation")
+                        order by $value
+                        return
+                            $value
+    return
+        array { $results}
+};
+
+declare function config:list-material-entries($type) {
+    (: let $_ := util:log("info", ("config:list-material-entries type: '", $type)) :)
+    let $results := for $hit in collection($config:data-root)//tei:text[ft:query(., "material:* AND type:document", map { "leading-wildcard": "yes","filter-rewrite": "yes"})]
+                        group by $value := ft:field($hit,"material")
+                        order by $value
+                        return
+                            $value
+    return
+        array { $results}
+};
+

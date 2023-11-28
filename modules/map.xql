@@ -6,6 +6,7 @@
 module namespace mapping="http://www.tei-c.org/tei-simple/components/map";
 
 import module namespace nav="http://www.tei-c.org/tei-simple/navigation/tei" at "navigation-tei.xql";
+import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
 
@@ -79,4 +80,18 @@ declare function mapping:ssrq($root as node(), $userParams as map(*)) {
     let $session := session:set-attribute('ssrq.lang', $language)
     return
         $root
+};
+declare function mapping:about($root as node(), $userParams as map(*)) {
+    let $language := $userParams?language
+    (: let $_  := util:log("info", "mapping:about: language: " || $language ) :)
+    let $doc := switch ($language)
+                    case "en" return 
+                        doc($config:data-root  || "/about/about-the-edition-en.xml")
+                    case "fr" return 
+                        doc($config:data-root  || "/about/about-the-edition-fr.xml")
+                    default return 
+                        doc($config:data-root  || "/about/about-the-edition-de.xml")
+    let $session := session:set-attribute('ssrq.lang', $language)
+    return
+        $doc
 };

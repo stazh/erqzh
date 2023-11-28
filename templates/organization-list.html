@@ -31,56 +31,12 @@
     <link rel="stylesheet" href="resources/css/theme-rqzh.css"/>
 
     <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
-
-    <script type="module" src="pb-leaflet-map.js" data-template="pages:load-components"/>
+    
     <custom-style>
         <style>
-            .main {
-                height: calc(100vh - 285px);
-            }
-            
-            @media (max-width: 1023px) {
-                .doclist {
-                    margin-bottom: 20px;
-                }
-                .documents {
-                    padding-left: 10px;
-                }
-                .documents .label {
-                    display: none;
-                }
-                .toolbar pb-search {
-                    padding-left: 0;
-                }
-                #facets {
-                    display: none;
-                }
-            }
-
-            @media (min-width: 1024px) {
-                .toolbar {
-                    display: none;
-                }
-                .panels {
-                    display: flex;
-                    flex-direction: row;
-                }
-            }
-
-            pb-leaflet-map {
-                height: 40%;
-                width: 100%;
-            }
-    
-            .content-body .transcript {
-                max-width: none;
-            }
-    
-            .list {
-                height: 60%;
-                max-width: 41.24rem;
-                margin: 0 auto;
-                overflow: auto;
+            .list {                
+                max-width: 80rem;
+                margin: 0 auto;                
             }
     
             [slot=controls] {
@@ -93,12 +49,6 @@
             pb-split-list::part(items) {
                 margin-top: 1em;
             }
-    
-            .place iron-icon {
-                margin-left: 1em;
-                --iron-icon-height: 22px;
-            }
-    
             @media (max-width: 767px) {
                 .list {
                     --pb-categorized-list-columns: 1;
@@ -134,26 +84,23 @@
                 <section>
                     <div class="pb-container">
                         <h1>
-                                <pb-i18n key="menu.places"/>:
+                                <pb-i18n key="menu.organizations"/>:
                             <span data-editionseinheit="${editionseinheit}" data-template="app:get-edition-unit"/>
                         </h1>
                     </div>
                 </section>
                 <section>
                     <div class="pb-container main">
-                        <pb-leaflet-map id="map" data-editionseinheit="${editionseinheit}" subscribe="map" emit="map" zoom="10" cluster="" latitude="47.3686498" longitude="8.5391825" data-template="pages:parse-params">
-                            <pb-map-layer show="" base="" label="Mapbox OSM" url="https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token={accessToken}" max-zoom="19" access-token="pk.eyJ1Ijoid29sZmdhbmdtbSIsImEiOiJjam1kMjVpMnUwNm9wM3JwMzdsNGhhcnZ0In0.v65crewF-dkNsPF3o1Q4uw" attribution="© Mapbox © OpenStreetMap">
-                            </pb-map-layer>
-                        </pb-leaflet-map>
+
                         
                         <div class="list">
                             <pb-custom-form id="options" auto-submit="paper-input,paper-icon-button" emit="transcription">
                                 <paper-input id="query" name="search" label="Suche" data-template="templates:form-control">
                                     <paper-icon-button icon="search" slot="suffix"/>
                                 </paper-input>
-                            </pb-custom-form>
+                            </pb-custom-form>                            
                             
-                            <pb-split-list url="api/places/${editionseinheit}" subforms="#options" selected="A" emit="transcription" subscribe="transcription" data-template="pages:parse-params"/>
+                            <pb-split-list url="api/register/organization/${editionseinheit}" subforms="#options" selected="A" emit="transcription" subscribe="transcription" data-template="pages:parse-params"/>
                         </div>
                     </div>
                 </section>
@@ -197,34 +144,6 @@
 
     <footer data-template="templates:include" data-template-path="templates/footer.html"/>
     <script data-template="templates:include" data-template-path="templates/matomo.html"/>
-    <script>
-            window.addEventListener('load', function() {
-                const map = document.querySelector('pb-leaflet-map');
-                map.addEventListener('pb-ready', function() {
-                    const endpoint = document.querySelector("pb-page").getEndpoint();
-                    const einheit = map.getAttribute("data-editionseinheit")
-                    // console.log(`editionseinheit ${einheit}`)
-                    
-                    const url = `${endpoint}/api/places-all/${einheit}`;
-                    // console.log(`fetching places from: ${url}`);
-                    
-                    fetch(url)                
-                    .then(function(response) {
-                        return response.json();
-                    })
-                    .then(function(json) {
-                        pbEvents.emit("pb-update-map", "map", json)
-                    });
-                });
-
-                pbEvents.subscribe('pb-leaflet-marker-click', 'map', function(ev) {
-                    const label = ev.detail.label;
-                    const key = ev.detail.id;
-                    const category = label.substring(0, 1);
-                    window.location = `${label}?key=${key}&amp;category=${category}`;
-                });
-            });
-        </script>
 </body>
 
 </html>

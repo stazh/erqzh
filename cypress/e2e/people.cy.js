@@ -1,5 +1,5 @@
 describe('people page', () => {
-    it('loads', () => {
+    beforeEach('loads', () => {
         cy.visit('people/all/')
     })
 

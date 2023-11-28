@@ -164,6 +164,16 @@ pb-i18n[key="by"]::after {
     content: ' ';
 }
 
+.footer {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    column-gap: 1rem;
+}
+
+.footer .part-nav[path=""] {
+    display: none;
+}
+
 .footer .part-nav a {
     height: 45px;
     color: #636363;
@@ -283,4 +293,11 @@ paper-input {
 paper-input label {
     height: 0;
     display: none;
+} 
+
+.inline-facsimile {
+    max-height:50vh;
+    width:auto;
+    height:50vh;
+    --pb-facsimile-height: 50vh;
 }

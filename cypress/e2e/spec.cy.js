@@ -1,5 +1,5 @@
 describe('landing page', () => {
-  it('loads', () => {
+  beforeEach('loads', () => {
     cy.visit('index.html')
   })
 

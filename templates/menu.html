@@ -113,7 +113,44 @@
                     </a>
                 </paper-item>
             </paper-listbox>
-        </paper-menu-button>        
+        </paper-menu-button>
+        <paper-menu-button>
+            <a href="#" slot="dropdown-trigger" data-i18n="[title]menu.keywords" title="foo">
+                <pb-i18n key="menu.keywords">Keywords</pb-i18n>
+            </a>
+            <paper-listbox slot="dropdown-content">
+                <paper-item>
+                    <a href="${app}/keyword/all/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.all-keywords">all</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/keyword/ZH_NF_I_1_3/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.ZH_NF_I_1_3">ZH_NF_I_1_3</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/keyword/ZH_NF_I_1_11/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.ZH_NF_I_1_11">ZH_NF_I_1_11</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/keyword/ZH_NF_I_2_1/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.ZH_NF_I_2_1">ZH_NF_I_2_1</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/keyword/ZH_NF_II_3/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.ZH_NF_II_3">ZH_NF_II_3</pb-i18n>
+                    </a>
+                </paper-item>
+                <paper-item>
+                    <a href="${app}/organization/ZH_NF_II_11/" data-template="pages:parse-params">
+                        <pb-i18n key="menu.ZH_NF_II_11">ZH_NF_II_11</pb-i18n>
+                    </a>
+                </paper-item>
+            </paper-listbox>
+        </paper-menu-button>
         <a href="${app}/abbr.html" data-template="pages:parse-params" class="tp-menu-item" title="Abbreviations">
             <div>
                 <pb-i18n key="abbreviations">Abkürzungen</pb-i18n>
@@ -126,12 +163,18 @@
             </div>
             <div class="ripple-container"/>
         </a>
-        <a id="feedback-mail" href="mailto:staatsarchivzh@ji.zh.ch" class="tp-menu-item">
+        <a href="${app}/about/" data-template="pages:parse-params" class="tp-menu-item" title="About">
+            <div>
+                <pb-i18n key="about">About</pb-i18n>
+            </div>
+            <div class="ripple-container"/>
+        </a>        
+        <!-- <a id="feedback-mail" href="mailto:staatsarchivzh@ji.zh.ch" class="tp-menu-item">
             <div>
                 <pb-i18n key="feedback">Feedback</pb-i18n>
             </div>
             <div class="ripple-container"/>
-        </a>
+        </a> -->
         <pb-restricted login="login" group="tei">
             <paper-menu-button>
                 <a href="#" slot="dropdown-trigger">
@@ -150,28 +193,13 @@
 
         <!-- language selector -->
         <pb-lang name="lang" data-template="pages:languages"/>
-
-        <pb-login id="login" group="tei">
-            <iron-icon slot="icon" icon="account-circle"/>
-            <p slot="information">
-                <pb-i18n key="login-info"/>
-            </p>
-        </pb-login>
-
     </pb-media-query>
 
     <pb-media-query query="(max-width: 1023px)">
         <div main-title="main-title"/>
-
-        <pb-login id="login" group="tei">
-            <iron-icon slot="icon" icon="account-circle"/>
-            <p slot="information">
-                <pb-i18n key="login-info"/>
-            </p>
-        </pb-login>
         <paper-icon-button icon="icons:menu" drawer-toggle="drawer-toggle"/>
     </pb-media-query>
 
-    <pb-progress indeterminate="indeterminate" bottom-item="bottom-item" subscribe="docs"/>
+    <pb-progress indeterminate="indeterminate" bottom-item="bottom-item" subscribe="search"/>
 
 </app-toolbar>

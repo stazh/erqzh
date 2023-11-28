@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="teipublisher_odds.xsd"?>
+<?xml-model href="teipublisher_odds.xsd"?><?teipublisher output="web"?>
 <TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xmlns:nontei="http://ssrq-sds-fds.ch/ns/nonTEI" xml:lang="en">
     <teiHeader>
         <fileDesc>
@@ -29,6 +28,9 @@
         <body>
             <schemaSpec start="TEI teiCorpus" ident="ssrq" source="teipublisher.odd">
                 <elementSpec ident="TEI" mode="change">
+                    <model predicate="$parameters?display='footer'" behaviour="block" cssClass="footer">
+            <param name="content" value="teiHeader"/>
+        </model>
                     <model predicate="$parameters?header='context'" behaviour="pass-through">
             <param name="content" value="teiHeader"/>
         </model>
@@ -40,7 +42,9 @@
                 <param name="content" value="text//back"/>
             </model>
         </modelSequence>
-                    <model behaviour="document"/>
+                    <model behaviour="document">
+            <param name="content" value=".//body"/>
+        </model>
                 </elementSpec>
                 <elementSpec ident="body" mode="change">
                     <modelSequence>
@@ -78,6 +82,14 @@
         </model>
                 </elementSpec>
                 <elementSpec ident="figure" mode="change">
+                    <model predicate="@rendition='iiif'" behaviour="pass-through">
+            <param name="url" value="graphic/@url/string()"/>
+            <param name="head" value="head/text()"/>
+            <param name="figDesc" value="figDesc/text()"/>
+            <pb:template xmlns="" xml:space="preserve"><pb-facsimile base-uri="https://media.sources-online.org/iiif/2/erqzh!" facsimiles="[&#34;[[url]]&#34;]" default-zoom-level="0" show-navigation-control="show-navigation-control" show-home-control="show-home-control" show-full-page-control="show-full-page-control" class="inline-facsimile">      
+      <div style="text-align:center;">[[figDesc]]</div>
+</pb-facsimile>  </pb:template>
+        </model>
                     <model behaviour="inline">
             <param name="content" value="ec:translate(@type, 0, 'uppercase')"/>
             <outputRendition xml:space="preserve" scope="before">
@@ -624,8 +636,10 @@
                 <desc>Hide the first pagebreak in a document (beware: independent of position!)</desc>
                 <param name="facs" value="normalize-space(@facs)"/>
                 <param name="name" value="'pb-facs-link'"/>
+                <param name="emit" value="'transcription'"/>
+                <param name="order" value="@n"/>
                 <outputRendition xml:space="preserve">
-                display: none;
+                visibility: hidden;
                 </outputRendition>
             </model>
             <model predicate="not(@n)" behaviour="pass-through" cssClass="pb-empty">
@@ -633,9 +647,10 @@
                 <param name="content" value="'|'"/>
                 <param name="alternate" value="ec:label('pb')"/>
                 <param name="facs" value="normalize-space(@facs)"/>
+                <param name="order" value="@n"/>
                 <pb:template xmlns="" xml:space="preserve">
                                 <a href="#">
-                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click" order="[[order]]">
                                     <pb-popover>
                                         [[content]]
                                         <template slot="alternate">[[alternate]]</template>
@@ -651,9 +666,10 @@
                 <param name="content" value="'[fol. ' || @n || ']'"/>
                 <param name="alternate" value="ec:label('pb')"/>
                 <param name="facs" value="normalize-space(@facs)"/>
+                <param name="order" value="@n"/>
                 <pb:template xmlns="" xml:space="preserve">
                                 <a href="#">
-                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click" order="[[order]]">
                                     <pb-popover>
                                         [[content]]
                                         <template slot="alternate">[[alternate]]</template>
@@ -669,9 +685,10 @@
                 <param name="content" value="('[', ec:label('page-abbr', false()), ' ', @n, '] ')"/>
                 <param name="facs" value="normalize-space(@facs)"/>
                 <param name="alternate" value="ec:label('pb')"/>
+                <param name="order" value="@n"/>
                 <pb:template xmlns="" xml:space="preserve">
                                 <a href="#">
-                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click">
+                                <pb-facs-link facs="[[facs]]" emit="transcription" trigger="click" order="[[order]]">
                                     <pb-popover>
                                         [[content]]
                                         <template slot="alternate">[[alternate]]</template>
@@ -738,24 +755,29 @@
                 <param name="content" value="ec:format-id(seriesStmt/idno)"/>
             </model>
             <model behaviour="link" cssClass="header-short title">
-                <param name="content" value="                             let $subtype := ancestor::TEI/@subtype                              return switch ($subtype)                                 case 'a' return 'Reihenvorwort'                                 case 'b' return 'Vorwort'                                 case 'c' return 'Einleitung'                                 case 'd' return 'Quellenverzeichnis'                                 default return 'Introduction'                                 "/>
-                <param name="link" value="$parameters?doc"/>
+                <param name="content" value="let $subtype := ancestor::TEI/@subtype                              return switch ($subtype)                                 case 'a' return 'Reihenvorwort'                                 case 'b' return 'Vorwort'                                 case 'c' return 'Einleitung'                                 case 'd' return 'Quellenverzeichnis'                                 default return 'Introduction'"/>
+                <param name="link" value="$parameters?doc || (if (request:get-parameter('query', '')='') then () else '?highlight=yes')"/>
             </model>
         </modelSequence>
                     <modelSequence predicate="$parameters?header='short'">
             <desc>Output a short header to be used in document listings</desc>
-            <model behaviour="block" cssClass="header-short">
-                <param name="content" value="ec:format-id(seriesStmt/idno)"/>
+            <model behaviour="pass-through" cssClass="header-short">
+                <param name="idno" value="ec:format-id(seriesStmt/idno)"/>
+                <param name="date" value="if (exists(sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then                                      ec:print-date(sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate)                                     else if (exists(sourceDesc/msDesc/history/origin/origDate)) then                                     ec:print-date(sourceDesc/msDesc/history/origin/origDate)                                    else                                       ()"/>
+                <pb:template xmlns="" xml:space="preserve"><div class="search-result-top">
+  <span class="idno">[[idno]]</span>
+  <span> - </span>
+  <span class="date">[[date]]</span>
+  
+</div></pb:template>
             </model>
-            <model behaviour="link" cssClass="header-short">
+            <model behaviour="link" cssClass="header-short title">
                 <param name="content" value="sourceDesc/msDesc/head"/>
-                <param name="link" value="$parameters?doc"/>
+                <param name="link" value="$parameters?doc || (if (request:get-parameter('query', '')='') then () else '?highlight=yes')"/>
             </model>
-            <model behaviour="block" cssClass="header-short">
-                <param name="content" value="if (exists(sourceDesc/msDesc/msContents/msItem/filiation[@type='original'][origDate])) then                                      ec:print-date(sourceDesc/msDesc/msContents/msItem/filiation[@type='original']/origDate)                                     else if (exists(sourceDesc/msDesc/history/origin/origDate)) then                                     ec:print-date(sourceDesc/msDesc/history/origin/origDate)                                    else                                       ()"/>
-            </model>
-            <model behaviour="block" cssClass="header-short">
+            <model behaviour="block" cssClass="title">
                 <param name="content" value="editionStmt"/>
+                <pb:template xmlns="" xml:space="preserve"><div class="test">[[content]]</div></pb:template>
             </model>
             <model behaviour="block" cssClass="header-short">
                 <param name="content" value="publicationStmt"/>
@@ -1053,7 +1075,7 @@
                     <model behaviour="heading" useSourceRendition="true">
             <param name="level" value="2"/>
         </model>
-                    <model predicate="$parameters?header='short'" behaviour="heading">
+                    <model predicate="$parameters?header='short'" behaviour="pass-through">
             <param name="content" value="replace(string-join(.//text() except .//ref//text()), '^(.*?)[^\w]*$', '$1')"/>
         </model>
                     <model predicate="parent::figure" behaviour="block">
@@ -1157,12 +1179,12 @@
                     <model predicate="$parameters?header='context'" behaviour="pass-through">
             <param name="persons" value="let $register := doc(&#34;/db/apps/rqzh-data/person/person.xml&#34;) let $entries:=     for $p in root(.)//persName[@ref]   group by $k := $p/@ref     return     id($p[1]/@ref , $register)  return  for $p in $entries   order by $p/persName[@type=&#34;full_sorted&#34;] ascending   return    $p"/>
             <param name="places" value="let $register := doc(&#34;/db/apps/rqzh-data/place/place.xml&#34;) let $entries:=     for $p in root(.)//text//(placeName[@ref]|origPlace[@ref])          group by $k := $p/@ref   return     id($p[1]/@ref,$register)   return  for $p in $entries   order by $p/@n ascending   return    $p"/>
-            <param name="organizations" value=" let $register := doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)  let $entries:=      for $p in root(.)//text//orgName[@ref]             group by $k := $p/@ref    return          id($p[1]/@ref, $register)      return   for $p in $entries          order by $p/orgName ascending             return                 $p                    "/>
+            <param name="organizations" value="let $register := doc(&#34;/db/apps/rqzh-data/organization/organization.xml&#34;)  let $entries:=      for $p in root(.)//text//orgName[@ref]             group by $k := $p/@ref    return          id($p[1]/@ref, $register)      return   for $p in $entries          order by $p/orgName ascending             return                 $p"/>
             <param name="taxonomies" value="let $register := doc(&#34;/db/apps/rqzh-data/taxonomy/taxonomy.xml&#34;) let $entries:=     for $p in root(.)//keywords//term[starts-with(@ref, &#34;key&#34;)]         group by $k := $p/@ref             return                 id($p[1]/@ref, $register)  return  for $p in $entries      order by $p/desc ascending          return                 $p"/>
-            <param name="emptyPlace" value="if(root(.)//text//(placeName[@ref]|origPlace[@ref])) then () else (&#34;hidden&#34;) "/>
-            <param name="emptyPerson" value="if(root(.)//persName[@ref]) then () else (&#34;hidden&#34;) "/>
-            <param name="emptyOrg" value="if(root(.)//text//orgName[@ref]) then () else (&#34;hidden&#34;) "/>
-            <param name="emptyTerm" value="if(root(.)//keywords//term[starts-with(@ref, &#34;key&#34;)]) then () else (&#34;hidden&#34;) "/>
+            <param name="emptyPlace" value="if(root(.)//text//(placeName[@ref]|origPlace[@ref])) then () else (&#34;hidden&#34;)"/>
+            <param name="emptyPerson" value="if(root(.)//persName[@ref]) then () else (&#34;hidden&#34;)"/>
+            <param name="emptyOrg" value="if(root(.)//text//orgName[@ref]) then () else (&#34;hidden&#34;)"/>
+            <param name="emptyTerm" value="if(root(.)//keywords//term[starts-with(@ref, &#34;key&#34;)]) then () else (&#34;hidden&#34;)"/>
             <pb:template xmlns="" xml:space="preserve"><div class="context register">
   <h3 class="place [[emptyPlace]]"><pb-i18n key="register.place"/></h3>
   <ul class="places">
@@ -1182,37 +1204,10 @@
   </ul>
 </div></pb:template>
         </model>
-        <model predicate="$parameters?mode='footer-prev'" behaviour="block" cssClass="footer button-prev">
-            <param name="target" value="
-            let $idno := .//seriesStmt/idno
-                let $col := substring-after(util:collection-name($idno), &#34;/db/apps/rqzh-data/&#34;)                         
-                let $temp  := replace($idno, &#34;^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$&#34;, &#34;$1 $2&#34;)
-                let $parts := tokenize($temp)
-                let $start := $parts[1]                         
-                let $id := 
-                    if (matches($parts[2], &#34;^\d{8}&#34;)) then
-                        replace($parts[2], &#34;_&#34;, &#34;-&#34;)
-                    else if (matches($parts[2], &#34;^\d{4}_\d{3}&#34;)) then
-                        number(substring-before($parts[2], &#34;_&#34;)) || &#34;-&#34; || number(substring-after($parts[2], &#34;_&#34;))                             
-                    else if (count($parts) eq 1)                             
-                        then ()                             
-                    else                                 
-                        number($parts[2])
-                let $next := xs:string($id - 1)
-                let $len := string-length($next)
-                let $next-id := 
-                    if ($len &gt; 2) then 
-                        $next 
-                    else 
-                        substring(&#34;000&#34;, 1, 3 - $len) || $next                         
-                let $idn := $start || &#34;_&#34; || $next-id
-                let $match := for $m in collection(&#34;/db/apps/rqzh-data&#34;)//idno[starts-with(., $idn)] order by $m return $m                         
-                let $link := 
-                    if (count($match)) then 
-                        $col || &#34;/&#34; || substring-before(util:document-name(head($match)), '.xml')
-                    else ()                          
-                return replace($link, '^(.*)_1$', '$1')"/>
-            <pb:template xmlns="" xml:space="preserve">
+                    <modelSequence predicate="$parameters?display='footer'">
+            <model behaviour="pass-through">
+                <param name="target" value="let $idno := $get(.)//seriesStmt/idno                 let $col := substring-after(util:collection-name($idno), '/db/apps/rqzh-data/')                                          let $temp  := replace($idno, '^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$', '$1 $2')                 let $parts := tokenize($temp)                 let $start := $parts[1]                                          let $id :=                      if (matches($parts[2], '^\d{8}')) then                         replace($parts[2], '_', '-')                     else if (matches($parts[2], '^\d{4}_\d{3}')) then                         number(substring-before($parts[2], '_')) || '-' || number(substring-after($parts[2], '_'))                                                  else if (count($parts) eq 1)                                                      then ()                                                  else                                                          number($parts[2])                 let $next := xs:string($id - 1)                 let $len := string-length($next)                 let $next-id :=                      if ($len &gt; 2) then                          $next                      else                          substring('000', 1, 3 - $len) || $next                                          let $idn := $start || '_' || $next-id                 let $match := for $m in collection('/db/apps/rqzh-data')//idno[starts-with(., $idn)] order by $m return $m                                          let $link :=                      if (count($match)) then                          $col || '/' || substring-before(util:document-name(head($match)), '.xml')                     else ()                                           return replace($link, '^(.*)_1$', '$1')"/>
+                <pb:template xmlns="" xml:space="preserve">
                 <div>
                     <pb-link id="prev" path="[[target]]" emit="transcription" class="part-nav">
                         <iron-icon icon="icons:chevron-left"/>
@@ -1223,10 +1218,10 @@
                     </pb-popover>
                 </div>
             </pb:template>
-        </model>
-        <model predicate="$parameters?mode='footer-next'" behaviour="block" cssClass="footer button-next">
-            <param name="target" value="let $idno := .//seriesStmt/idno                          let $col := substring-after(util:collection-name($idno), &#34;/db/apps/rqzh-data/&#34;)                          let $temp  := replace($idno, &#34;^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$&#34;, &#34;$1 $2&#34;)                          let $parts := tokenize($temp)                          let $start := $parts[1]                          let $id    :=                             if (matches($parts[2], &#34;^\d{8}&#34;)) then                                 replace($parts[2], &#34;_&#34;, &#34;-&#34;)                             else if (matches($parts[2], &#34;^\d{4}_\d{3}&#34;)) then                                 number(substring-before($parts[2], &#34;_&#34;)) || &#34;-&#34; || number(substring-after($parts[2], &#34;_&#34;))                             else if (count($parts) eq 1)                             then ()                             else                                 number($parts[2])                          let $next := xs:string($id + 1)                         let $len := string-length($next)                         let $next-id := if ($len &gt; 2) then $next else substring(&#34;000&#34;, 1, 3 - $len) || $next                         let $idn := $start || &#34;_&#34; || $next-id                         let $match := for $m in collection(&#34;/db/apps/rqzh-data&#34;)//idno[starts-with(., $idn)] order by $m return $m                         let $link := if (count($match)) then $col || &#34;/&#34; || substring-before(util:document-name(head($match)), '.xml') else ()                          return replace($link, '^(.*)_1$', '$1')"/>
-            <pb:template xmlns="" xml:space="preserve">
+            </model>
+            <model behaviour="pass-through">
+                <param name="target" value="let $idno := $get(.)//seriesStmt/idno                 let $col := substring-after(util:collection-name($idno), '/db/apps/rqzh-data/')                 let $temp  := replace($idno, '^(.+?)_(\d{3}.*?)(?:_\d{1,2})?$', '$1 $2')                 let $parts := tokenize($temp)                 let $start := $parts[1]                 let $id    :=                      if (matches($parts[2], '^\d{8}')) then                         replace($parts[2], '_', '-')                     else if (matches($parts[2], '^\d{4}_\d{3}')) then                         number(substring-before($parts[2], '_')) || '-' || number(substring-after($parts[2], '_'))                     else if (count($parts) eq 1) then ()                     else number($parts[2])                 let $next := xs:string($id + 1)                 let $len := string-length($next)                 let $next-id := if ($len &gt; 2) then $next else substring('000', 1, 3 - $len) || $next                 let $idn := $start || '_' || $next-id                 let $match := for $m in collection('/db/apps/rqzh-data')//idno[starts-with(., $idn)] order by $m return $m                 let $link := if (count($match)) then $col || '/' || substring-before(util:document-name(head($match)), '.xml') else ()                 return replace($link, '^(.*)_1$', '$1')"/>
+                <pb:template xmlns="" xml:space="preserve">
                             <div>
                                 <pb-link id="next" path="[[target]]" emit="transcription" class="part-nav">
                                     <pb-i18n class="sr-only" key="navigation.next"/>
@@ -1237,7 +1232,36 @@
                                 </pb-popover>
                             </div>
                         </pb:template>
-        </model>
+            </model>
+            <model behaviour="pass-through">
+                <param name="target" value="let $current := root($parameters?root)//text                     let $hits := session:get-attribute('rqzh2.hits')                     let $pos := for $i at $p in $hits return if ($i is $current) then $p else ()                     let $next:= if ($pos and $pos &gt; 0) then subsequence($hits, $pos - 1, 1) else ()                     return                         if ($next) then                             substring-before(substring-after(document-uri(root($next)), '/db/apps/rqzh-data/'), '.xml')                         else                             ()"/>
+                <pb:template xmlns="" xml:space="preserve">
+                    <pb-popover theme="light-border">
+                        <pb-link path="[[target]]" emit="transcription" class="part-nav">
+                            <pb-i18n class="sr-only" key="navigation.prev-in-search"/>
+                            <iron-icon icon="icons:first-page"/>
+                        </pb-link>
+                        <template slot="alternate">
+                            <pb-i18n key="navigation.prev-in-search"/>
+                        </template>
+                    </pb-popover>
+                </pb:template>
+            </model>
+            <model behaviour="pass-through">
+                <param name="target" value="let $current := root($parameters?root)//text                     let $hits := session:get-attribute('rqzh2.hits')                     let $pos := for $i at $p in $hits return if ($i is $current) then $p else ()                     let $next:= if ($pos and $pos &lt; count($hits)) then subsequence($hits, $pos + 1, 1) else ()                     return                         if ($next) then                             substring-before(substring-after(document-uri(root($next)), '/db/apps/rqzh-data/'), '.xml')                         else                             ()"/>
+                <pb:template xmlns="" xml:space="preserve">
+                    <pb-popover theme="light-border">
+                        <pb-link path="[[target]]" emit="transcription" class="part-nav">
+                            <pb-i18n class="sr-only" key="navigation.next-in-search"/>
+                            <iron-icon icon="icons:last-page"/>
+                        </pb-link>
+                        <template slot="alternate">
+                            <pb-i18n key="navigation.next-in-search"/>
+                        </template>
+                    </pb-popover>
+                </pb:template>
+            </model>
+        </modelSequence>
                     <modelSequence predicate="$parameters?view='metadata'">
             <model predicate="not(ends-with(util:document-name(.//sourceDesc), 'Introduction.xml'))" behaviour="block">
                 <param name="content" value="fileDesc"/>
@@ -1289,7 +1313,7 @@
             </model>
         </modelSequence>
                     <model output="fo" behaviour="omit"/>
-                    <model output="web" predicate="$parameters?header='short'" behaviour="block"/>
+                    <model output="web" predicate="$parameters?header='short'" behaviour="pass-through"/>
                 </elementSpec>
             <elementSpec ident="person" mode="add">
                     <model predicate="$parameters?header='context'" behaviour="pass-through">
@@ -1373,6 +1397,15 @@
             <elementSpec ident="docImprint" mode="change">
                     <model behaviour="listItem">
             <param name="content" value="(ec:label('imprint'), ec:colon(), translate((translate((pubPlace/text() || &#34; &#34; || publisher/text() ),&#34;)&#34;,&#34;&#34;)),&#34;(&#34;,&#34;&#34;))"/>
+        </model>
+                </elementSpec>
+    <elementSpec ident="graphic" mode="change">
+        <model behaviour="graphic">
+            <param name="url" value="'resources/images/' || @url"/>
+            <param name="width" value="@width"/>
+            <param name="height" value="@height"/>
+            <param name="scale" value="@scale"/>
+            <param name="title" value="desc"/>
         </model>
                 </elementSpec>
             </schemaSpec>

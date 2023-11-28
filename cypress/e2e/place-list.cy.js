@@ -1,6 +1,6 @@
-describe('places page', () => {
-    it('loads', () => {
-        cy.visit('places.html')
+describe('place-list page', () => {
+    beforeEach('loads', () => {
+        cy.visit('places/all/')
     })
 
     it('displays a map', () => {

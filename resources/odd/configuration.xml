@@ -24,10 +24,14 @@
         <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/rqzh2/modules/ext-common.xql"/>
     </output>
     <output mode="print">
-        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/rqzh2/modules/ext-common.xql"/>
-        <module uri="http://www.tei-c.org/tei-simple/xquery/ext-fo" prefix="ext-fo" at="xmldb:exist:///db/apps/rqzh2/modules/ext-fo.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-web" prefix="ext-html" at="xmldb:exist:///db/apps/rqzh2/modules/ext-html.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/rqzh2/modules/ext-common.xql"/>        
     </output>
     <output mode="epub">
         <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/rqzh2/modules/ext-common.xql"/>
+    </output>
+    <output mode="fo">
+        <module uri="http://www.tei-c.org/tei-simple/xquery/functions/ssrq-common" prefix="ec" at="xmldb:exist:///db/apps/rqzh2/modules/ext-common.xql"/>
+        <module uri="http://www.tei-c.org/tei-simple/xquery/ext-fo" prefix="ext-fo" at="xmldb:exist:///db/apps/rqzh2/modules/ext-fo.xql"/>
     </output>
 </modules>

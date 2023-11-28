@@ -302,6 +302,51 @@ declare function scraper:conv-taxonomy($info) {
 
 };
 
+declare function scraper:generate-taxonomy-xml-for-col() {
+    for $col in $config:data-collections
+        return
+            let $all-category := 
+                doc($config:data-root || "/taxonomy/taxonomy.xml")//tei:category
+            let $all-category-count := count($all-category)
+            let $found-terms-ids := scraper:get-taxonomies-from-data($col)
+            let $found-terms-ids-count := count($found-terms-ids)
+            let $found-tei-categories := 
+                for $term-id in $found-terms-ids
+                    return
+                        $all-category[@xml:id = $term-id]
+            let $found-tei-categories-count := count($found-tei-categories)
+            let $missing-categories-count := $found-terms-ids-count - $found-tei-categories-count
+            let $util:log := util:log("info", "scraper:generate-taxonomy-xml-for-col: 
+                collection:'" || $col || "' has '" || $found-terms-ids-count || "' unique terms.
+                Found categories in taxonomy.xml: '" || $found-tei-categories-count || "'
+                Missing categories in taxonomy.xml: '" ||  $missing-categories-count || "'")
+            
+            let $generated-taxonomy-tei := scraper:generate-taxonomy-tei($scraper:taxonomy, $found-tei-categories)
+            return
+                xmldb:store($config:data-root || "/" || $scraper:taxonomy, $scraper:taxonomy || "-" || $col || ".xml", $generated-taxonomy-tei)
+};
+
+declare function scraper:get-taxonomies-from-data($org-col) {
+    for $term in collection($config:data-root || "/"|| $org-col)//tei:term[@ref]
+        group by $ref := $term/@ref
+        order by $ref ascending
+            return
+                $ref[1]/string()
+};
+
+declare function scraper:generate-taxonomy-tei($type, $categories){
+    element { QName("http://www.tei-c.org/ns/1.0", "TEI") } {
+        attribute xml:id {"taxonomy"},
+        attribute type {"Taxonomy" },
+        scraper:tei-header($type),
+        element standOff {
+            element listPlace {
+                $categories
+            }
+        }
+    }
+};
+
 declare function scraper:persons-all($ids-per-batch) {
     util:log("info", "scraper:persons-all: started" ),    
     batch:generate-and-store-person-id-batches($ids-per-batch),
@@ -586,6 +631,7 @@ declare function scraper:tei-header($category) {
                     case $scraper:person return "Personendaten"
                     case $scraper:organization return "Organisationsdaten"
                     case $scraper:place return "Ortsdaten"
+                    case $scraper:taxonomy return "Taxonomy"
                     default return ""
     return
         element { QName("http://www.tei-c.org/ns/1.0", "teiHeader") } {

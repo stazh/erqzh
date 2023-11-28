@@ -31,56 +31,12 @@
     <link rel="stylesheet" href="resources/css/theme-rqzh.css"/>
 
     <script type="module" src="pb-components-bundle.js" data-template="pages:load-components"/>
-
-    <script type="module" src="pb-leaflet-map.js" data-template="pages:load-components"/>
+    
     <custom-style>
-        <style>
-            .main {
-                height: calc(100vh - 285px);
-            }
-            
-            @media (max-width: 1023px) {
-                .doclist {
-                    margin-bottom: 20px;
-                }
-                .documents {
-                    padding-left: 10px;
-                }
-                .documents .label {
-                    display: none;
-                }
-                .toolbar pb-search {
-                    padding-left: 0;
-                }
-                #facets {
-                    display: none;
-                }
-            }
-
-            @media (min-width: 1024px) {
-                .toolbar {
-                    display: none;
-                }
-                .panels {
-                    display: flex;
-                    flex-direction: row;
-                }
-            }
-
-            pb-leaflet-map {
-                height: 40%;
-                width: 100%;
-            }
-    
-            .content-body .transcript {
-                max-width: none;
-            }
-    
+        <style>  
             .list {
-                height: 60%;
-                max-width: 41.24rem;
-                margin: 0 auto;
-                overflow: auto;
+                max-width: 80rem;
+                margin: 0 auto;                
             }
     
             [slot=controls] {
@@ -92,12 +48,7 @@
     
             pb-split-list::part(items) {
                 margin-top: 1em;
-            }
-    
-            .place iron-icon {
-                margin-left: 1em;
-                --iron-icon-height: 22px;
-            }
+            }    
     
             @media (max-width: 767px) {
                 .list {
@@ -134,7 +85,7 @@
                 <section>
                     <div class="pb-container">
                         <h1>
-                                <pb-i18n key="menu.organizations"/>:
+                                <pb-i18n key="menu.keywords"/>:
                             <span data-editionseinheit="${editionseinheit}" data-template="app:get-edition-unit"/>
                         </h1>
                     </div>
@@ -150,7 +101,7 @@
                                 </paper-input>
                             </pb-custom-form>
                             
-                            <pb-split-list url="api/organization/${editionseinheit}" subforms="#options" selected="A" emit="transcription" subscribe="transcription" data-template="pages:parse-params"/>
+                            <pb-split-list url="api/register/keyword/${editionseinheit}" subforms="#options" selected="A" emit="transcription" subscribe="transcription" data-template="pages:parse-params"/>
                         </div>
                     </div>
                 </section>

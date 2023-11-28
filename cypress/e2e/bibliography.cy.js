@@ -1,10 +1,10 @@
 describe('bibliography page', () => {
-    it('should load', () => {
+    beforeEach('should load', () => {
         cy.visit('literaturverzeichnis.html')
     })
 
     it('should display two separate tables', () => {
-        cy.get('caption')
+        cy.get('table')
         .should('be.visible')
         .should('have.length', 2)
     })

@@ -24,6 +24,7 @@ declare function sapi:autocomplete($request as map(*)) {
     return
         array {
             for $item in $items
+            group by $item
             return
                 map {
                     "text": $item,
@@ -52,7 +53,7 @@ declare function sapi:search($request as map(*)) {
         let $store := (
             session:set-attribute($config:session-prefix || ".hits", $hitsAll),
             session:set-attribute($config:session-prefix || ".hitCount", $hitCount),
-            session:set-attribute($config:session-prefix || ".query", $request?parameters?query),
+            session:set-attribute($config:session-prefix || ".search", $request?parameters?query),
             session:set-attribute($config:session-prefix || ".field", $request?parameters?field),
             session:set-attribute($config:session-prefix || ".docs", $request?parameters?doc)
         )
@@ -111,8 +112,9 @@ declare %private function sapi:show-hits($request as map(*), $hits as item()*, $
 
 declare function sapi:facets($request as map(*)) {
     
-    let $hits := session:get-attribute($config:session-prefix || ".hits")
+    let $hits := session:get-attribute($config:session-prefix || ".hits")    
     where count($hits) > 0
+    let $_ := util:log("info", "sapi:facets " || count($hits))
     return
         <div>
         {
