@@ -51,12 +51,12 @@ ARG ACCESS_TOKEN_VALUE1=glpat-xH4UNyWKyx2iwPgm58Hr
 ARG ACCESS_TOKEN_NAME2=rqzh2
 ARG ACCESS_TOKEN_VALUE2=glpat-fZA7FnjN7rwwMve4q8gY
 
-RUN  git clone --depth 1 -b tp8 https://${ACCESS_TOKEN_NAME1}:${ACCESS_TOKEN_VALUE1}@gitlab.existsolutions.com/rqzh/erqzh-data.git \ 
+RUN  git clone --depth 1 -b main https://${ACCESS_TOKEN_NAME1}:${ACCESS_TOKEN_VALUE1}@gitlab.existsolutions.com/rqzh/erqzh-data.git \ 
     && cd erqzh-data \
     && ant
 
 
-RUN  git clone --depth 1 -b tp8 https://${ACCESS_TOKEN_NAME2}:${ACCESS_TOKEN_VALUE2}@gitlab.existsolutions.com/rqzh/rqzh2.git \
+RUN  git clone --depth 1 -b main https://${ACCESS_TOKEN_NAME2}:${ACCESS_TOKEN_VALUE2}@gitlab.existsolutions.com/rqzh/rqzh2.git \
     && cd rqzh2 \
     && ant
 
