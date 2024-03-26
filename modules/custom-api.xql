@@ -162,7 +162,7 @@ declare function api:html($request as map(*)) {
                                 </body>
                             </html>
                     return
-                        dapi:postprocess($page, (), $config?odd, $config:context-path || "/", true())
+                        dapi:postprocess($page, (), (), $config:context-path || "/", ())
                 else
                     error($errors:NOT_FOUND, "Document " || $doc || " not found")
         else
