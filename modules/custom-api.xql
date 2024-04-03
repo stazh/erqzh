@@ -22,6 +22,8 @@ import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at
 import module namespace dapi="http://teipublisher.com/api/documents" at "lib/api/document.xql";
 import module namespace vapi="http://teipublisher.com/api/view" at "lib/api/view.xql";
 
+declare default collation "http://exist-db.org/collation?lang=DE";
+
 declare variable $api:REGISTER-LUCENE-OPTIONS := map {
                     "leading-wildcard": "yes",
                     "filter-rewrite": "yes"
@@ -232,7 +234,8 @@ declare function api:split-list($request as map(*)) {
     let $reg-type := normalize-space($request?parameters?type)
     let $editionseinheit := translate($request?parameters?editionseinheit, "/","")
     let $log := util:log("info","api:split-list: registry-type: " || $reg-type)
-    let $items := api:query-register($reg-type,$search,$editionseinheit)
+    let $entities := api:query-register($reg-type,$search,$editionseinheit)
+    let $items := sort($entities, (), function($item) {head((ft:field($item, 'name-s'), ft:field($item, 'name')))})
     let $log := util:log("info", "api:split-list found items: " || count($items))
     let $byLetter := 
         map:merge(
