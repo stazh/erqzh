@@ -1103,7 +1103,7 @@
                 <elementSpec ident="ref" mode="change">
                     <model predicate="parent::bibl" behaviour="link" cssClass="ref-link">
             <param name="text" value="."/>
-            <param name="link" value="ec:ref-link(@target, util:collection-name(.))"/>
+            <param name="link" value="ec:ref-link(@target, util:collection-name($parameters?root))"/>
         </model>
                     <model predicate="ancestor::div/@type='collection'" behaviour="link">
             <desc>Link in Klammerdokument</desc>
