@@ -237,7 +237,7 @@ declare function api:split-list($request as map(*)) {
     let $byLetter := 
         map:merge(
             for $item in $items
-                let $name := ft:field($item, 'name')[1]
+                let $name := if ($reg-type eq 'people') then ft:field($item, 'name-s')[1] else ft:field($item, 'name')[1]
                 order by $name
                 group by $letter := substring($name, 1, 1) => upper-case()
                 return
