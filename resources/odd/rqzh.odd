@@ -814,7 +814,7 @@
             <param name="fileDescTitle" value="titleStmt/title"/>
             <param name="fileDescPerson" value="ec:persName-list(titleStmt/respStmt[1]/persName)"/>
             <param name="credits" value="./publicationStmt/availability/p[@xml:id='facs']/text()"/>
-            <param name="link" value="'https://rechtsquellen.sources-online.org/' || substring-after(util:collection-name(.), '/db/apps/rqzh-data/') || '/' || replace(seriesStmt/idno, '^(.*)_1$', '$1')"/>
+            <param name="link" value="'https://rechtsquellen.sources-online.org/' || substring-after(util:collection-name(.), '/db/apps/rqzh-data/') || '/' || substring-before(util:document-name(.), '.xml')"/>
             <pb:template xmlns="" xml:space="preserve">
                             <span id="info">
                                 [[idno-format]]
@@ -1103,7 +1103,7 @@
                 <elementSpec ident="ref" mode="change">
                     <model predicate="parent::bibl" behaviour="link" cssClass="ref-link">
             <param name="text" value="."/>
-            <param name="link" value="ec:ref-link(@target, util:collection-name(.))"/>
+            <param name="link" value="ec:ref-link(@target, util:collection-name($parameters?root))"/>
         </model>
                     <model predicate="ancestor::div/@type='collection'" behaviour="link">
             <desc>Link in Klammerdokument</desc>
@@ -1400,7 +1400,7 @@
         </model>
                 </elementSpec>
     <elementSpec ident="graphic" mode="change">
-        <model behaviour="graphic">
+                    <model behaviour="graphic">
             <param name="url" value="'resources/images/' || @url"/>
             <param name="width" value="@width"/>
             <param name="height" value="@height"/>
