@@ -45,7 +45,7 @@ ARG ADMIN_PASS=dm18IWqn0OQBfSh5KubR
 
 ## erqzh-data at gitlab.existsolutions.com/rqzh/erqzh-data.git
 ARG ACCESS_TOKEN_NAME1=rqzh-data
-ARG ACCESS_TOKEN_VALUE1=glpat-xH4UNyWKyx2iwPgm58Hr
+ARG ACCESS_TOKEN_VALUE1=glpat-nNsPU6oPa-PSqRMPmQr4
 
 ## rqzh2 at gitlab.existsolutions.com/rqzh/rqzh2.git
 ARG ACCESS_TOKEN_NAME2=rqzh2
