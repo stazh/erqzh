@@ -34,7 +34,7 @@ RUN curl -L -o exist-distribution-${EXIST_VERSION}-unix.tar.bz2 https://github.c
     && mv /usr/local/exist-distribution-${EXIST_VERSION} /usr/local/exist
 
 
-RUN  git clone --depth 1 -b main https://rqzh-data:glpat-nNsPU6oPa-PSqRMPmQr4@gitlab.existsolutions.com/rqzh/erqzh-data.git
+RUN  git clone --depth 1 -b main https://rqzh-data:glpat-bgZ8xQBnHgRjEPWrpwab@gitlab.existsolutions.com/rqzh/erqzh-data.git
 RUN cd /workspaces/erqzh-data \
     && ant \
     && cp build/*.xar /usr/local/exist/autodeploy/zz-erqzh-data-0.1.xar;

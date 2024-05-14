@@ -38,25 +38,17 @@ FROM builder as tei
 RUN  mkdir -p ~/.ssh && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 
 ARG TEMPLATING_VERSION=1.1.0
-ARG PUBLISHER_LIB_VERSION=3.1.0
+ARG PUBLISHER_LIB_VERSION=4.0.0
 ARG ROUTER_VERSION=1.8.1
 
 ARG ADMIN_PASS=dm18IWqn0OQBfSh5KubR
 
-## erqzh-data at gitlab.existsolutions.com/rqzh/erqzh-data.git
-ARG ACCESS_TOKEN_NAME1=rqzh-data
-ARG ACCESS_TOKEN_VALUE1=glpat-nNsPU6oPa-PSqRMPmQr4
-
-## rqzh2 at gitlab.existsolutions.com/rqzh/rqzh2.git
-ARG ACCESS_TOKEN_NAME2=rqzh2
-ARG ACCESS_TOKEN_VALUE2=glpat-fZA7FnjN7rwwMve4q8gY
-
-RUN  git clone --depth 1 -b main https://${ACCESS_TOKEN_NAME1}:${ACCESS_TOKEN_VALUE1}@gitlab.existsolutions.com/rqzh/erqzh-data.git \ 
-    && cd erqzh-data \
-    && ant
-
-
-RUN  git clone --depth 1 -b main https://${ACCESS_TOKEN_NAME2}:${ACCESS_TOKEN_VALUE2}@gitlab.existsolutions.com/rqzh/rqzh2.git \
+RUN  git clone --depth 1 -b main https://rqzh-data:glpat-bgZ8xQBnHgRjEPWrpwab@gitlab.existsolutions.com/rqzh/erqzh-data.git 
+RUN cd erqzh-data \
+    && ant \
+    && cp build/*.xar /usr/local/exist/autodeploy/zz-erqzh-data-0.1.xar;
+    
+RUN  git clone --depth 1 -b main https://rqzh2:glpat-fZA7FnjN7rwwMve4q8gY@gitlab.existsolutions.com/rqzh/rqzh2.git \
     && cd rqzh2 \
     && ant
 
