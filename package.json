@@ -7,7 +7,7 @@
     "@teipublisher/pb-components": "2.10.1"
   },
   "devDependencies": {
-    "cypress": "^13.3.0"
+    "cypress": "^13.17.0"
   },
   "scripts": {
     "e2e": "cypress run"
