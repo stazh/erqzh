@@ -1,23 +1,47 @@
-describe('abbreviation page', () => {
-    before('loads', () => {
-        cy.visit('abbr.html', {
-            onBeforeLoad(win) {
-                Object.defineProperty(win.navigator, 'languages', {
-                    value: ['de'],
+describe('Abbreviation page multilingual tests', () => {
+    const translations = require('../fixtures/translations-abbr.json')
+    Object.keys(translations).forEach((lang) => {
+        describe(`Language: ${lang}`, () => {
+
+            // Load the page and set the language before each test
+            beforeEach(function () {
+                const texts = translations[lang];
+                cy.visit('abbr.html', {
+                    onBeforeLoad(win) {
+                        Object.defineProperty(win.navigator, 'languages', { value: [lang] });
+                    }
                 });
-            }
-        })
+                this.texts = texts;
+            });
 
+// Metadata tests
+            it('checks meta title', function () {
+                cy.title()
+                    .should('not.be.empty')
+                    .should('contain', this.texts.metaTitle);
+            });
 
-    })
+            it('checks meta description', function () {
+                cy.get('meta[name="description"]')
+                    .should('have.attr', 'content')
+                    .and('not.be.empty');
+            });
 
-    it('displays symbols', () => {
-        // TODO: see #93 this doesn't properly test 
-        // the computed css used by various browsers but its a start
-        cy.get(':nth-child(9) > pb-lang')
-        cy.get(':nth-child(4) > :nth-child(3)')
-        .should('be.visible')
-        .and('have.css', 'font')
-        .and('match', /Lexia Fontes/)    
-    })
-})
+// Content tests
+            it('checks h1 header', function () {
+                cy.contains('h1', this.texts.h1).should('be.visible');
+            });
+
+            it('checks footer', function () {
+                cy.get('.footer__imprint').should('be.visible');
+            });
+
+            it('checks app header', function () {
+                cy.get('app-header').should('be.visible');
+            });
+
+        });
+
+    });
+
+});
