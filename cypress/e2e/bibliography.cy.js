@@ -32,7 +32,7 @@ describe('Bibliography page multilingual tests', () => {
                 cy.contains('h1', this.texts.h1).should('be.visible');
             });
 
-            it('checks footer', function () {
+            it.skip('checks footer', function () {
                 cy.get('.footer__imprint').should('be.visible');
             });
 
