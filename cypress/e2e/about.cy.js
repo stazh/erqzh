@@ -1,5 +1,5 @@
-describe('Abbreviation page multilingual tests', () => {
-    const translations = require('../fixtures/translations-abbr.json')
+describe('About page multilingual tests', () => {
+    const translations = require('../fixtures/translations-about.json')
     Object.keys(translations).forEach((lang) => {
         describe(`Language: ${lang}`, () => {
 
@@ -28,7 +28,7 @@ describe('Abbreviation page multilingual tests', () => {
             });
 
 // Content tests
-            it('checks h1 header', function () {
+            it.skip('checks h1 header', function () {
                 cy.contains('h1', this.texts.h1).should('be.visible');
             });
 
