@@ -28,7 +28,29 @@ declare function local:checkOriginWhitelist($regexes, $origin) {
         local:checkOriginWhitelist(tail($regexes), $origin)
 };
 
-if ($exist:path eq '') then
+(:~
+ : True if the request path or a query parameter contains a ".." path segment.
+ : Many endpoints build database paths from request input, so such requests are
+ : rejected up front to prevent access outside the intended collections.
+ : Only the query string is inspected: reading parameters via request:get-parameter
+ : would consume form-encoded request bodies before they reach the API.
+ :)
+declare function local:decode-parent-segment($str as xs:string) {
+    try { xmldb:decode($str) } catch * { $str }
+};
+
+declare function local:has-parent-segment() as xs:boolean {
+    matches(local:decode-parent-segment($exist:path), "(^|/)\.\.(/|$)") or
+    (some $param in tokenize(request:get-query-string(), "&amp;")
+        satisfies matches(local:decode-parent-segment(substring-after($param, "=")), "(^|/)\.\.(/|$)"))
+};
+
+if (local:has-parent-segment()) then (
+    response:set-status-code(400),
+    <error>Invalid request: path segments '..' are not allowed</error>
+)
+
+else if ($exist:path eq '') then
     <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
         <redirect url="{request:get-uri()}/"/>
     </dispatch>
@@ -86,7 +108,14 @@ else if (matches($exist:resource, "\.(png|jpg|jpeg|gif|tif|tiff|txt|mei)$", "s")
 
 (: all other requests are passed on the Open API router :)
 else
-    let $main := if (matches($exist:path, "^/+api/+(?:odd|lint)")) then "api-odd.xql" else "api.xql"
+    let $main :=
+        if (matches($exist:path, "^/+api/+(?:odd|lint)")) then
+            "api-odd.xql"
+        (: only LaTeX and app generation may run with dba privileges :)
+        else if (matches($exist:path, "^/+api/+document/+.+/+tex$") or matches($exist:path, "^/+api/+apps/+generate$")) then
+            "api-dba.xql"
+        else
+            "api.xql"
     return
         <dispatch xmlns="http://exist.sourceforge.net/NS/exist">
             <forward url="{$exist:controller}/modules/lib/{$main}">

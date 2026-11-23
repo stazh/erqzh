@@ -437,6 +437,25 @@ declare variable $config:data-collections := ("ZH_NF_I_1_3", "ZH_NF_I_1_11", "ZH
 declare variable $config:data-default := $config:data-root;
 
 (:~
+ : XPath expressions a client may pass in the xpath parameter of the /api/parts
+ : endpoint (e.g. via the xpath attribute of pb-view). Any other expression is
+ : rejected, except /id('...'), which is always allowed. Add the expressions
+ : used by your own templates here.
+ :)
+declare variable $config:allowed-xpath := (
+    "//teiHeader",
+    "//teiHeader/fileDesc/titleStmt",
+    "//teiHeader/fileDesc/titleStmt/title",
+    "//body",
+    "//text[@type='source']",
+    "//text[@type='source']/body",
+    "//text[@xml:lang='pl']/body",
+    "! (.//text[@xml:lang = 'la']/body | .//text/body)[1]",
+    "//div[@type='original']",
+    "//div[@xml:lang=tokenize(request:get-parameter('user.language', ()), '-')[1] or @xml:lang='de'][1]"
+);
+
+(:~
  : A sequence of root elements which should be excluded from the list of
  : documents displayed in the browsing view.
  :)
@@ -626,15 +645,42 @@ declare function config:document-type($div as element()) {
             "jats"
 };
 
+(:~
+ : Collections from which documents may be loaded via config:get-document. Documents
+ : outside these collections are never returned, even if addressed by an absolute path.
+ : Extend this list if your app needs to display documents stored elsewhere.
+ :)
+declare variable $config:document-roots := distinct-values((
+    $config:data-root, $config:data-default
+));
+
+(:~
+ : Filter the given documents, keeping only those stored below one of $config:document-roots.
+ :)
+declare function config:in-document-roots($docs as node()*) as node()* {
+    for $doc in $docs
+    let $uri := document-uri(root($doc))
+    where some $root in $config:document-roots satisfies
+        starts-with($uri, replace($root, "/+$", "") || "/")
+    return
+        $doc
+};
+
 declare function config:get-document($idOrName as xs:string) {
-    if ($config:address-by-id) then
-        root(collection($config:data-root)/id($idOrName))
-    else if (starts-with($idOrName, '/')) then
-        doc(xmldb:encode-uri($idOrName))
-    else if (doc-available($config:data-root || "/" || $idOrName || ".xml")) then
-        doc(xmldb:encode-uri($config:data-root || "/" || $idOrName || ".xml"))
+    (: reject relative path segments to prevent escaping the document roots :)
+    if (tokenize($idOrName, "/") = "..") then
+        ()
     else
-        doc(xmldb:encode-uri($config:data-root || "/" || $idOrName || "_1.xml"))
+        config:in-document-roots(
+            if ($config:address-by-id) then
+                root(collection($config:data-root)/id($idOrName))
+            else if (starts-with($idOrName, '/')) then
+                doc(xmldb:encode-uri($idOrName))
+            else if (doc-available($config:data-root || "/" || $idOrName || ".xml")) then
+                doc(xmldb:encode-uri($config:data-root || "/" || $idOrName || ".xml"))
+            else
+                doc(xmldb:encode-uri($config:data-root || "/" || $idOrName || "_1.xml"))
+        )
 };
 
 (:~
