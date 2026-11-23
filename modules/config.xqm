@@ -69,6 +69,9 @@ declare variable $config:address-by-id := false();
  :)
 declare variable $config:default-language := "en";
 
+declare variable $config:odd-media := ("web", "print", "latex", "epub", "fo");
+
+
 (:
  : The default to use for determining the amount of content to be shown
  : on a single page. Possible values: 'div' for showing entire divs (see

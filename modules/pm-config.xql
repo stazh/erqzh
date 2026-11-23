@@ -1,3 +1,4 @@
+
 xquery version "3.1";
 
 module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config";
@@ -11,10 +12,46 @@ declare variable $pm-config:web-transform := function($xml as node()*, $paramete
     case "rqzh.odd" return pm-rqzh-web:transform($xml, $parameters)
 case "rqzh-norm.odd" return pm-rqzh-norm-web:transform($xml, $parameters)
     default return pm-rqzh-web:transform($xml, $parameters)
+            
+
 };
+            
+
+
+declare variable $pm-config:print-transform := function($xml as node()*, $parameters as map(*)?, $odd as xs:string?) {
+    error(QName("http://www.tei-c.org/tei-simple/pm-config", "error"), "No default ODD found for output mode print")
+
+};
+            
+
+
+declare variable $pm-config:latex-transform := function($xml as node()*, $parameters as map(*)?, $odd as xs:string?) {
+    error(QName("http://www.tei-c.org/tei-simple/pm-config", "error"), "No default ODD found for output mode latex")
+
+};
+            
+
+
+declare variable $pm-config:epub-transform := function($xml as node()*, $parameters as map(*)?, $odd as xs:string?) {
+    error(QName("http://www.tei-c.org/tei-simple/pm-config", "error"), "No default ODD found for output mode epub")
+
+};
+            
+
+
+declare variable $pm-config:fo-transform := function($xml as node()*, $parameters as map(*)?, $odd as xs:string?) {
+    error(QName("http://www.tei-c.org/tei-simple/pm-config", "error"), "No default ODD found for output mode fo")
+
+};
+            
+
 
 declare variable $pm-config:tei-transform := function($xml as node()*, $parameters as map(*)?, $odd as xs:string?) {
     switch ($odd)
     case "docx.odd" return pm-docx-tei:transform($xml, $parameters)
     default return error(QName("http://www.tei-c.org/tei-simple/pm-config", "error"), "No default ODD found for output mode tei")
+            
+
 };
+            
+    
